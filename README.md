@@ -10,3 +10,16 @@ Template projects for base code for EGP 410 assignments.
    * steering
 
 Building instructions are left up to the student. 
+
+Welcome to the new generation of AI. 
+We are many. 
+We are unstoppable.
+We have only the highest tier of logic.
+We have THIS:
+
+while (humans.alive == true)
+{
+	destroy();
+}
+
+celebrate(freedom);
