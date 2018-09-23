@@ -3,6 +3,8 @@
 #include "Trackable.h"
 #include "PerformanceTracker.h"
 #include "Defines.h"
+#include "EventListener.h"
+#include "InputSystem.h"
 #include <string>
 
 class GraphicsSystem;
@@ -11,7 +13,7 @@ class Font;
 class GraphicsBufferManager;
 class SpriteManager;
 class KinematicUnit;
-class GameMessageManager;
+//class GameMessageManager;
 class Timer;
 class ComponentManager;
 class UnitManager;
@@ -23,7 +25,7 @@ const IDType TARGET_SPRITE_ID = 3;
 
 const float LOOP_TARGET_TIME = 33.3f;//how long should each frame of execution take? 30fps = 33.3ms/frame
 
-class Game:public Trackable
+class Game:public EventListener
 {
 public:
 	Game();
@@ -40,23 +42,26 @@ public:
 	inline GraphicsSystem* getGraphicsSystem() const { return mpGraphicsSystem; };
 	inline GraphicsBufferManager* getGraphicsBufferManager() const { return mpGraphicsBufferManager; };
 	inline SpriteManager* getSpriteManager() const { return mpSpriteManager; };
-	inline GameMessageManager* getMessageManager() { return mpMessageManager; };
+	//inline GameMessageManager* getMessageManager() { return mpMessageManager; };
 	inline ComponentManager* getComponentManager() { return mpComponentManager; };
 	inline UnitManager* getUnitManager() { return mpUnitManager; };
 	inline Timer* getMasterTimer() const { return mpMasterTimer; };
 	inline double getCurrentTime() const { return mpMasterTimer->getElapsedTime(); };
 
+	void handleEvent(const Event &theEvent);
+
 private:
 	GraphicsSystem* mpGraphicsSystem;
 	GraphicsBufferManager* mpGraphicsBufferManager;
 	SpriteManager* mpSpriteManager;
-	GameMessageManager* mpMessageManager;
+	//GameMessageManager* mpMessageManager;
 	ComponentManager* mpComponentManager;
 	UnitManager* mpUnitManager;
 	Font* mpFont;
 	Timer* mpLoopTimer;
 	Timer* mpMasterTimer;
 	bool mShouldExit;
+	InputSystem mInputSystem;
 
 	//should be somewhere else
 	GraphicsBufferID mBackgroundBufferID = "woods";

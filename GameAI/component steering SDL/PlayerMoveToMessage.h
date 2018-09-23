@@ -2,10 +2,11 @@
 
 #include "GameMessage.h"
 #include "Vector2D.h"
+#include "Event.h"
 
 class Vector2D;
 
-class PlayerMoveToMessage:public GameMessage
+class PlayerMoveToMessage:public Event
 {
 public:
 	PlayerMoveToMessage( const Vector2D& pos );

@@ -1,0 +1,6 @@
+﻿  WanderSteering.cpp
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\wandersteering.cpp(37): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\wandersteering.cpp(44): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\wandersteering.cpp(48): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\wandersteering.cpp(72): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  steering.vcxproj -> C:\Users\karim\Documents\AIGames\EGP-410\GameAI\component steering SDL\Debug\steering.exe

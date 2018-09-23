@@ -4,9 +4,11 @@
 #include "UnitManager.h"
 
 PlayerMoveToMessage::PlayerMoveToMessage( const Vector2D& pos )
-:GameMessage(PLAYER_MOVETO_MESSAGE)
+:Event(PLAYER_MOVE_TO_MESSAGE)
 ,mPos(pos)
 {
+	cout << pos.getX() << endl;
+	process();
 }
 
 PlayerMoveToMessage::~PlayerMoveToMessage()
@@ -16,6 +18,6 @@ PlayerMoveToMessage::~PlayerMoveToMessage()
 void PlayerMoveToMessage::process()
 {
 	Unit* pPlayer = gpGame->getUnitManager()->getPlayerUnit();
-	pPlayer->setSteering(Steering::SEEK, mPos);
+	pPlayer->setSteering(Steering::ARRIVEFACE, mPos);
 }
 

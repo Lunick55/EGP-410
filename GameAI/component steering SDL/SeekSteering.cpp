@@ -51,7 +51,11 @@ Steering* SeekSteering::getSteering()
 
 	PhysicsData data = pOwner->getPhysicsComponent()->getData();
 	data.acc = diff;
-	data.rotVel = 1.0f;
+
+	float velocityDirection = atan2(diff.getY(), diff.getX()) + (3.14159 /2);
+	pOwner->getPositionComponent()->setFacing(velocityDirection);
+
+	//data.rotVel = 1.0f;
 	this->mData = data;
 	return this;
 }
