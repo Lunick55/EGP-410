@@ -91,6 +91,9 @@
     <ClCompile Include="ArriveAndFace.cpp">
       <Filter>Source Files\Steering</Filter>
     </ClCompile>
+    <ClCompile Include="WanderChaseSteering.cpp">
+      <Filter>Source Files\Steering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GraphicsBuffer.h">
@@ -181,6 +184,9 @@
       <Filter>Header Files\Util</Filter>
     </ClInclude>
     <ClInclude Include="ArriveAndFace.h">
+      <Filter>Header Files\Steering</Filter>
+    </ClInclude>
+    <ClInclude Include="WanderChaseSteering.h">
       <Filter>Header Files\Steering</Filter>
     </ClInclude>
   </ItemGroup>

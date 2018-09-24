@@ -31,7 +31,6 @@ bool InputSystem::initInputSystem()
 void InputSystem::update()
 {
 		getKeyEvents();
-		getMouseEvents();
 }
 
 
@@ -47,7 +46,6 @@ void InputSystem::getKeyEvents()
 			if (mEvent.button.button == SDL_BUTTON_LEFT)
 			{
 				cout << "InputSystem: MOUSE LEFT" << endl;
-				//mKeyEvent.setType(MOUSE_LEFT);
 
 				int x, y;
 				SDL_GetMouseState(&x, &y);
@@ -63,8 +61,14 @@ void InputSystem::getKeyEvents()
 			}
 			if (mEvent.key.keysym.sym == SDLK_d)
 			{
-				cout << "InputSystem: Space" << endl;
+				cout << "InputSystem: D Key" << endl;
 				mKeyEvent.setType(D_KEY);
+				EventSystem::getInstance()->fireEvent(mKeyEvent);
+			}
+			if (mEvent.key.keysym.sym == SDLK_RETURN)
+			{
+				cout << "InputSystem: Enter" << endl;
+				mKeyEvent.setType(ENTER);
 				EventSystem::getInstance()->fireEvent(mKeyEvent);
 			}
 			if (mEvent.key.keysym.sym == SDLK_UP)
@@ -98,7 +102,7 @@ void InputSystem::getKeyEvents()
 }
 
 
-void InputSystem::getMouseEvents()
+void InputSystem::getMousePos(int &x, int &y)
 {
-	
+	SDL_GetMouseState(&x, &y);
 }

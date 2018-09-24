@@ -40,6 +40,7 @@
     <ClInclude Include="SteeringComponent.h" />
     <ClInclude Include="Unit.h" />
     <ClInclude Include="UnitManager.h" />
+    <ClInclude Include="WanderChaseSteering.h" />
     <ClInclude Include="WanderSteering.h" />
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +73,7 @@
     <ClCompile Include="SteeringComponent.cpp" />
     <ClCompile Include="Unit.cpp" />
     <ClCompile Include="UnitManager.cpp" />
+    <ClCompile Include="WanderChaseSteering.cpp" />
     <ClCompile Include="WanderSteering.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

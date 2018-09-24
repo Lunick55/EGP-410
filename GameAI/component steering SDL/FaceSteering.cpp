@@ -29,18 +29,6 @@ Steering* FaceSteering::getSteering()
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
 	//are we seeking a location or a unit?
 
-	float targetAngle = 0.01;
-	float slowAngle = 0.5;
-	float timeToTarget = 0.1;
-
-	/*if (mTargetID != INVALID_UNIT_ID)
-	{
-		//seeking unit
-		Unit* pTarget = gpGame->getUnitManager()->getUnit(mTargetID);
-		assert(pTarget != NULL);
-		mTargetLoc = pTarget->getPositionComponent()->getPosition();
-	}*/
-
 	diff = mTargetLoc - pOwner->getPositionComponent()->getPosition();
 
 	PhysicsData data = pOwner->getPhysicsComponent()->getData();
@@ -54,53 +42,50 @@ Steering* FaceSteering::getSteering()
 		return this;
 	}
 
-	float targetOrient = atan2(diff.getY(), diff.getX()) + (3.14159 / 2);
-	float rotation = targetOrient - pOwner->getFacing();
-	float rotationDirection;
-	rotation = fmod(rotation, (2 * 3.14f));// - 3.14f;
-	if (rotation > 3.14f)
+	mTargetOrient = atan2(diff.getY(), diff.getX()) + (3.14159 / 2);
+	mRotation = mTargetOrient - pOwner->getFacing();
+	mRotation = fmod(mRotation, (2 * 3.14f));
+	if (mRotation > 3.14f)
 	{
-		rotation - 3.14f;
-		rotation *= -1.0f;
+		mRotation - 3.14f;
+		mRotation *= -1.0f;
 	}
-	if (rotation < -3.14f)
+	if (mRotation < -3.14f)
 	{
-		rotation + 3.14f;
-		rotation *= -1.0f;
+		mRotation + 3.14f;
+		mRotation *= -1.0f;
 	}
 
-	float rotationSize = abs(rotation);
+	mRotationSize = abs(mRotation);
 
-	float targetRotation;
+	mTargetRotation;
 
-	if (rotationSize < targetAngle)
+	if (mRotationSize < mTargetAngle)
 	{
 		data.rotAcc = 0;
 		data.rotVel = 0;
 		this->mData = data;
 		return this;
 	}
-	if (rotationSize > slowAngle)
+	if (mRotationSize > mSlowAngle)
 	{
-		targetRotation = data.maxRotAcc;
+		mTargetRotation = data.maxRotAcc;
 	}
 	else
 	{
-		targetRotation = data.maxRotAcc * rotationSize / slowAngle;
+		mTargetRotation = data.maxRotAcc * mRotationSize / mSlowAngle;
 	}
 
-	targetRotation *= rotation / rotationSize;
-	
+	mTargetRotation *= mRotation / mRotationSize;
 
+	data.rotAcc = mTargetRotation - data.rotVel;
+	data.rotAcc /= mTimeToTarget;
 
-	data.rotAcc = targetRotation - data.rotVel;//pOwner->getPhysicsComponent()->getRotationalVelocity();
-	data.rotAcc /= timeToTarget;
+	float mAngularAcc = abs(data.rotAcc);
 
-	float angularAcc = abs(data.rotAcc);
-
-	if (angularAcc > data.maxRotAcc)
+	if (mAngularAcc > data.maxRotAcc)
 	{
-		data.rotAcc /= angularAcc;
+		data.rotAcc /= mAngularAcc;
 		data.rotAcc *= data.maxRotAcc;
 	}
 

@@ -28,13 +28,6 @@ Steering* WanderSteering::getSteering()
 	Vector2D diff;
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
 	//are we seeking a location or a unit?
-
-	//forward offset and radius of wander
-	float wanderOffset = 100.0f;
-	float wanderRadius = 30.0f;
-
-	//maximum rate at which the wanOrien can change
-	float wanderRate = 0.8;
 	
 	//update wander orientation
 	mWanderOrientation += (genRandomBinomial() * wanderRate);
@@ -44,30 +37,19 @@ Steering* WanderSteering::getSteering()
 	targetOrientation = mWanderOrientation + (pOwner->getFacing() - (3.14159 / 2));
 
 	//calculate center of wander cirlce
-	Vector2D target;
-	target = pOwner->getPositionComponent()->getPosition() + (asVector(pOwner->getFacing() - (3.14159 / 2)) * wanderOffset);
-	cout << (pOwner->getFacing() - (3.14159 / 2)) * wanderOffset << endl; //----------
+	mTarget = pOwner->getPositionComponent()->getPosition() + (asVector(pOwner->getFacing() - (3.14159 / 2)) * mWanderOffset);
 
 	//calculate target location
-	target += (asVector(targetOrientation) * wanderRadius);
-	cout << targetOrientation * wanderRadius << endl; //--------------
-
-	cout << diff.getX() << endl;
+	mTarget += (asVector(targetOrientation) * mWanderRadius);
 
 	//do a facing delegate to FACE using target
-	mFaceSteering.setTargetLoc(target);
+	mFaceSteering.setTargetLoc(mTarget);
 	Steering* tempFace = mFaceSteering.getSteering();
 
 	PhysicsData data = pOwner->getPhysicsComponent()->getData();
 
 	data.rotAcc = tempFace->getData().rotAcc;
 	data.rotVel = tempFace->getData().rotVel;
-	//cout << "ROTACC " << data.rotAcc << endl;
-	//cout << "TARORT " << targetOrientation << endl;
-	//cout << "WANORT " << mWanderOrientation << endl;
-	//cout << "TARGTX " << target.getX() << endl;
-	//cout << "TARGTY " << target.getY() << endl;
-
 	
 	data.acc = asVector(pOwner->getFacing() - (3.14159 / 2)) * pOwner->getMaxAcc();
 

@@ -31,14 +31,14 @@ Steering* ArriveAndFace::getSteering()
 
 	PhysicsData data = pOwner->getPhysicsComponent()->getData();
 
-	Steering* tempFace = mFaceSteering.getSteering();
-	Steering* tempArrive = mArriveSteering.getSteering();
+	mFaceSteering.getSteering();
+	mArriveSteering.getSteering();
 
-	data.rotAcc = tempFace->getData().rotAcc;
-	data.rotVel = tempFace->getData().rotVel;
+	data.rotAcc = mFaceSteering.getData().rotAcc;
+	data.rotVel = mFaceSteering.getData().rotVel;
 
-	data.acc = tempArrive->getData().acc;
-	data.vel = tempArrive->getData().vel;
+	data.acc = mArriveSteering.getData().acc;
+	data.vel = mArriveSteering.getData().vel;
 
 	this->mData = data;
 	return this;

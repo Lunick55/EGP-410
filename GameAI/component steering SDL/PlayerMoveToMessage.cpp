@@ -7,7 +7,6 @@ PlayerMoveToMessage::PlayerMoveToMessage( const Vector2D& pos )
 :Event(PLAYER_MOVE_TO_MESSAGE)
 ,mPos(pos)
 {
-	cout << pos.getX() << endl;
 	process();
 }
 

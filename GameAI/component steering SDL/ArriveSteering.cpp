@@ -25,12 +25,9 @@ ArriveSteering::ArriveSteering(const UnitID& ownerID, const Vector2D& targetLoc,
 
 Steering* ArriveSteering::getSteering()
 {
-	float stopRadius = 0.2;
-	float slowRadius = 150;
-	float timeToTarget = 0.1f;
-
 	Vector2D diff;
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
+	PhysicsData data = pOwner->getPhysicsComponent()->getData();
 	//are we seeking a location or a unit?
 
 	if (mTargetID != INVALID_UNIT_ID)
@@ -41,12 +38,9 @@ Steering* ArriveSteering::getSteering()
 		mTargetLoc = pTarget->getPositionComponent()->getPosition();
 	}
 	
-	PhysicsData data = pOwner->getPhysicsComponent()->getData();
-
 	diff = mTargetLoc - pOwner->getPositionComponent()->getPosition();
 
-	//----------Dynamic attempt
-	if (diff.getLength() < stopRadius)
+	if (diff.getLength() < mStopRadius)
 	{
 		data.acc = 0;
 		data.vel= 0;
@@ -54,23 +48,21 @@ Steering* ArriveSteering::getSteering()
 		return this;
 	}
 
-	float targetSpeed;
-	if (diff.getLength() > slowRadius)
+	if (diff.getLength() > mSlowRadius)
 	{
-		targetSpeed = pOwner->getMaxSpeed();
+		mTargetSpeed = pOwner->getMaxSpeed();
 	}
 	else
 	{
-		targetSpeed = pOwner->getMaxSpeed() * diff.getLength() / slowRadius;
+		mTargetSpeed = pOwner->getMaxSpeed() * diff.getLength() / mSlowRadius;
 	}
 	
-	Vector2D targetVelocity;
-	targetVelocity = diff;
-	targetVelocity.normalize();
-	targetVelocity *= targetSpeed;
+	mTargetVelocity = diff;
+	mTargetVelocity.normalize();
+	mTargetVelocity *= mTargetSpeed;
 
-	data.acc = targetVelocity - data.vel; //pOwner->getPhysicsComponent()->getVelocity();
-	data.acc /= timeToTarget;
+	data.acc = mTargetVelocity - data.vel; //pOwner->getPhysicsComponent()->getVelocity();
+	data.acc /= mTimeToTarget;
 
 	if (data.acc.getLength() > pOwner->getMaxAcc())
 	{
@@ -78,12 +70,6 @@ Steering* ArriveSteering::getSteering()
 		data.acc *= pOwner->getMaxAcc();
 	}
 
-	//data.acc = diff;
-
-	//float velocityDirection = atan2(diff.getY(), diff.getX()) + (3.14159 / 2);
-	//pOwner->getPositionComponent()->setFacing(velocityDirection);
-
-	//data.rotVel = 1.0f;
 	this->mData = data;
 	return this;
 }
