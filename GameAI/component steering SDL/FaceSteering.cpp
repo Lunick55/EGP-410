@@ -42,17 +42,17 @@ Steering* FaceSteering::getSteering()
 		return this;
 	}
 
-	mTargetOrient = atan2(diff.getY(), diff.getX()) + (3.14159 / 2);
+	mTargetOrient = atan2(diff.getY(), diff.getX()) + (PI / 2);
 	mRotation = mTargetOrient - pOwner->getFacing();
-	mRotation = fmod(mRotation, (2 * 3.14f));
-	if (mRotation > 3.14f)
+	mRotation = fmod(mRotation, (2 * PI));
+	if (mRotation > PI)
 	{
-		mRotation - 3.14f;
+		mRotation - PI;
 		mRotation *= -1.0f;
 	}
-	if (mRotation < -3.14f)
+	if (mRotation < -PI)
 	{
-		mRotation + 3.14f;
+		mRotation + PI;
 		mRotation *= -1.0f;
 	}
 

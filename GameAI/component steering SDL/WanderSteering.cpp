@@ -34,10 +34,10 @@ Steering* WanderSteering::getSteering()
 
 	//calculate combined target Orient
 	float targetOrientation;
-	targetOrientation = mWanderOrientation + (pOwner->getFacing() - (3.14159 / 2));
+	targetOrientation = mWanderOrientation + (pOwner->getFacing() - (PI / 2));
 
 	//calculate center of wander cirlce
-	mTarget = pOwner->getPositionComponent()->getPosition() + (asVector(pOwner->getFacing() - (3.14159 / 2)) * mWanderOffset);
+	mTarget = pOwner->getPositionComponent()->getPosition() + (asVector(pOwner->getFacing() - (PI / 2)) * mWanderOffset);
 
 	//calculate target location
 	mTarget += (asVector(targetOrientation) * mWanderRadius);
@@ -49,9 +49,8 @@ Steering* WanderSteering::getSteering()
 	PhysicsData data = pOwner->getPhysicsComponent()->getData();
 
 	data.rotAcc = tempFace->getData().rotAcc;
-	data.rotVel = tempFace->getData().rotVel;
 	
-	data.acc = asVector(pOwner->getFacing() - (3.14159 / 2)) * pOwner->getMaxAcc();
+	data.acc = asVector(pOwner->getFacing() - (PI / 2)) * pOwner->getMaxAcc();
 
 	this->mData = data;
 	return this;

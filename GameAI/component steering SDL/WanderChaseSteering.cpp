@@ -50,14 +50,14 @@ Steering* WanderChaseSteering::getSteering()
 	{
 		//Get seekSteering
 		mSeekSteering.getSteering();
-		data = mSeekSteering.getData();//tempSeek->getData();
+		data = mSeekSteering.getData();
 
 		//Get faceSteering
 		mFaceSteering.setTargetLoc(mTargetLoc);
 		mFaceSteering.getSteering();
 
-		data.rotAcc = mFaceSteering.getData().rotAcc;//tempFace->getData().rotAcc;		
-		data.rotVel = mFaceSteering.getData().rotVel;//tempFace->getData().rotVel;
+		data.rotAcc = mFaceSteering.getData().rotAcc;		
+		data.rotVel = mFaceSteering.getData().rotVel;
 	}
 
 	this->mData = data;

@@ -11,6 +11,8 @@ const IDType INVALID_ID = -1;
 
 const IDType HIGHEST_ID = 9999;
 
+const float PI = 3.14159f;
+
 #define MESSAGE_MANAGER gpGame->getMessageManager()
 #define GRAPHICS_SYSTEM gpGame->getGraphicsSystem()
 
