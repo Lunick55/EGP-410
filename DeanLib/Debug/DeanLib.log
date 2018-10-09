@@ -1,4 +1,6 @@
-﻿  CircularQueue.cpp
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppClean.targets(76,5): warning : The process cannot access the file 'c:\users\karim\documents\aigames\egp-410\deanlib\debug\memorytracker.obj' because it is being used by another process.
+C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppClean.targets(76,5): warning : The process cannot access the file 'c:\users\karim\documents\aigames\egp-410\deanlib\lib\deanlibdebug.lib' because it is being used by another process.
+  CircularQueue.cpp
   MemoryPool.cpp
   MemoryTracker.cpp
   PerformanceTracker.cpp

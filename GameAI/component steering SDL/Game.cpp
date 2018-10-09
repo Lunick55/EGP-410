@@ -82,6 +82,15 @@ bool Game::init()
 	EventSystem::getInstance()->addListener(ESC, this);
 	EventSystem::getInstance()->addListener(D_KEY, this);
 	EventSystem::getInstance()->addListener(ENTER, this);
+	EventSystem::getInstance()->addListener(S_KEY, this);
+	EventSystem::getInstance()->addListener(C_KEY, this);
+	EventSystem::getInstance()->addListener(A_KEY, this);
+	EventSystem::getInstance()->addListener(W_KEY, this);
+	EventSystem::getInstance()->addListener(G_KEY, this);
+	EventSystem::getInstance()->addListener(DOWN_ARROW, this);
+	EventSystem::getInstance()->addListener(UP_ARROW, this);
+	EventSystem::getInstance()->addListener(LEFT_ARROW, this);
+	EventSystem::getInstance()->addListener(RIGHT_ARROW, this);
 
 	//setup sprites
 	GraphicsBuffer* pBackGroundBuffer = mpGraphicsBufferManager->getBuffer( mBackgroundBufferID );
@@ -110,19 +119,21 @@ bool Game::init()
 
 	Vector2D tempLoc = (100, 100);
 
+	loadFlockData();
+
 	//setup units
-	Unit* pUnit = mpUnitManager->createPlayerUnit(*pArrowSprite);
-	pUnit->setShowTarget(true);
-	pUnit->setSteering(Steering::ARRIVEFACE, ZERO_VECTOR2D);
+	//Unit* pUnit = mpUnitManager->createPlayerUnit(*pArrowSprite);
+	//pUnit->setShowTarget(true);
+	//pUnit->setSteering(Steering::ARRIVE, ZERO_VECTOR2D);
 
 	//create 2 enemies
 	//pUnit = mpUnitManager->createUnit(*pEnemyArrow, true, PositionData(Vector2D((float)gpGame->getGraphicsSystem()->getWidth()-1, 0.0f), 0.0f));
-	//pUnit->setShowTarget(false);
-	//pUnit->setSteering(Steering::WANDERCHASE, tempLoc, PLAYER_UNIT_ID);
+	//pUnit->setShowTarget(true);
+	//pUnit->setSteering(Steering::WANDER, tempLoc, PLAYER_UNIT_ID);
 	//
 	//pUnit = mpUnitManager->createUnit(*pEnemyArrow, true, PositionData(Vector2D(0.0f, (float)gpGame->getGraphicsSystem()->getHeight()-1), 0.0f));
 	//pUnit->setShowTarget(true);
-	//pUnit->setSteering(Steering::SEEK, ZERO_VECTOR2D, PLAYER_UNIT_ID);
+	//pUnit->setSteering(Steering::WANDER, ZERO_VECTOR2D, PLAYER_UNIT_ID);
 
 
 	return true;
@@ -182,6 +193,16 @@ void Game::processLoop()
 
 	//write text at mouse position
 	mpGraphicsSystem->writeText(*mpFont, (float)x, (float)y, mousePos.str(), BLACK_COLOR);
+	mpGraphicsSystem->writeText(*mpFont, (float)x, (float)y - 20, "S Weight: " + std::to_string(mWeightSeparation) + "|", BLACK_COLOR);
+	mpGraphicsSystem->writeText(*mpFont, (float)x + 270, (float)y - 20, "S Radius: " + std::to_string((int)mRadiusSeparation), BLACK_COLOR);
+
+	mpGraphicsSystem->writeText(*mpFont, (float)x, (float)y - 40, "C Weight: " + std::to_string(mWeightCohesion) + "|", BLACK_COLOR);
+	mpGraphicsSystem->writeText(*mpFont, (float)x + 270, (float)y - 40, "C Radius: " + std::to_string((int)mRadiusCohesion), BLACK_COLOR);
+
+	mpGraphicsSystem->writeText(*mpFont, (float)x, (float)y - 60, "G Weight: " + std::to_string(mWeightGroupAlign) + "|", BLACK_COLOR);
+	mpGraphicsSystem->writeText(*mpFont, (float)x + 270, (float)y - 60, "G Radius: " + std::to_string((int)mRadiusGroupAlign), BLACK_COLOR);
+
+	mpGraphicsSystem->writeText(*mpFont, (float)x, (float)y - 80, mWeightMode, BLACK_COLOR);
 
 	//test of fill region the big red square
 	//mpGraphicsSystem->fillRegion(*pDest, Vector2D(300, 300), Vector2D(500, 500), RED_COLOR);
@@ -208,6 +229,72 @@ float genRandomFloat()
 	return r;
 }
 
+void Game::loadFlockData()
+{
+	ifstream inFile;
+	ofstream outFile;
+	float flockValArr[6];
+	int j = 0;
+
+	inFile.open(mFlockingDataFilename);
+	if (inFile.fail())
+	{
+		cout << "File does not exist" << endl;
+		return;
+	}
+
+	while (!inFile.eof())
+	{
+		string tempLine;
+		string numValue;
+		bool numFound = false;
+		getline(inFile, tempLine);
+
+		for (int i = 0; i < tempLine.length(); i++)
+		{
+			if (numFound == true)
+			{
+				numValue+=tempLine[i];
+			}
+			if (tempLine[i] == '=')
+			{
+				numFound = true;
+			}
+		}
+	
+		flockValArr[j] = stof(numValue);
+		j++;
+	}
+
+	mWeightCohesion = flockValArr[0];
+	mRadiusCohesion = flockValArr[1];
+	mWeightSeparation = flockValArr[2];
+	mRadiusSeparation = flockValArr[3];
+	mWeightGroupAlign = flockValArr[4];
+	mRadiusGroupAlign = flockValArr[5];
+}
+
+void Game::saveFlockData()
+{
+	ofstream outFile;
+
+	outFile.open(mFlockingDataFilename);
+	if (outFile.fail())
+	{
+		cout << "File does not exist" << endl;
+		return;
+	}
+
+	outFile << "mWeightCohesion=" << mWeightCohesion << endl;
+	outFile << "mRadiusCohesion=" << mRadiusCohesion << endl;
+	outFile << "mWeightSeparation=" << mWeightSeparation << endl;
+	outFile << "mRadiusSeparation=" << mRadiusSeparation << endl;
+	outFile << "mWeightGroupAlign=" << mWeightGroupAlign << endl;
+	outFile << "mRadiusGroupAlign=" << mRadiusGroupAlign;
+
+	cout << "FLOCKING DATA SAVED" << endl;
+}
+
 void Game::handleEvent(const Event & theEvent)
 {
 	if (theEvent.getType() == ESC)
@@ -220,14 +307,127 @@ void Game::handleEvent(const Event & theEvent)
 	}
 	if (theEvent.getType() == ENTER)
 	{
-		Unit* pUnit = mpUnitManager->createRandomUnit(*mpSpriteManager->getSprite(AI_ICON_SPRITE_ID));
-		if (pUnit == NULL)
+		cout << "SAVING FLOCKING DATA....." << endl;
+		saveFlockData();
+	}
+	if (theEvent.getType() == A_KEY)
+	{
+		for (int i = 0; i < 10; i++)
+		{ 
+			Unit* pUnit = mpUnitManager->createRandomUnit(*mpSpriteManager->getSprite(AI_ICON_SPRITE_ID));
+			if (pUnit == NULL)
+			{
+				mpUnitManager->deleteRandomUnit();
+			}
+		}
+	}
+	if (theEvent.getType() == UP_ARROW)
+	{
+		if (mWeightMode != "null")
 		{
-			mpUnitManager->deleteRandomUnit();
+			if (mWeightMode == "Separation")
+			{
+				mWeightSeparation += 0.1;
+			}
+			else if (mWeightMode == "Cohesion")
+			{
+				mWeightCohesion += 0.1;
+			}
+			else if (mWeightMode == "Group Align")
+			{
+				mWeightGroupAlign += 0.1;
+			}
+		}
+	}
+	if (theEvent.getType() == DOWN_ARROW)
+	{
+		if (mWeightMode != "null")
+		{
+			if (mWeightMode == "Separation")
+			{
+				mWeightSeparation -= 0.1;
+			}
+			else if (mWeightMode == "Cohesion")
+			{
+				mWeightCohesion -= 0.1;
+			}
+			else if (mWeightMode == "Group Align")
+			{
+				mWeightGroupAlign -= 0.1;
+			}
+		}
+	}
+	if (theEvent.getType() == LEFT_ARROW)
+	{
+		if (mWeightMode != "null")
+		{
+			if (mWeightMode == "Separation")
+			{
+				mRadiusSeparation -= 5;
+			}
+			else if (mWeightMode == "Cohesion")
+			{
+				mRadiusCohesion -= 5;
+			}
+			else if (mWeightMode == "Group Align")
+			{
+				mRadiusGroupAlign -= 5;
+			}
+		}
+	}
+	if (theEvent.getType() == RIGHT_ARROW)
+	{
+		if (mWeightMode != "null")
+		{
+			if (mWeightMode == "Separation")
+			{
+				mRadiusSeparation += 5;
+			}
+			else if (mWeightMode == "Cohesion")
+			{
+				mRadiusCohesion += 5;
+			}
+			else if (mWeightMode == "Group Align")
+			{
+				mRadiusGroupAlign += 5;
+			}
 		}
 	}
 	if (theEvent.getType() == D_KEY)
 	{
 		mpUnitManager->deleteRandomUnit();
+	}
+	if (theEvent.getType() == S_KEY)
+	{
+		if (mWeightMode == "Separation")
+		{
+			mWeightMode = "null";
+		}
+		else 
+		{
+			mWeightMode = "Separation";
+		}
+	}
+	if (theEvent.getType() == C_KEY)
+	{
+		if (mWeightMode == "Cohesion")
+		{
+			mWeightMode = "null";
+		}
+		else
+		{
+			mWeightMode = "Cohesion";
+		}
+	}
+	if (theEvent.getType() == G_KEY)
+	{
+		if (mWeightMode == "Group Align")
+		{
+			mWeightMode = "null";
+		}
+		else
+		{
+			mWeightMode = "Group Align";
+		}
 	}
 }

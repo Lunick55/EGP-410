@@ -14,7 +14,7 @@ public:
 protected:
 	float mWanderOffset = 100.0f;
 	float mWanderRadius = 30.0f;
-	float wanderRate = 0.8;
+	float wanderRate = 1.0;
 	float mWanderOrientation;
 	Vector2D mTarget;
 

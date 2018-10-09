@@ -65,6 +65,36 @@ void InputSystem::getKeyEvents()
 				mKeyEvent.setType(D_KEY);
 				EventSystem::getInstance()->fireEvent(mKeyEvent);
 			}
+			if (mEvent.key.keysym.sym == SDLK_s)
+			{
+				cout << "InputSystem: S Key" << endl;
+				mKeyEvent.setType(S_KEY);
+				EventSystem::getInstance()->fireEvent(mKeyEvent);
+			}
+			if (mEvent.key.keysym.sym == SDLK_c)
+			{
+				cout << "InputSystem: C Key" << endl;
+				mKeyEvent.setType(C_KEY);
+				EventSystem::getInstance()->fireEvent(mKeyEvent);
+			}
+			if (mEvent.key.keysym.sym == SDLK_a)
+			{
+				cout << "InputSystem: A Key" << endl;
+				mKeyEvent.setType(A_KEY);
+				EventSystem::getInstance()->fireEvent(mKeyEvent);
+			}
+			if (mEvent.key.keysym.sym == SDLK_w)
+			{
+				cout << "InputSystem: W Key" << endl;
+				mKeyEvent.setType(W_KEY);
+				EventSystem::getInstance()->fireEvent(mKeyEvent);
+			}
+			if (mEvent.key.keysym.sym == SDLK_g)
+			{
+				cout << "InputSystem: G Key" << endl;
+				mKeyEvent.setType(G_KEY);
+				EventSystem::getInstance()->fireEvent(mKeyEvent);
+			}
 			if (mEvent.key.keysym.sym == SDLK_RETURN)
 			{
 				cout << "InputSystem: Enter" << endl;

@@ -35,6 +35,8 @@ public:
 
 	Unit* getPlayerUnit() const { return getUnit(PLAYER_UNIT_ID); };
 
+	std::map<UnitID, Unit*> getMap(){return mUnitMap;};
+
 private:
 	static UnitID msNextUnitID;
 	MemoryPool mPool;

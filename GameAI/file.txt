@@ -1,0 +1,6 @@
+mWeightCohesion=0.7
+mRadiusCohesion=80
+mWeightSeparation=1
+mRadiusSeparation=50
+mWeightGroupAlign=2
+mRadiusGroupAlign=95

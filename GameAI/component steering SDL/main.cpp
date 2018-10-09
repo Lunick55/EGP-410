@@ -67,7 +67,7 @@ int main(int argc, char **argv)
 
 	}
 
-	gpGame->cleanup();
+	//gpGame->cleanup();
 	delete gpGame;
 	gpGame = NULL;
 

@@ -5,6 +5,7 @@
 #include "Defines.h"
 #include "EventListener.h"
 #include "InputSystem.h"
+#include <fstream>
 #include <string>
 
 class GraphicsSystem;
@@ -45,7 +46,15 @@ public:
 	inline UnitManager* getUnitManager() { return mpUnitManager; };
 	inline Timer* getMasterTimer() const { return mpMasterTimer; };
 	inline double getCurrentTime() const { return mpMasterTimer->getElapsedTime(); };
+	inline float getGroupAlignWeight(){return mWeightGroupAlign;};
+	inline float getSeparationWeight(){return mWeightSeparation;};
+	inline float getCohesionWeight(){return mWeightCohesion;};
+	inline float getGroupAlignRadius() { return mRadiusGroupAlign; };
+	inline float getSeparationRadius() { return mRadiusSeparation; };
+	inline float getCohesionRadius() { return mRadiusCohesion; };
 
+	void loadFlockData();
+	void saveFlockData();
 	void handleEvent(const Event &theEvent);
 
 private:
@@ -59,6 +68,15 @@ private:
 	Timer* mpMasterTimer;
 	bool mShouldExit;
 	InputSystem mInputSystem;
+
+	string mWeightMode = "null";
+	string mFlockingDataFilename = "..//file.txt";
+	float mWeightCohesion = 1.0f;
+	float mRadiusCohesion = 100.0f;
+	float	mWeightSeparation = 1.0f;
+	float mRadiusSeparation = 25.0f;
+	float	mWeightGroupAlign = 1.0f;
+	float mRadiusGroupAlign = 125.0f;
 
 	//should be somewhere else
 	GraphicsBufferID mBackgroundBufferID = "woods";

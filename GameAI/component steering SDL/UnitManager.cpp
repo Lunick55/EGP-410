@@ -76,7 +76,10 @@ Unit* UnitManager::createRandomUnit(const Sprite& sprite)
 	if (pUnit != NULL)
 	{
 		//pUnit->setSteering(Steering::WANDERCHASE, Vector2D(rand() % gpGame->getGraphicsSystem()->getWidth(), rand() % gpGame->getGraphicsSystem()->getHeight()));
-		pUnit->setSteering(Steering::WANDERCHASE, Vector2D(gpGame->getGraphicsSystem()->getWidth()/2, gpGame->getGraphicsSystem()->getHeight()/2), PLAYER_UNIT_ID);
+		pUnit->setSteering(Steering::FLOCKING, Vector2D(gpGame->getGraphicsSystem()->getWidth()/2, rand() % gpGame->getGraphicsSystem()->getHeight()/2));
+		int temp = rand() % 360;
+		temp = temp * (PI/180);
+		pUnit->getPositionComponent()->setFacing(temp);
 	}	
 
 	return pUnit;

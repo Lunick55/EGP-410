@@ -14,6 +14,11 @@ enum EventType
 
 	ESC,
 	D_KEY,
+	S_KEY,
+	C_KEY,
+	A_KEY,
+	W_KEY,
+	G_KEY,
 	UP_ARROW,//Input translator events, focused on buttons/keys
 	DOWN_ARROW,
 	LEFT_ARROW,

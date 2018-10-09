@@ -1,10 +1,50 @@
-﻿  WanderChaseSteering.cpp
-c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\facesteering.h(13): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\facesteering.h(15): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\wandersteering.h(17): warning C4305: 'initializing': truncation from 'double' to 'float'
+﻿  Game.cpp
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\game.cpp(120): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\game.cpp(253): warning C4018: '<': signed/unsigned mismatch
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\game.cpp(330): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\game.cpp(334): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\game.cpp(338): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\game.cpp(348): warning C4305: '-=': truncation from 'double' to 'float'
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\game.cpp(352): warning C4305: '-=': truncation from 'double' to 'float'
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\game.cpp(356): warning C4305: '-=': truncation from 'double' to 'float'
+  FlockingSteering.cpp
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\arrivesteering.h(14): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\facesteering.h(14): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\facesteering.h(16): warning C4305: 'initializing': truncation from 'double' to 'float'
+  Generating Code...
+  Compiling...
+  main.cpp
+  WanderSteering.cpp
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\facesteering.h(14): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\facesteering.h(16): warning C4305: 'initializing': truncation from 'double' to 'float'
+  WanderChaseSteering.cpp
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\facesteering.h(14): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\facesteering.h(16): warning C4305: 'initializing': truncation from 'double' to 'float'
+  UnitManager.cpp
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\unitmanager.cpp(81): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\unitmanager.cpp(82): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  Unit.cpp
+  SeparationSteering.cpp
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\separationsteering.cpp(63): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  SeekSteering.cpp
+  PositionComponent.cpp
+  PlayerMoveToMessage.cpp
+  GroupAlignSteering.cpp
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\facesteering.h(14): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\facesteering.h(16): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\groupalignsteering.cpp(63): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  GameMessageManager.cpp
+  FaceSteering.cpp
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\facesteering.h(14): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\facesteering.h(16): warning C4305: 'initializing': truncation from 'double' to 'float'
+  CohesionSteering.cpp
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\arrivesteering.h(14): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\cohesionsteering.cpp(63): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  ArriveSteering.cpp
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\arrivesteering.h(14): warning C4305: 'initializing': truncation from 'double' to 'float'
   ArriveAndFace.cpp
 c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\arrivesteering.h(14): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\facesteering.h(13): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\facesteering.h(15): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\facesteering.h(14): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\karim\documents\aigames\egp-410\gameai\component steering sdl\facesteering.h(16): warning C4305: 'initializing': truncation from 'double' to 'float'
   Generating Code...
   steering.vcxproj -> C:\Users\karim\Documents\AIGames\EGP-410\GameAI\component steering SDL\Debug\steering.exe
