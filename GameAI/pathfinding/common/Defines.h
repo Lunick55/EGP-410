@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 typedef int IDType;
 typedef std::string IDDescriptor;
 typedef std::string GraphicsBufferID;

@@ -1,10 +1,10 @@
 #pragma once
 
 #include "GameMessage.h"
-
+#include "../common/Event.h"
 #include "Vector2D.h"
 
-class PathToMessage:public GameMessage
+class PathToMessage:public Event
 {
 public:
 	PathToMessage( const Vector2D& from, const Vector2D& to );

@@ -9,6 +9,10 @@
 #include <Trackable.h>
 #include <Timer.h>
 #include "Defines.h"
+#include "EventListener.h"
+#include "InputSystem.h"
+#include "Event.h"
+#include "EventSystem.h"
 
 class MemoryTracker;
 class PerformanceTracker;
@@ -24,7 +28,7 @@ extern Game* gpGame;
 
 const IDType BACKGROUND_SPRITE_ID = 0;
 
-class Game:public Trackable
+class Game:public EventListener
 {
 public:
 	Game();

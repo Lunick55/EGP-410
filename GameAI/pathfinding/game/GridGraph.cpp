@@ -1,9 +1,11 @@
+#pragma once
 #include "GridGraph.h"
 #include "Connection.h"
 #include "Node.h"
 #include "Grid.h"
 #include "Game.h"
 #include <vector>
+#include "Vector2D.h"
 
 GridGraph::GridGraph( Grid* pGrid )
 :Graph()
@@ -53,7 +55,8 @@ void GridGraph::init()
 				{
 					Node* pToNode = mNodes[ adjacencies[adjIndex] ];//find to node
 
-					Connection* pConnection = new Connection( pFromNode, pToNode, 1.0f );//create a connection
+					Vector2D diff = mpGrid->getULCornerOfSquare(pToNode->getId()) - mpGrid->getULCornerOfSquare(pFromNode->getId());
+					Connection* pConnection = new Connection( pFromNode, pToNode, diff.getLengthSquared());//create a connection
 
 					//add connection to connection vectors
 					mConnections.push_back( pConnection );

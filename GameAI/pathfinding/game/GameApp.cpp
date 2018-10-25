@@ -13,6 +13,8 @@
 #include "Connection.h"
 #include "Path.h"
 #include "DepthFirstPathfinder.h"
+#include "DijkstraPathfinder.h"
+#include "AStarPathFinder.h"
 #include "Pathfinder.h"
 #include "GridPathfinder.h"
 #include "GridVisualizer.h"
@@ -62,7 +64,24 @@ bool GameApp::init()
 	//init the nodes and connections
 	mpGridGraph->init();
 
-	mpPathfinder = new DepthFirstPathfinder(mpGridGraph);
+	//mpPathfinder = new DijkstraPathfinder(mpGridGraph);
+	mpPathfinder = new AStarPathfinder(mpGridGraph);
+	//mpPathfinder = new DepthFirstPathfinder(mpGridGraph);
+
+	//load listeners
+	EventSystem::initInstance();
+	EventSystem::getInstance()->addListener(ESC, this);
+	EventSystem::getInstance()->addListener(D_KEY, this);
+	EventSystem::getInstance()->addListener(ENTER, this);
+	EventSystem::getInstance()->addListener(S_KEY, this);
+	EventSystem::getInstance()->addListener(F_KEY, this);
+	EventSystem::getInstance()->addListener(A_KEY, this);
+	EventSystem::getInstance()->addListener(W_KEY, this);
+	EventSystem::getInstance()->addListener(G_KEY, this);
+	EventSystem::getInstance()->addListener(DOWN_ARROW, this);
+	EventSystem::getInstance()->addListener(UP_ARROW, this);
+	EventSystem::getInstance()->addListener(LEFT_ARROW, this);
+	EventSystem::getInstance()->addListener(RIGHT_ARROW, this);
 
 	//load buffers
 	mpGraphicsBufferManager->loadBuffer(mBackgroundBufferID, "wallpaper.bmp");
@@ -124,40 +143,54 @@ void GameApp::processLoop()
 
 	mpMessageManager->processMessagesForThisframe();
 
-	//get input - should be moved someplace better
-	SDL_PumpEvents();
-	int x, y;
-
-	if (SDL_GetMouseState(&x, &y) & SDL_BUTTON(SDL_BUTTON_LEFT))
-	{
-		static Vector2D lastPos(0.0f, 0.0f);
-		Vector2D pos(x,y);
-		if (lastPos.getX() != pos.getX() || lastPos.getY() != pos.getY())
-		{
-			GameMessage* pMessage = new PathToMessage(lastPos, pos);
-			mpMessageManager->addMessage(pMessage, 0);
-			lastPos = pos;
-		}
-	}
-
-	//get input - should be moved someplace better
-	//all this should be moved to InputManager!!!
-	{
-		//get keyboard state
-		const Uint8 *state = SDL_GetKeyboardState(NULL);
-
-		//if escape key was down then exit the loop
-		if (state[SDL_SCANCODE_ESCAPE])
-		{
-			markForExit();
-		}
-	}
-
 	//should be last thing in processLoop
+	mInputSystem.update();
 	Game::processLoop();
 }
 
 bool GameApp::endLoop()
 {
 	return Game::endLoop();
+}
+
+void GameApp::handleEvent(const Event & theEvent)
+{
+	if (theEvent.getType() == ESC)
+	{
+		markForExit();
+	}
+	if (theEvent.getType() == MOUSE_LEFT)
+	{
+		//input manager handles the moveTo message call.
+	}
+	if (theEvent.getType() == D_KEY)
+	{
+		//dkitsra
+		delete mpPathfinder; 
+		mpPathfinder = new DijkstraPathfinder(mpGridGraph);
+
+		delete mpDebugDisplay;
+		PathfindingDebugContent* pContent = new PathfindingDebugContent(mpPathfinder);
+		mpDebugDisplay = new DebugDisplay(Vector2D(0, 12), pContent);
+	}
+	if (theEvent.getType() == A_KEY)
+	{
+		//aaaaaaa
+		delete mpPathfinder;
+		mpPathfinder = new AStarPathfinder(mpGridGraph);
+
+		delete mpDebugDisplay;
+		PathfindingDebugContent* pContent = new PathfindingDebugContent(mpPathfinder);
+		mpDebugDisplay = new DebugDisplay(Vector2D(0, 12), pContent);
+	}
+	if (theEvent.getType() == F_KEY)
+	{
+		//DFS
+		delete mpPathfinder;
+		mpPathfinder = new DepthFirstPathfinder(mpGridGraph);
+
+		delete mpDebugDisplay;
+		PathfindingDebugContent* pContent = new PathfindingDebugContent(mpPathfinder);
+		mpDebugDisplay = new DebugDisplay(Vector2D(0, 12), pContent);
+	}
 }

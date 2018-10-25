@@ -6,10 +6,10 @@
 #include "GridGraph.h"
 
 PathToMessage::PathToMessage( const Vector2D& from, const Vector2D& to )
-:GameMessage(PATH_TO_MESSAGE)
-,mFrom(from)
-,mTo(to)
 {
+	mFrom = from;
+	mTo = to;
+	process();
 }
 
 PathToMessage::~PathToMessage()
@@ -19,7 +19,8 @@ PathToMessage::~PathToMessage()
 void PathToMessage::process()
 {
 	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
-	if( pGame != NULL ) 
+	
+	if( pGame != NULL)
 	{
 		GridPathfinder* pPathfinder = pGame->getPathfinder();
 		GridGraph* pGridGraph = pGame->getGridGraph();
