@@ -157,15 +157,24 @@ Path* AStarPathfinder::findPath(Node* pFrom, Node* pTo)
 	else
 	{
 		//compile list into path
-		pPath->addNode(currentNodeRec.mpNode);
+		Path* tempPath = new Path;
+
+		tempPath->addNode(currentNodeRec.mpNode);
 
 		//work back along the path
 		//reverse path and return it
 		while (currentNodeRec.mpNode != pFrom)
 		{
 			currentNodeRec = findNode(currentNodeRec.mpConnection->getFromNode(), closedList);
-			pPath->addNode(currentNodeRec.mpNode);
+			tempPath->addNode(currentNodeRec.mpNode);
 		}
+
+		for (int i = tempPath->getNumNodes() - 1; i > -1; i--)
+		{
+			pPath->addNode(tempPath->peekNode(i));
+		}
+
+		delete tempPath;
 	}
 
 	gpPerformanceTracker->stopTracking("path");
