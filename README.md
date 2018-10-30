@@ -24,3 +24,8 @@ while (humans.alive == true)
 
 celebrate(freedom);
 Testing testing, 1, 2 ,3
+
+
+Advanced Pathfinding:
+Path Smoothing
+Dynamic Pathfinding
