@@ -95,23 +95,41 @@
     <ClInclude Include="..\common\Renderer.h" />
     <ClInclude Include="..\common\Sprite.h" />
     <ClInclude Include="..\common\SpriteManager.h" />
+    <ClInclude Include="ArriveAndFaceSteering.h" />
+    <ClInclude Include="ArriveSteering.h" />
     <ClInclude Include="AStarPathfinder.h" />
+    <ClInclude Include="Cohesion.h" />
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="ComponentManager.h" />
     <ClInclude Include="Connection.h" />
     <ClInclude Include="DebugContent.h" />
     <ClInclude Include="DebugDisplay.h" />
     <ClInclude Include="DepthFirstPathfinder.h" />
     <ClInclude Include="DijkstraPathfinder.h" />
+    <ClInclude Include="FaceSteering.h" />
+    <ClInclude Include="Flocking.h" />
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="GameMessage.h" />
     <ClInclude Include="GameMessageManager.h" />
     <ClInclude Include="Graph.h" />
     <ClInclude Include="GridGraph.h" />
     <ClInclude Include="GridPathfinder.h" />
+    <ClInclude Include="GroupAlignment.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Path.h" />
     <ClInclude Include="Pathfinder.h" />
     <ClInclude Include="PathfindingDebugContent.h" />
     <ClInclude Include="PathToMessage.h" />
+    <ClInclude Include="PhysicsComponent.h" />
+    <ClInclude Include="PositionComponent.h" />
+    <ClInclude Include="SeekSteering.h" />
+    <ClInclude Include="Seperation.h" />
+    <ClInclude Include="Steering.h" />
+    <ClInclude Include="SteeringComponent.h" />
+    <ClInclude Include="Unit.h" />
+    <ClInclude Include="UnitManager.h" />
+    <ClInclude Include="WanderAndChaseSteering.h" />
+    <ClInclude Include="WanderSteering.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\common\Color.cpp" />
@@ -130,6 +148,8 @@
     <ClCompile Include="..\common\Sprite.cpp" />
     <ClCompile Include="..\common\SpriteManager.cpp" />
     <ClCompile Include="AStarPathfinder.cpp" />
+    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="ComponentManager.cpp" />
     <ClCompile Include="Connection.cpp" />
     <ClCompile Include="DebugDisplay.cpp" />
     <ClCompile Include="DepthFirstPathfinder.cpp" />
@@ -146,6 +166,9 @@
     <ClCompile Include="Pathfinder.cpp" />
     <ClCompile Include="PathfindingDebugContent.cpp" />
     <ClCompile Include="PathToMessage.cpp" />
+    <ClCompile Include="PhysicsComponent.cpp" />
+    <ClCompile Include="PositionComponent.cpp" />
+    <ClCompile Include="SteeringComponent.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
