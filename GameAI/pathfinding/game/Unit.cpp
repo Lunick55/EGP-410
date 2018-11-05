@@ -9,6 +9,7 @@
 #include "SteeringComponent.h"
 #include "ComponentManager.h"
 #include "SpriteManager.h"
+#include "GameApp.h"
 
 
 Unit::Unit(const Sprite& sprite)
@@ -59,13 +60,15 @@ PositionComponent* Unit::getPositionComponent() const
 
 PhysicsComponent* Unit::getPhysicsComponent() const
 {
-	PhysicsComponent* pComponent = gpGame->getComponentManager()->getPhysicsComponent(mPhysicsComponentID);
+	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+	PhysicsComponent* pComponent = pGame->getComponentManager()->getPhysicsComponent(mPhysicsComponentID);
 	return pComponent;
 }
 
 SteeringComponent* Unit::getSteeringComponent() const
 {
-	SteeringComponent* pComponent = gpGame->getComponentManager()->getSteeringComponent(mSteeringComponentID);
+	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+	SteeringComponent* pComponent = pGame->getComponentManager()->getSteeringComponent(mSteeringComponentID);
 	return pComponent;
 }
 

@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "UnitManager.h"
 #include "Unit.h"
+#include "GameApp.h"
 #include <math.h>
 
 FaceSteering::FaceSteering(const UnitID & ownerID, const Vector2D & targetLoc, const UnitID & targetID, bool shouldFlee)
@@ -45,7 +46,8 @@ float FaceSteering::MapToRange(float rotation)
 Steering * FaceSteering::getSteering()
 {
 	Vector2D direction;
-	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
+	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+	Unit* pOwner = pGame->getUnitManager()->getUnit(mOwnerID);
 
 	if (mType == Steering::FACE)
 	{

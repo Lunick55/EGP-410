@@ -80,7 +80,7 @@ void SteeringComponent::setData(const SteeringData& data)
 	case Steering::FLOCK:
 	{
 		delete mpSteering;
-		mpSteering = new Flocking(data.ownerID, data.targetLoc, data.targetID, false);
+		//mpSteering = new Flocking(data.ownerID, data.targetLoc, data.targetID, false);
 		break;
 	}
 	case Steering::FLEE:

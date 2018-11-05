@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "ComponentManager.h"
 #include "GraphicsSystem.h"
+#include "GameApp.h"
 
 UnitID UnitManager::msNextUnitID = PLAYER_UNIT_ID + 1;
 
@@ -39,7 +40,8 @@ Unit* UnitManager::createUnit(const Sprite& sprite, bool shouldWrap, const Posit
 		pUnit->mID = theID;
 
 		//create some components
-		ComponentManager* pComponentManager = gpGame->getComponentManager();
+		GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+		ComponentManager* pComponentManager = pGame->getComponentManager();
 		ComponentID id = pComponentManager->allocatePositionComponent(posData, shouldWrap);
 		pUnit->mPositionComponentID = id;
 		pUnit->mpPositionComponent = pComponentManager->getPositionComponent(id);
@@ -103,7 +105,8 @@ void UnitManager::deleteUnit(const UnitID& id)
 		mUnitMap.erase(it);
 
 		//remove components
-		ComponentManager* pComponentManager = gpGame->getComponentManager();
+		GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+		ComponentManager* pComponentManager = pGame->getComponentManager();
 		pComponentManager->deallocatePhysicsComponent(pUnit->mPhysicsComponentID);
 		pComponentManager->deallocatePositionComponent(pUnit->mPositionComponentID);
 		pComponentManager->deallocateSteeringComponent(pUnit->mSteeringComponentID);

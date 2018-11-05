@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "UnitManager.h"
 #include "Unit.h"
+#include "GameApp.h"
 #include <cassert>
 
 ArriveAndFaceSteering::ArriveAndFaceSteering(const UnitID & ownerID, const Vector2D & targetLoc, const UnitID & targetID, bool shouldFlee)
@@ -24,8 +25,8 @@ ArriveAndFaceSteering::ArriveAndFaceSteering(const UnitID & ownerID, const Vecto
 }
 Steering * ArriveAndFaceSteering::getSteering()
 {
-
-	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
+	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+	Unit* pOwner = pGame->getUnitManager()->getUnit(mOwnerID);
 	PhysicsData data = pOwner->getPhysicsComponent()->getData();
 
 	Steering* mFaceSteer = mFaceSteering.getSteering();

@@ -2,6 +2,7 @@
 #include "Unit.h"
 #include "Game.h"
 #include "UnitManager.h"
+#include "GameApp.h"
 
 WanderAndChaseSteering::WanderAndChaseSteering(const UnitID & ownerID, const Vector2D & targetLoc, const UnitID & targetID, bool shouldFlee)
 	: Steering(),
@@ -24,10 +25,11 @@ WanderAndChaseSteering::WanderAndChaseSteering(const UnitID & ownerID, const Vec
 
 Steering * WanderAndChaseSteering::getSteering()
 {
-	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
+	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+	Unit* pOwner = pGame->getUnitManager()->getUnit(mOwnerID);
 	PhysicsData data = pOwner->getPhysicsComponent()->getData();
 
-	Vector2D myPlayerLocation = gpGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition();
+	Vector2D myPlayerLocation = pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition();
 	Vector2D diff = myPlayerLocation - pOwner->getPositionComponent()->getPosition();
 
 

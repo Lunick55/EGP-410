@@ -3,6 +3,7 @@
 #include "Steering.h"
 #include "Game.h"
 #include "UnitManager.h"
+#include "GameApp.h"
 #include "Unit.h"
 
 ArriveSteering::ArriveSteering(const UnitID & ownerID, const Vector2D & targetLoc, const UnitID & targetID, bool shouldFlee)
@@ -31,14 +32,15 @@ Steering * ArriveSteering::getSteering()
 	float targetRadius = 10.0f;
 	float slowRadius = 200.0f;
 	float timeToTarget = 0.1f;
-	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
+	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+	Unit* pOwner = pGame->getUnitManager()->getUnit(mOwnerID);
 	PhysicsData data = pOwner->getPhysicsComponent()->getData();
 	//are we seeking a location or a unit?
 
 	if (mTargetID != INVALID_UNIT_ID)
 	{
 		//seeking unit
-		Unit* pTarget = gpGame->getUnitManager()->getUnit(mTargetID);
+		Unit* pTarget = pGame->getUnitManager()->getUnit(mTargetID);
 		assert(pTarget != NULL);
 		mTargetLoc = pTarget->getPositionComponent()->getPosition();
 	}

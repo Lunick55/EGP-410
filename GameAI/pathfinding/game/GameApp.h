@@ -19,9 +19,16 @@ class GridVisualizer;
 class GridGraph;
 class GridPathfinder;
 class DebugDisplay;
+class KinematicUnit;
+class Timer;
+class ComponentManager;
+class UnitManager;
 
 const float LOOP_TARGET_TIME = 33.3f;//how long should each frame of execution take? 30fps = 33.3ms/frame
-
+									 
+const IDType PLAYER_ICON_SPRITE_ID = 1;
+const IDType AI_ICON_SPRITE_ID = 2;
+const IDType TARGET_SPRITE_ID = 3;
 
 class GameApp: public Game
 {
@@ -43,6 +50,15 @@ public:
 	inline GridPathfinder* getPathfinder() { return mpPathfinder; };
 	inline Grid* getGrid() { return mpGrid; };
 	inline GridGraph* getGridGraph() { return mpGridGraph; };
+	inline GraphicsSystem* getGraphicsSystem() const { return mpGraphicsSystem; };
+	inline GraphicsBufferManager* getGraphicsBufferManager() const { return mpGraphicsBufferManager; };
+	inline SpriteManager* getSpriteManager() const { return mpSpriteManager; };
+
+	//Added in functions from other project
+	inline ComponentManager* getComponentManager() { return mpComponentManager; };
+	inline UnitManager* getUnitManager() { return mpUnitManager; };
+	inline Timer* getMasterTimer() const { return mpMasterTimer; };
+	inline double getCurrentTime() const { return mpMasterTimer->getElapsedTime(); };
 
 	void handleEvent(const Event & theEvent);
 
@@ -53,8 +69,14 @@ private:
 	GridGraph* mpGridGraph;
 	DebugDisplay* mpDebugDisplay;
 	InputSystem mInputSystem;
-
+	ComponentManager* mpComponentManager;
+	UnitManager* mpUnitManager;
 	GridPathfinder* mpPathfinder;
+
+	GraphicsBufferID mBackgroundBufferID = "woods";
+	GraphicsBufferID mPlayerIconBufferID = "player";
+	GraphicsBufferID mEnemyIconBufferID = "enemy";
+	GraphicsBufferID mTargetBufferID = "target";
 
 };
 

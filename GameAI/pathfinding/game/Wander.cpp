@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "UnitManager.h"
 #include "Unit.h"
+#include "GameApp.h"
 #include <math.h>
 
 WanderSteering::WanderSteering(const UnitID & ownerID, const Vector2D & targetLoc, const UnitID & targetID, bool shouldFlee)
@@ -34,7 +35,8 @@ Vector2D WanderSteering::to2DVector(float convert)
 Steering * WanderSteering::getSteering()
 {
 	Vector2D diff;
-	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
+	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+	Unit* pOwner = pGame->getUnitManager()->getUnit(mOwnerID);
 	PhysicsData owner = pOwner->getPhysicsComponent()->getData();
 	float wanderOffset = 100.0f;
 	float wanderRadius = 30.0f;
