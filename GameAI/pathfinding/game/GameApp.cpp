@@ -22,6 +22,7 @@
 #include "PathfindingDebugContent.h"
 #include "UnitManager.h"
 #include "Unit.h"
+#include "ComponentManager.h"
 
 #include <SDL.h>
 #include <fstream>
@@ -39,6 +40,7 @@ GameApp::GameApp()
 ,mpPathfinder(NULL)
 ,mpDebugDisplay(NULL)
 , mpUnitManager(NULL)
+, mpComponentManager(NULL)
 {
 }
 
@@ -58,6 +60,7 @@ bool GameApp::init()
 
 	mpMessageManager = new GameMessageManager();
 	mpUnitManager = new UnitManager(MAX_UNITS);
+	mpComponentManager = new ComponentManager(MAX_UNITS);
 	//create and load the Grid, GridBuffer, and GridRenderer
 	mpGrid = new Grid(mpGraphicsSystem->getWidth(), mpGraphicsSystem->getHeight(), GRID_SQUARE_SIZE);
 	mpGridVisualizer = new GridVisualizer( mpGrid );
@@ -89,6 +92,10 @@ bool GameApp::init()
 
 	//load buffers
 	mpGraphicsBufferManager->loadBuffer(mBackgroundBufferID, "wallpaper.bmp");
+	mpGraphicsBufferManager->loadBuffer(mPlayerIconBufferID, "arrow.png");
+	mpGraphicsBufferManager->loadBuffer(mEnemyIconBufferID, "enemy-arrow.png");
+	mpGraphicsBufferManager->loadBuffer(mTargetBufferID, "target.png");
+
 
 	//setup sprites
 	GraphicsBuffer* pBackGroundBuffer = mpGraphicsBufferManager->getBuffer( mBackgroundBufferID );
@@ -150,6 +157,9 @@ void GameApp::cleanup()
 
 	delete mpUnitManager;
 	mpUnitManager = NULL;
+
+	delete mpComponentManager;
+	mpComponentManager = NULL;
 }
 
 void GameApp::beginLoop()
@@ -165,6 +175,7 @@ void GameApp::processLoop()
 	//copy to back buffer
 	mpGridVisualizer->draw( *pBackBuffer );
 	mpUnitManager->updateAll(TARGET_ELAPSED_MS);
+	mpComponentManager->update(TARGET_ELAPSED_MS);
 #ifdef VISUALIZE_PATH
 	//show pathfinder visualizer
 	mpPathfinder->drawVisualization(mpGrid, pBackBuffer);
