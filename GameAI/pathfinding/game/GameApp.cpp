@@ -21,6 +21,7 @@
 #include "DebugDisplay.h"
 #include "PathfindingDebugContent.h"
 #include "UnitManager.h"
+#include "Unit.h"
 
 #include <SDL.h>
 #include <fstream>
@@ -95,7 +96,30 @@ bool GameApp::init()
 	{
 		mpSpriteManager->createAndManageSprite( BACKGROUND_SPRITE_ID, pBackGroundBuffer, 0, 0, (float)pBackGroundBuffer->getWidth(), (float)pBackGroundBuffer->getHeight() );
 	}
+	GraphicsBuffer* pPlayerBuffer = mpGraphicsBufferManager->getBuffer(mPlayerIconBufferID);
+	Sprite* pArrowSprite = NULL;
+	if (pPlayerBuffer != NULL)
+	{
+		pArrowSprite = mpSpriteManager->createAndManageSprite(PLAYER_ICON_SPRITE_ID, pPlayerBuffer, 0, 0, (float)pPlayerBuffer->getWidth(), (float)pPlayerBuffer->getHeight());
+	}
+	GraphicsBuffer* pAIBuffer = mpGraphicsBufferManager->getBuffer(mEnemyIconBufferID);
+	Sprite* pEnemyArrow = NULL;
+	if (pAIBuffer != NULL)
+	{
+		pEnemyArrow = mpSpriteManager->createAndManageSprite(AI_ICON_SPRITE_ID, pAIBuffer, 0, 0, (float)pAIBuffer->getWidth(), (float)pAIBuffer->getHeight());
+	}
 
+	GraphicsBuffer* pTargetBuffer = mpGraphicsBufferManager->getBuffer(mTargetBufferID);
+	if (pTargetBuffer != NULL)
+	{
+		mpSpriteManager->createAndManageSprite(TARGET_SPRITE_ID, pTargetBuffer, 0, 0, (float)pTargetBuffer->getWidth(), (float)pTargetBuffer->getHeight());
+	}
+
+	/*Unit* pUnit = mpUnitManager->createRandomUnit(*mpSpriteManager->getSprite(AI_ICON_SPRITE_ID));
+	if (pUnit == NULL)
+	{
+		mpUnitManager->deleteRandomUnit();
+	}*/
 	//debug display
 	PathfindingDebugContent* pContent = new PathfindingDebugContent( mpPathfinder );
 	mpDebugDisplay = new DebugDisplay( Vector2D(0,12), pContent );

@@ -53,6 +53,7 @@ public:
 	inline GraphicsBufferManager* getGraphicsBufferManager() const { return mpGraphicsBufferManager; };
 	inline SpriteManager* getSpriteManager() const { return mpSpriteManager; };
 
+
 	//Added in functions from other project
 	inline ComponentManager* getComponentManager() { return mpComponentManager; };
 	inline UnitManager* getUnitManager() { return mpUnitManager; };
