@@ -20,6 +20,7 @@
 #include "GridVisualizer.h"
 #include "DebugDisplay.h"
 #include "PathfindingDebugContent.h"
+#include "UnitManager.h"
 
 #include <SDL.h>
 #include <fstream>
@@ -27,6 +28,8 @@
 
 const int GRID_SQUARE_SIZE = 32;
 const std::string gFileName = "pathgrid.txt";
+const float TARGET_ELAPSED_MS = LOOP_TARGET_TIME / 1000.0f;
+const Uint32 MAX_UNITS = 100;
 
 GameApp::GameApp()
 :mpMessageManager(NULL)
@@ -34,6 +37,7 @@ GameApp::GameApp()
 ,mpGridGraph(NULL)
 ,mpPathfinder(NULL)
 ,mpDebugDisplay(NULL)
+, mpUnitManager(NULL)
 {
 }
 
@@ -52,7 +56,7 @@ bool GameApp::init()
 	}
 
 	mpMessageManager = new GameMessageManager();
-
+	mpUnitManager = new UnitManager(MAX_UNITS);
 	//create and load the Grid, GridBuffer, and GridRenderer
 	mpGrid = new Grid(mpGraphicsSystem->getWidth(), mpGraphicsSystem->getHeight(), GRID_SQUARE_SIZE);
 	mpGridVisualizer = new GridVisualizer( mpGrid );
@@ -119,6 +123,9 @@ void GameApp::cleanup()
 
 	delete mpDebugDisplay;
 	mpDebugDisplay = NULL;
+
+	delete mpUnitManager;
+	mpUnitManager = NULL;
 }
 
 void GameApp::beginLoop()
@@ -133,11 +140,13 @@ void GameApp::processLoop()
 	GraphicsBuffer* pBackBuffer = mpGraphicsSystem->getBackBuffer();
 	//copy to back buffer
 	mpGridVisualizer->draw( *pBackBuffer );
+	mpUnitManager->updateAll(TARGET_ELAPSED_MS);
 #ifdef VISUALIZE_PATH
 	//show pathfinder visualizer
 	mpPathfinder->drawVisualization(mpGrid, pBackBuffer);
 #endif
-
+	//draw units
+	mpUnitManager->drawAll();
 	mpDebugDisplay->draw( pBackBuffer );
 
 	mpMessageManager->processMessagesForThisframe();
@@ -161,6 +170,16 @@ void GameApp::handleEvent(const Event & theEvent)
 	if (theEvent.getType() == MOUSE_LEFT)
 	{
 		//input manager handles the moveTo message call.
+		//need to change this to start pathfinding towards click
+	}
+	if (theEvent.getType() == S_KEY)
+	{
+		Unit* pUnit = mpUnitManager->createRandomUnit(*mpSpriteManager->getSprite(AI_ICON_SPRITE_ID));
+		if (pUnit == NULL)
+		{
+			mpUnitManager->deleteRandomUnit();
+		}
+		cout << "Add random unit" << endl;
 	}
 	if (theEvent.getType() == D_KEY)
 	{
