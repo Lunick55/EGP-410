@@ -5,6 +5,7 @@
 #include "Game.h"
 #include <PerformanceTracker.h>
 #include <list>
+#include <queue>
 //#include <vector>
 #include <algorithm>
 
@@ -45,7 +46,10 @@ Path* DijkstraPathfinder::findPath(Node* pFrom, Node* pTo)
 
 	//initialize open and close lists
 	//allocate nodes to visit list and place starting node in it
+
+	//Karol use this boi: priority_queue <NodeRecord> openList;
 	vector<NodeRecord> openList;
+	//use push_front() boiiiiiiidfhjsdfhjksfhd
 	openList.insert(openList.begin(),startRecord);
 	vector<NodeRecord> closedList;
 
@@ -61,6 +65,7 @@ Path* DijkstraPathfinder::findPath(Node* pFrom, Node* pTo)
 	while (openList.size() > 0)
 	{
 		//find smallest element in openList
+		//use .front()
 		currentNodeRec = smallestElement(openList);
 
 		//if it is the goal node, then we're done here
@@ -162,6 +167,7 @@ Path* DijkstraPathfinder::findPath(Node* pFrom, Node* pTo)
 	return pPath;
 }
 
+//change this to priority_queue
 NodeRecord DijkstraPathfinder::smallestElement(vector<NodeRecord> listToCheck)
 {
 	//returns smallest Nodes costSoFar
@@ -179,6 +185,7 @@ NodeRecord DijkstraPathfinder::smallestElement(vector<NodeRecord> listToCheck)
 	return smallestNode;
 }
 
+//change this to priority_queueu
 NodeRecord DijkstraPathfinder::findNode(Node* nodeToCheck, vector<NodeRecord> listToCheck)
 {
 	for (int i = 0; i < listToCheck.size(); i++)
