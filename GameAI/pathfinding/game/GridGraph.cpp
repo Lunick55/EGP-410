@@ -56,7 +56,8 @@ void GridGraph::init()
 					Node* pToNode = mNodes[ adjacencies[adjIndex] ];//find to node
 
 					Vector2D diff = mpGrid->getULCornerOfSquare(pToNode->getId()) - mpGrid->getULCornerOfSquare(pFromNode->getId());
-					Connection* pConnection = new Connection( pFromNode, pToNode, diff.getLengthSquared());//create a connection
+					
+					Connection* pConnection = new Connection( pFromNode, pToNode, diff.getLength());//create a connection
 
 					//add connection to connection vectors
 					mConnections.push_back( pConnection );

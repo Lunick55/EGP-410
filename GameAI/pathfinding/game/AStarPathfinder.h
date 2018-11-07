@@ -42,7 +42,6 @@ public:
 	NodeRecordA findNode(Node* nodeToCheck, std::list<NodeRecordA> listToCheck);
 	bool contains(Node* nodeToCheck, std::list<NodeRecordA> listToCheck);
 	float heuristic(Node* nodeToCheck, Node* goalNode);
-	void removeFromList(NodeRecordA nodeToRemove, std::list<NodeRecordA> listToUse);
 
 private:
 

@@ -65,6 +65,8 @@ Path* AStarPathfinder::findPath(Node* pFrom, Node* pTo)
 
 	while (openList.size() > 0)
 	{
+		//std::cout << openList.size() << std::endl;
+
 		//find smallest element in openList
 		currentNodeRec = smallestElement(openList);
 		
@@ -98,7 +100,14 @@ Path* AStarPathfinder::findPath(Node* pFrom, Node* pTo)
 				}
 
 				//if we find a better path, take node out of the closed list
-				removeFromList(endNodeRec, closedList);
+				for (list<NodeRecordA>::iterator iter = closedList.begin(); iter != closedList.end(); iter++)
+				{
+					if (iter->mpNode == endNodeRec.mpNode && iter->mpConnection == endNodeRec.mpConnection && iter->mCostSoFar == endNodeRec.mCostSoFar)
+					{
+						closedList.erase(iter);
+						break;
+					}
+				}
 
 				///This could be calculated without calling the heuristic
 				endNodeHeuristic = heuristic(endNodeRec.mpNode, pTo);
@@ -144,7 +153,6 @@ Path* AStarPathfinder::findPath(Node* pFrom, Node* pTo)
 				break;
 			}
 		}
-		//removeFromList(currentNodeRec, openList);
 
 		//add current to closed list
 		closedList.push_front(currentNodeRec);
@@ -191,18 +199,6 @@ Path* AStarPathfinder::findPath(Node* pFrom, Node* pTo)
 	return pPath;
 }
 
-void AStarPathfinder::removeFromList(NodeRecordA nodeToRemove, std::list<NodeRecordA> listToCheck)
-{
-	for (list<NodeRecordA>::iterator iter = listToCheck.begin(); iter != listToCheck.end(); iter++)
-	{
-		if (iter->mpNode == nodeToRemove.mpNode && iter->mpConnection == nodeToRemove.mpConnection && iter->mCostSoFar == nodeToRemove.mCostSoFar)
-		{
-			listToCheck.erase(iter);
-			break;
-		}
-	}
-}
-
 NodeRecordA AStarPathfinder::smallestElement(list<NodeRecordA> listToCheck)
 {
 	//returns smallest Nodes costSoFar
@@ -216,6 +212,7 @@ NodeRecordA AStarPathfinder::smallestElement(list<NodeRecordA> listToCheck)
 			smallestNode = (*iter);
 		}
 	}
+
 	return smallestNode;
 }
 
