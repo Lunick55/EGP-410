@@ -49,9 +49,10 @@ Path* AStarPathfinder::findPath(Node* pFrom, Node* pTo)
 
 	//initialize open and close lists
 	//allocate nodes to visit list and place starting node in it
-	vector<NodeRecordA> openList;
-	openList.insert(openList.begin(), startRecord);
-	vector<NodeRecordA> closedList;
+	list<NodeRecordA> openList;
+	//openList.insert(openList.begin(), startRecord);
+	openList.push_front(startRecord);
+	list<NodeRecordA> closedList;
 
 	///I assume this can stay
 #ifdef VISUALIZE_PATH
@@ -113,8 +114,7 @@ Path* AStarPathfinder::findPath(Node* pFrom, Node* pTo)
 				}
 
 				///This could be calculated without calling the heuristic
-				endNodeHeuristic = heuristic(endNodeRec.mpNode, pTo);
-				
+				endNodeHeuristic = heuristic(endNodeRec.mpNode, pTo);				
 			}
 			else //this is an all new node!
 			{
@@ -130,20 +130,24 @@ Path* AStarPathfinder::findPath(Node* pFrom, Node* pTo)
 
 			if (!contains(endNode, openList))
 			{
-				openList.insert(openList.begin(), endNodeRec);
+				//openList.insert(openList.begin(), endNodeRec);
+				openList.push_front(endNodeRec);
 			}
 		}
 
 		//remove current from openList
-		for (int i = 0; i < openList.size(); i++)
+		for (list<NodeRecordA>::iterator iter = openList.begin(); iter != openList.end(); iter++)
 		{
-			if (openList[i].mpNode == currentNodeRec.mpNode && openList[i].mpConnection == currentNodeRec.mpConnection && openList[i].mCostSoFar == currentNodeRec.mCostSoFar)
+			if (iter->mpNode == currentNodeRec.mpNode && iter->mpConnection == currentNodeRec.mpConnection && iter->mCostSoFar == currentNodeRec.mCostSoFar)
 			{
-				openList.erase(openList.begin() + i);
+				openList.erase(iter);
+				break;
 			}
 		}
+		//removeFromList(currentNodeRec, openList);
+
 		//add current to closed list
-		closedList.push_back(currentNodeRec);
+		closedList.push_front(currentNodeRec);
 
 #ifdef VISUALIZE_PATH
 		mVisitedNodes.push_back(currentNodeRec.mpNode);
@@ -187,50 +191,50 @@ Path* AStarPathfinder::findPath(Node* pFrom, Node* pTo)
 	return pPath;
 }
 
-void AStarPathfinder::removeFromList(NodeRecordA nodeToRemove, std::vector<NodeRecordA> listToUse)
+void AStarPathfinder::removeFromList(NodeRecordA nodeToRemove, std::list<NodeRecordA> listToCheck)
 {
-	for (int i = 0; i < listToUse.size(); i++)
+	for (list<NodeRecordA>::iterator iter = listToCheck.begin(); iter != listToCheck.end(); iter++)
 	{
-		if (listToUse[i].mpNode == nodeToRemove.mpNode && listToUse[i].mpConnection == nodeToRemove.mpConnection && listToUse[i].mCostSoFar == nodeToRemove.mCostSoFar)
+		if (iter->mpNode == nodeToRemove.mpNode && iter->mpConnection == nodeToRemove.mpConnection && iter->mCostSoFar == nodeToRemove.mCostSoFar)
 		{
-			listToUse.erase(listToUse.begin() + i);
+			listToCheck.erase(iter);
+			break;
 		}
 	}
 }
 
-NodeRecordA AStarPathfinder::smallestElement(vector<NodeRecordA> listToCheck)
+NodeRecordA AStarPathfinder::smallestElement(list<NodeRecordA> listToCheck)
 {
 	//returns smallest Nodes costSoFar
 	NodeRecordA smallestNode;
 	smallestNode = listToCheck.front();
 
-	for (int i = 0; i < listToCheck.size(); i++)
+	for (list<NodeRecordA>::iterator iter = listToCheck.begin(); iter != listToCheck.end(); iter++)
 	{
-		if (listToCheck[i].mEstimatedTotalCost < smallestNode.mEstimatedTotalCost)
+		if (iter->mEstimatedTotalCost < smallestNode.mEstimatedTotalCost)
 		{
-			smallestNode = listToCheck[i];
+			smallestNode = (*iter);
 		}
 	}
-
 	return smallestNode;
 }
 
-NodeRecordA AStarPathfinder::findNode(Node* nodeToCheck, vector<NodeRecordA> listToCheck)
+NodeRecordA AStarPathfinder::findNode(Node* nodeToCheck, list<NodeRecordA> listToCheck)
 {
-	for (int i = 0; i < listToCheck.size(); i++)
+	for (list<NodeRecordA>::iterator iter = listToCheck.begin(); iter != listToCheck.end(); iter++)
 	{
-		if (nodeToCheck == listToCheck[i].mpNode)
+		if (nodeToCheck == iter->mpNode)
 		{
-			return listToCheck[i];
+			return (*iter);
 		}
 	}
 }
 
-bool AStarPathfinder::contains(Node* nodeToCheck, vector<NodeRecordA> listToCheck)
+bool AStarPathfinder::contains(Node* nodeToCheck, list<NodeRecordA> listToCheck)
 {
-	for (int i = 0; i < listToCheck.size(); i++)
+	for (list<NodeRecordA>::iterator iter = listToCheck.begin(); iter != listToCheck.end(); iter++)
 	{
-		if (nodeToCheck == listToCheck[i].mpNode)
+		if (nodeToCheck == iter->mpNode)
 		{
 			return true;
 		}

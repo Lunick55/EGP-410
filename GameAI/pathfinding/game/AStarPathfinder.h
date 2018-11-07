@@ -2,6 +2,7 @@
 
 #include "GridPathfinder.h"
 #include <vector>
+#include <list>
 
 
 class Path;
@@ -37,11 +38,11 @@ public:
 
 	Path* findPath(Node* pFrom, Node* pTo);//make sure to delete the path when you are done!
 
-	NodeRecordA smallestElement(std::vector<NodeRecordA> listToCheck);
-	NodeRecordA findNode(Node* nodeToCheck, std::vector<NodeRecordA> listToCheck);
-	bool contains(Node* nodeToCheck, std::vector<NodeRecordA> listToCheck);
+	NodeRecordA smallestElement(std::list<NodeRecordA> listToCheck);
+	NodeRecordA findNode(Node* nodeToCheck, std::list<NodeRecordA> listToCheck);
+	bool contains(Node* nodeToCheck, std::list<NodeRecordA> listToCheck);
 	float heuristic(Node* nodeToCheck, Node* goalNode);
-	void removeFromList(NodeRecordA nodeToRemove, std::vector<NodeRecordA> listToUse);
+	void removeFromList(NodeRecordA nodeToRemove, std::list<NodeRecordA> listToUse);
 
 private:
 
