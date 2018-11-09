@@ -106,6 +106,7 @@
     <ClInclude Include="DebugDisplay.h" />
     <ClInclude Include="DepthFirstPathfinder.h" />
     <ClInclude Include="DijkstraPathfinder.h" />
+    <ClInclude Include="DynamicPathfinding.h" />
     <ClInclude Include="FaceSteering.h" />
     <ClInclude Include="Flocking.h" />
     <ClInclude Include="GameApp.h" />
@@ -119,6 +120,7 @@
     <ClInclude Include="Path.h" />
     <ClInclude Include="Pathfinder.h" />
     <ClInclude Include="PathfindingDebugContent.h" />
+    <ClInclude Include="PathSmoothing.h" />
     <ClInclude Include="PathToMessage.h" />
     <ClInclude Include="PhysicsComponent.h" />
     <ClInclude Include="PositionComponent.h" />
@@ -157,6 +159,7 @@
     <ClCompile Include="DebugDisplay.cpp" />
     <ClCompile Include="DepthFirstPathfinder.cpp" />
     <ClCompile Include="DijkstraPathfinder.cpp" />
+    <ClCompile Include="DynamicPathfinding.cpp" />
     <ClCompile Include="FaceSteering.cpp" />
     <ClCompile Include="Flocking.cpp" />
     <ClCompile Include="GameApp.cpp" />
@@ -171,6 +174,7 @@
     <ClCompile Include="Path.cpp" />
     <ClCompile Include="Pathfinder.cpp" />
     <ClCompile Include="PathfindingDebugContent.cpp" />
+    <ClCompile Include="PathSmoothing.cpp" />
     <ClCompile Include="PathToMessage.cpp" />
     <ClCompile Include="PhysicsComponent.cpp" />
     <ClCompile Include="PositionComponent.cpp" />
