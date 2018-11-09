@@ -89,6 +89,7 @@ bool GameApp::init()
 	EventSystem::getInstance()->addListener(UP_ARROW, this);
 	EventSystem::getInstance()->addListener(LEFT_ARROW, this);
 	EventSystem::getInstance()->addListener(RIGHT_ARROW, this);
+	EventSystem::getInstance()->addListener(MOUSE_LEFT, this);
 
 	//load buffers
 	mpGraphicsBufferManager->loadBuffer(mBackgroundBufferID, "wallpaper.bmp");
@@ -206,6 +207,22 @@ void GameApp::handleEvent(const Event & theEvent)
 	{
 		//input manager handles the moveTo message call.
 		//need to change this to start pathfinding towards click
+
+		GridPathfinder* pPathfinder = this->getPathfinder();
+
+		for (int i = 0; i < mpUnitManager->getUnitCount(); i++)
+		{
+			GridGraph* pGridGraph = this->getGridGraph();
+			Grid* pGrid = this->getGrid();
+			int fromIndex = pGrid->getSquareIndexFromPixelXY((int)mpUnitManager->getUnit(i)->getPositionComponent()->getPosition().getX(), (int)mpUnitManager->getUnit(i)->getPositionComponent()->getPosition().getY());
+			int toIndex = pGrid->getSquareIndexFromPixelXY((int)mousePosX, (int)mousePosY);
+			Node* pFromNode = pGridGraph->getNode(fromIndex);
+			Node* pToNode = pGridGraph->getNode(toIndex);
+			pPathfinder->findPath(pFromNode, pToNode);
+			//set path
+			//mpUnitManager->getUnit(i)->getSteeringComponent().set;
+		}
+
 	}
 	if (theEvent.getType() == S_KEY)
 	{

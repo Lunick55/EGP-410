@@ -8,6 +8,7 @@
 #include "WanderAndChaseSteering.h"
 #include "Seperation.h"
 #include "Flocking.h"
+#include "FollowPath.h"
 SteeringComponent::SteeringComponent(const ComponentID& id, const ComponentID& physicsComponentID)
 	:Component(id)
 	, mPhysicsComponentID(physicsComponentID)
@@ -86,6 +87,12 @@ void SteeringComponent::setData(const SteeringData& data)
 	case Steering::FLEE:
 	{
 		mpSteering = new SeekSteering(data.ownerID, data.targetLoc, data.targetID, true);
+		break;
+	}
+	case Steering::FOLLOW_PATH:
+	{
+		delete mpSteering;
+		mpSteering = new FollowPath(data.ownerID, data.targetLoc, data.targetID, false);
 		break;
 	}
 	default:

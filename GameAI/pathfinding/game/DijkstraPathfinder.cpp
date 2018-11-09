@@ -11,6 +11,7 @@
 
 using namespace std;
 
+
 DijkstraPathfinder::DijkstraPathfinder(Graph* pGraph)
 	:GridPathfinder(dynamic_cast<GridGraph*>(pGraph))
 {

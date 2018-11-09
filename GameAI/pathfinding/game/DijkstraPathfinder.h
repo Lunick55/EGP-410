@@ -41,5 +41,4 @@ public:
 	bool contains(Node* nodeToCheck, std::vector<NodeRecord> listToCheck);
 
 private:
-
 };

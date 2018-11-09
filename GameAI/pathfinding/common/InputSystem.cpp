@@ -63,6 +63,9 @@ void InputSystem::getKeyEvents()
 						EventSystem::getInstance()->fireEvent(PathToMessage(lastPos, pos));
 						lastPos = pos;
 					}
+
+					mKeyEvent.setType(MOUSE_LEFT);
+					EventSystem::getInstance()->fireEvent(mKeyEvent);
 				}
 			}
 			break;

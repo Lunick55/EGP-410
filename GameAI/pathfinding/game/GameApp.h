@@ -52,7 +52,7 @@ public:
 	inline GraphicsSystem* getGraphicsSystem() const { return mpGraphicsSystem; };
 	inline GraphicsBufferManager* getGraphicsBufferManager() const { return mpGraphicsBufferManager; };
 	inline SpriteManager* getSpriteManager() const { return mpSpriteManager; };
-
+	inline void setMousePosition(int x, int y) { mousePosX = x, mousePosY = y;};
 
 	//Added in functions from other project
 	inline ComponentManager* getComponentManager() { return mpComponentManager; };
@@ -77,6 +77,9 @@ private:
 	GraphicsBufferID mPlayerIconBufferID = "player";
 	GraphicsBufferID mEnemyIconBufferID = "enemy";
 	GraphicsBufferID mTargetBufferID = "target";
+
+	int mousePosX;
+	int mousePosY;
 
 };
 

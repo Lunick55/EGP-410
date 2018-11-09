@@ -32,6 +32,7 @@ Steering * ArriveAndFaceSteering::getSteering()
 	Steering* mFaceSteer = mFaceSteering.getSteering();
 	Steering* mArriveSteer = mArriveSteering.getSteering();
 
+
 	if (mArriveSteer != NULL)
 	{
 		data.acc = mArriveSteer->getData().acc;

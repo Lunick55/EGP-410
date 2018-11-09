@@ -30,5 +30,6 @@ void PathToMessage::process()
 		Node* pFromNode = pGridGraph->getNode( fromIndex );
 		Node* pToNode = pGridGraph->getNode( toIndex );
 		pPathfinder->findPath( pFromNode, pToNode );
+		pGame->setMousePosition((float)mTo.getX(), (float)mTo.getY());
 	}
 }

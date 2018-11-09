@@ -109,6 +109,7 @@
     <ClInclude Include="DynamicPathfinding.h" />
     <ClInclude Include="FaceSteering.h" />
     <ClInclude Include="Flocking.h" />
+    <ClInclude Include="FollowPath.h" />
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="GameMessage.h" />
     <ClInclude Include="GameMessageManager.h" />
@@ -162,6 +163,7 @@
     <ClCompile Include="DynamicPathfinding.cpp" />
     <ClCompile Include="FaceSteering.cpp" />
     <ClCompile Include="Flocking.cpp" />
+    <ClCompile Include="FollowPath.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameMessage.cpp" />
     <ClCompile Include="GameMessageManager.cpp" />
