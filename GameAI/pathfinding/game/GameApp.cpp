@@ -209,10 +209,14 @@ void GameApp::handleEvent(const Event & theEvent)
 	}
 	if (theEvent.getType() == S_KEY)
 	{
-		Unit* pUnit = mpUnitManager->createRandomUnit(*mpSpriteManager->getSprite(AI_ICON_SPRITE_ID));
-		if (pUnit == NULL)
+		for (int i = 0; i < 10; i++)
 		{
-			mpUnitManager->deleteRandomUnit();
+			Unit* pUnit = mpUnitManager->createRandomUnit(*mpSpriteManager->getSprite(AI_ICON_SPRITE_ID));
+			if (pUnit == NULL)
+			{
+				mpUnitManager->deleteRandomUnit();
+			}
+
 		}
 		cout << "Add random unit" << endl;
 	}
