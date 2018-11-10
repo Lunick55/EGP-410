@@ -211,7 +211,7 @@ void GameApp::handleEvent(const Event & theEvent)
 
 		GridPathfinder* pPathfinder = this->getPathfinder();
 
-		for (int i = 1; i < mpUnitManager->getUnitCount(); i++)
+		for (int i = 1; i <= mpUnitManager->getUnitCount(); i++)
 		{
 			GridGraph* pGridGraph = this->getGridGraph();
 			Grid* pGrid = this->getGrid();
@@ -221,9 +221,10 @@ void GameApp::handleEvent(const Event & theEvent)
 			Node* pToNode = pGridGraph->getNode(toIndex);
 			pPathfinder->findPath(pFromNode, pToNode);
 			//set path
-			FollowPath* pFollowSteering = dynamic_cast<FollowPath*>(mpUnitManager->getUnit(i)->getSteeringComponent()->getSteering());
-			pFollowSteering->setPath(pPathfinder->findPath(pFromNode, pToNode));
-			
+			FollowPath* pFollowSteering = dynamic_cast<FollowPath*>(mpUnitManager->getUnit(i)->getSteeringComponent()->getSteeringBehavior());
+			Path* newPath = pPathfinder->findPath(pFromNode, pToNode);
+			pFollowSteering->resetIndex();
+			pFollowSteering->setPath(newPath);			
 		}
 
 	}

@@ -37,7 +37,7 @@ public:
 	void setTargetUnitID(const UnitID& id) { mData.targetID = id; };
 	void applySteering(PhysicsComponent& physicsComponent);
 
-	Steering* getSteering() { return mpSteering; };
+	Steering* getSteeringBehavior() { return mpSteering; };
 
 private:
 	ComponentID mPhysicsComponentID;

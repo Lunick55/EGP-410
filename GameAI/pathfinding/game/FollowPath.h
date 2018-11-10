@@ -17,9 +17,10 @@ public:
 	virtual Steering* getSteering();
 
 	void setPath(Path* myPath);
+	void resetIndex();
 
 private:
-	Path* mPath;
+	Path mPath;
 	ArriveAndFaceSteering mArriveAndFaceSteering;
 	int index;
 };

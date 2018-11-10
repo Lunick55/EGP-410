@@ -29,17 +29,21 @@ Steering * ArriveAndFaceSteering::getSteering()
 	Unit* pOwner = pGame->getUnitManager()->getUnit(mOwnerID);
 	PhysicsData data = pOwner->getPhysicsComponent()->getData();
 
+	mArriveSteering.setTargetLoc(mTargetLoc);
+	mFaceSteering.setTargetLoc(mTargetLoc);
+
 	Steering* mFaceSteer = mFaceSteering.getSteering();
 	Steering* mArriveSteer = mArriveSteering.getSteering();
 
 
 	if (mArriveSteer != NULL)
 	{
+
+		data.rotAcc = mFaceSteer->getData().rotAcc;
+		data.rotVel = mFaceSteer->getData().rotVel;
+
 		data.acc = mArriveSteer->getData().acc;
-		if (mFaceSteer != NULL)
-		{
-			data.rotAcc = mFaceSteer->getData().rotAcc;
-		}
+		data.vel = mArriveSteer->getData().vel;
 	}
 	else
 	{

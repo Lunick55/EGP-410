@@ -78,4 +78,39 @@ void GridPathfinder::drawVisualization( Grid* pGrid, GraphicsBuffer* pDest )
 
 	mpVisualizer->draw(*pDest);
 }
+
+void GridPathfinder::drawPath(Grid* pGrid, GraphicsBuffer* pDest, Path pPath)
+{
+	//cout << "mpPath:" << mpPath << endl;
+
+	static Color pathColor = Color(255, 64, 64);
+	static Color visitedColor = GREEN_COLOR;
+	static Color startColor = Color(1, 255, 128);
+	static Color stopColor = Color(1, 128, 255);
+
+	if (pPath.getNumNodes() != 0)
+	{
+		Color currentPathColor = pathColor;
+		unsigned int numNodes = pPath.getNumNodes();
+
+		/*for( int i=1; i<numNodes-1; i++ )
+		{
+		mpVisualizer->addColor( mpPath->peekNode(i)->getId(), pathColor );
+		}*/
+		for (unsigned int i = 1; i < numNodes - 1; i++)
+		{
+			mpVisualizer->addColor(pPath.peekNode(i)->getId(), currentPathColor);
+			float lerpVal = lerp(i, 0, numNodes);
+			currentPathColor = Color((int)(255 * (1.0f - lerpVal)), currentPathColor.getG(), currentPathColor.getB());
+		}
+
+
+		//add beginning and ending color
+		mpVisualizer->addColor(pPath.peekNode(0)->getId(), startColor);
+		mpVisualizer->addColor(pPath.peekNode(pPath.getNumNodes() - 1)->getId(), stopColor);
+	}
+
+	mpVisualizer->draw(*pDest);
+}
+
 #endif

@@ -58,7 +58,10 @@ Steering * ArriveSteering::getSteering()
 	//check to see if we are there, no steering
 	if (distance < targetRadius)
 	{
-		return NULL;
+		data.acc = 0;
+		data.vel = 0;
+		this->mData = data;
+		return this;
 		//do nothing
 	}
 
