@@ -221,8 +221,7 @@ void GameApp::handleEvent(const Event & theEvent)
 			Node* pToNode = pGridGraph->getNode(toIndex);
 			pPathfinder->findPath(pFromNode, pToNode);
 			//set path
-			//This dynamic cast fails because FollowPath isn't of SteeringComponent class, its a Steering class
-			FollowPath* pFollowSteering = dynamic_cast<FollowPath*>(mpUnitManager->getUnit(i)->getSteeringComponent());
+			FollowPath* pFollowSteering = dynamic_cast<FollowPath*>(mpUnitManager->getUnit(i)->getSteeringComponent()->getSteering());
 			pFollowSteering->setPath(pPathfinder->findPath(pFromNode, pToNode));
 			
 		}

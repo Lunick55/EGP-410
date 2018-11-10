@@ -36,6 +36,9 @@ public:
 	void setTargetLoc(const Vector2D& pos) { mData.targetLoc = pos; };
 	void setTargetUnitID(const UnitID& id) { mData.targetID = id; };
 	void applySteering(PhysicsComponent& physicsComponent);
+
+	Steering* getSteering() { return mpSteering; };
+
 private:
 	ComponentID mPhysicsComponentID;
 	SteeringData mData;
