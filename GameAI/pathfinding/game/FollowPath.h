@@ -5,6 +5,8 @@
 #include "Path.h"
 #include "Grid.h"
 #include "ArriveAndFaceSteering.h"
+#include "SeekSteering.h"
+
 using namespace std;
 
 class DijkstraPathfinder;
@@ -21,6 +23,7 @@ public:
 
 private:
 	Path mPath;
+	//SeekSteering mSeekSteering;
 	ArriveAndFaceSteering mArriveAndFaceSteering;
 	int index;
 };

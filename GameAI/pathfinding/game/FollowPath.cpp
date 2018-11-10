@@ -43,10 +43,17 @@ Steering * FollowPath::getSteering()
 	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
 	Unit* pOwner = pGame->getUnitManager()->getUnit(mOwnerID);
 	PhysicsData data = pOwner->getPhysicsComponent()->getData();
-
 	pGame->getPathfinder()->drawPath(pGame->getGrid(), pGame->getGraphicsSystem()->getBackBuffer() , mPath);
 
-	if (data.acc == 0 && mPath.peekNode(index) != NULL)
+	Vector2D direction;
+	float distance;
+	float targetRadius = 30.0f;
+
+
+	direction = mTargetLoc - pOwner->getPositionComponent()->getPosition();
+	distance = direction.getLength();
+
+	if (distance < targetRadius && mPath.peekNode(index) != NULL)
 	{
 		Grid* pGrid = dynamic_cast<GameApp*>(gpGame)->getGrid();
 		Vector2D target = pGrid->getULCornerOfSquare(mPath.peekNode(index)->getId());
