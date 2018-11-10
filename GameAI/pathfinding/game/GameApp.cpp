@@ -23,6 +23,7 @@
 #include "UnitManager.h"
 #include "Unit.h"
 #include "ComponentManager.h"
+#include "FollowPath.h"
 
 #include <SDL.h>
 #include <fstream>
@@ -210,7 +211,7 @@ void GameApp::handleEvent(const Event & theEvent)
 
 		GridPathfinder* pPathfinder = this->getPathfinder();
 
-		for (int i = 0; i < mpUnitManager->getUnitCount(); i++)
+		for (int i = 1; i < mpUnitManager->getUnitCount(); i++)
 		{
 			GridGraph* pGridGraph = this->getGridGraph();
 			Grid* pGrid = this->getGrid();
@@ -220,7 +221,10 @@ void GameApp::handleEvent(const Event & theEvent)
 			Node* pToNode = pGridGraph->getNode(toIndex);
 			pPathfinder->findPath(pFromNode, pToNode);
 			//set path
-			//mpUnitManager->getUnit(i)->getSteeringComponent().set;
+			//This dynamic cast fails because FollowPath isn't of SteeringComponent class, its a Steering class
+			FollowPath* pFollowSteering = dynamic_cast<FollowPath*>(mpUnitManager->getUnit(i)->getSteeringComponent());
+			pFollowSteering->setPath(pPathfinder->findPath(pFromNode, pToNode));
+			
 		}
 
 	}

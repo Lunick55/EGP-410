@@ -8,6 +8,7 @@
 #include "defines.h"
 #include "PhysicsComponent.h"
 
+#include "Path.h"
 
 
 class Steering : public Trackable
@@ -44,13 +45,13 @@ public:
 	PhysicsData& getData() { return mData; };
 
 	void update();
+
 protected:
 	SteeringType mType;
 	Vector2D mTargetLoc;
 	UnitID mTargetID;
 	UnitID mOwnerID;
 	PhysicsData mData;
-
+	
 	virtual Steering* getSteering() { return this; };//overridden by sub-classes
-
 };

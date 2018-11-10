@@ -19,7 +19,7 @@ public:
 	void setPath(Path* myPath);
 
 private:
-	Path mPath;
+	Path* mPath;
 	ArriveAndFaceSteering mArriveAndFaceSteering;
 	int index;
 };

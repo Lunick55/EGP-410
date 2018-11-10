@@ -21,11 +21,14 @@ FollowPath::FollowPath(const UnitID & ownerID, const Vector2D & targetLoc, const
 	setTargetLoc(targetLoc);
 	
 	index = 0;
+
+	mPath = new Path();
+
 }
 
 void FollowPath::setPath(Path* myPath)
 {
-	mPath = *myPath;
+	mPath = myPath;
 }
 
 Steering * FollowPath::getSteering()
@@ -35,10 +38,10 @@ Steering * FollowPath::getSteering()
 	PhysicsData data = pOwner->getPhysicsComponent()->getData();
 
 
-	if (data.acc == 0 && mPath.peekNode(index) != NULL)
+	if (data.acc == 0 && mPath->peekNode(index) != NULL)
 	{
 		Grid* pGrid = dynamic_cast<GameApp*>(gpGame)->getGrid();
-		Vector2D target = pGrid->getULCornerOfSquare(mPath.peekNode(index)->getId());
+		Vector2D target = pGrid->getULCornerOfSquare(mPath->peekNode(index)->getId());
 		mArriveAndFaceSteering.setTargetLoc(target);
 		setTargetLoc(target);
 		index++;

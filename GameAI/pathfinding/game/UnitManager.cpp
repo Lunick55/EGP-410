@@ -85,7 +85,10 @@ Unit* UnitManager::createRandomUnit(const Sprite& sprite)
 	Unit* pUnit = createUnit(sprite, true, PositionData(Vector2D(posX, posY), 0)/*, PhysicsData(Vector2D(velX, velY), Vector2D(0.1f, 0.1f), 0.1f, 0.05f)*/);
 	if (pUnit != NULL)
 	{
-		pUnit->setSteering(Steering::FOLLOW_PATH, Vector2D(gpGame->getGraphicsSystem()->getWidth() / 2, gpGame->getGraphicsSystem()->getHeight() / 2));
+		pUnit->setSteering(Steering::FOLLOW_PATH, Vector2D(pUnit->getPositionComponent()->getPosition().getX(), pUnit->getPositionComponent()->getPosition().getY()));//gpGame->getGraphicsSystem()->getWidth() / 2, gpGame->getGraphicsSystem()->getHeight() / 2));
+		int temp = rand() % 360;
+		temp = temp * (PI / 180);
+		pUnit->getPositionComponent()->setFacing(temp);
 	}
 	return pUnit;
 }
