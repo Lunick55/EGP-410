@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GridPathfinder.h"
+#include "Path.h"
 #include <vector>
 #include <list>
 
@@ -13,19 +14,6 @@ class Connection;
 
 using namespace std;
 
-/*
-Used to keep track of individual node values on the graph
-*/
-struct NodeRecordA : public Trackable
-{
-	NodeRecordA() { mpConnection = nullptr; mCostSoFar = 0; mpNode = nullptr; };
-
-	Connection* mpConnection;
-
-	float mCostSoFar;
-	float mEstimatedTotalCost;
-	Node* mpNode;
-};
 
 /*
 Finds a path from a start to an end point using the A* pathfinding algorithm
@@ -38,6 +26,10 @@ public:
 
 	Path* findPath(Node* pFrom, Node* pTo);//make sure to delete the path when you are done!
 
-private:
+	Path* smoothPath(Path* inputPath);
 
+	bool rayClear(Node* outputPath, Node* inputPath);
+
+private:
+	Path *mPath;
 };

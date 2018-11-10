@@ -24,6 +24,7 @@
 #include "Unit.h"
 #include "ComponentManager.h"
 #include "FollowPath.h"
+#include "PathSmoothing.h"
 
 #include <SDL.h>
 #include <fstream>
@@ -223,8 +224,12 @@ void GameApp::handleEvent(const Event & theEvent)
 			//set path
 			FollowPath* pFollowSteering = dynamic_cast<FollowPath*>(mpUnitManager->getUnit(i)->getSteeringComponent()->getSteeringBehavior());
 			Path* newPath = pPathfinder->findPath(pFromNode, pToNode);
+
+			PathSmoothing mySmooth(pGridGraph);
+			newPath = mySmooth.smoothPath(newPath);
+
 			pFollowSteering->resetIndex();
-			pFollowSteering->setPath(newPath);			
+			pFollowSteering->setPath(newPath);		
 		}
 
 	}

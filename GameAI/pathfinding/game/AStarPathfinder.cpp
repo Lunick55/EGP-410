@@ -26,6 +26,7 @@ AStarPathfinder::~AStarPathfinder()
 {
 #ifdef VISUALIZE_PATH
 	delete mpPath;
+	
 #endif
 }
 
