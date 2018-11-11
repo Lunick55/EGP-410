@@ -23,6 +23,7 @@ class KinematicUnit;
 class Timer;
 class ComponentManager;
 class UnitManager;
+class PathPooling;
 
 const float LOOP_TARGET_TIME = 33.3f;//how long should each frame of execution take? 30fps = 33.3ms/frame
 const IDType PLAYER_ICON_SPRITE_ID = 1;
@@ -72,6 +73,7 @@ private:
 	ComponentManager* mpComponentManager;
 	UnitManager* mpUnitManager;
 	GridPathfinder* mpPathfinder;
+	PathPooling* mpPathPool;
 
 	GraphicsBufferID mBackgroundBufferID = "woods";
 	GraphicsBufferID mPlayerIconBufferID = "player";

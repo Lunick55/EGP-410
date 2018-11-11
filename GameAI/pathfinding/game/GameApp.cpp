@@ -25,6 +25,7 @@
 #include "ComponentManager.h"
 #include "FollowPath.h"
 #include "PathSmoothing.h"
+#include "PathPooling.h"
 
 #include <SDL.h>
 #include <fstream>
@@ -76,6 +77,9 @@ bool GameApp::init()
 
 	mpPathfinder = new AStarPathfinder(mpGridGraph);
 	//mpPathfinder = new DepthFirstPathfinder(mpGridGraph);
+
+	//create new pathPool
+	mpPathPool = new PathPooling;
 
 	//load listeners
 	EventSystem::initInstance();
@@ -220,11 +224,21 @@ void GameApp::handleEvent(const Event & theEvent)
 			int toIndex = pGrid->getSquareIndexFromPixelXY((int)mousePosX, (int)mousePosY);
 			Node* pFromNode = pGridGraph->getNode(fromIndex);
 			Node* pToNode = pGridGraph->getNode(toIndex);
-			pPathfinder->findPath(pFromNode, pToNode);
+
+
 			//set path
 			FollowPath* pFollowSteering = dynamic_cast<FollowPath*>(mpUnitManager->getUnit(i)->getSteeringComponent()->getSteeringBehavior());
-			Path* newPath = pPathfinder->findPath(pFromNode, pToNode);
-
+			Path* newPath;
+			
+			if (mpPathPool->getPath(pFromNode, pToNode) != nullptr)
+			{
+				newPath = mpPathPool->getPath(pFromNode, pToNode);
+			}
+			else
+			{
+				newPath = pPathfinder->findPath(pFromNode, pToNode);
+				mpPathPool->storePath(pFromNode, pToNode, newPath);
+			}
 			PathSmoothing mySmooth(pGridGraph);
 			newPath = mySmooth.smoothPath(newPath);
 

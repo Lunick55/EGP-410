@@ -106,7 +106,7 @@
     <ClInclude Include="DebugDisplay.h" />
     <ClInclude Include="DepthFirstPathfinder.h" />
     <ClInclude Include="DijkstraPathfinder.h" />
-    <ClInclude Include="DynamicPathfinding.h" />
+    <ClInclude Include="PathPooling.h" />
     <ClInclude Include="FaceSteering.h" />
     <ClInclude Include="Flocking.h" />
     <ClInclude Include="FollowPath.h" />
@@ -160,7 +160,7 @@
     <ClCompile Include="DebugDisplay.cpp" />
     <ClCompile Include="DepthFirstPathfinder.cpp" />
     <ClCompile Include="DijkstraPathfinder.cpp" />
-    <ClCompile Include="DynamicPathfinding.cpp" />
+    <ClCompile Include="PathPooling.cpp" />
     <ClCompile Include="FaceSteering.cpp" />
     <ClCompile Include="Flocking.cpp" />
     <ClCompile Include="FollowPath.cpp" />

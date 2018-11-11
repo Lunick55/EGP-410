@@ -201,11 +201,11 @@
     <ClInclude Include="PathSmoothing.h">
       <Filter>Header Files\pathfinding</Filter>
     </ClInclude>
-    <ClInclude Include="DynamicPathfinding.h">
-      <Filter>Header Files\pathfinding</Filter>
-    </ClInclude>
     <ClInclude Include="FollowPath.h">
       <Filter>Header Files\Steering</Filter>
+    </ClInclude>
+    <ClInclude Include="PathPooling.h">
+      <Filter>Header Files\pathfinding</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -362,11 +362,11 @@
     <ClCompile Include="PathSmoothing.cpp">
       <Filter>Source Files\pathfinding</Filter>
     </ClCompile>
-    <ClCompile Include="DynamicPathfinding.cpp">
-      <Filter>Source Files\pathfinding</Filter>
-    </ClCompile>
     <ClCompile Include="FollowPath.cpp">
       <Filter>Source Files\Steering</Filter>
+    </ClCompile>
+    <ClCompile Include="PathPooling.cpp">
+      <Filter>Source Files\pathfinding</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
