@@ -259,6 +259,13 @@ void GameApp::handleEvent(const Event & theEvent)
 			}
 
 		}
+		/*if (mpUnitManager->getUnitCount() > 1)
+		{
+			for (int i = 0; i < 10; i++)
+			{
+				mpUnitManager->deleteRandomUnit();
+			}
+		}*/
 		cout << "Add random unit" << endl;
 	}
 	if (theEvent.getType() == D_KEY)
