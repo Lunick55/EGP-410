@@ -12,3 +12,6 @@ f: Sets pathfinding to be DFS
 a: Sets pathfinding to be A*
 d: Sets pathfinding to be Dijkstra
 Esc: Exits Simulation
+
+Jeff: All commits made by Tcarbone are from Kelly. There was an issue with thte computer I was using at the time and the person using it before 
+forgot to log out of their github and for some reason it allowed me to continue to commit. Sorry about that.
