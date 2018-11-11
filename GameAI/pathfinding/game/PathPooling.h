@@ -4,13 +4,6 @@
 #include <vector>
 #include <list>
 
-
-class Path;
-class Graph;
-class GraphicsBuffer;
-class Grid;
-class Connection;
-
 using namespace std;
 
 /*

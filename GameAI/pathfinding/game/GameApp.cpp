@@ -129,12 +129,6 @@ bool GameApp::init()
 		mpSpriteManager->createAndManageSprite(TARGET_SPRITE_ID, pTargetBuffer, 0, 0, (float)pTargetBuffer->getWidth(), (float)pTargetBuffer->getHeight());
 	}
 
-	/*Unit* pUnit = mpUnitManager->createRandomUnit(*mpSpriteManager->getSprite(AI_ICON_SPRITE_ID));
-	if (pUnit == NULL)
-	{
-		mpUnitManager->deleteRandomUnit();
-	}*/
-	//debug display
 	PathfindingDebugContent* pContent = new PathfindingDebugContent( mpPathfinder );
 	mpDebugDisplay = new DebugDisplay( Vector2D(0,12), pContent );
 
@@ -167,6 +161,9 @@ void GameApp::cleanup()
 
 	delete mpComponentManager;
 	mpComponentManager = NULL;
+
+	delete mpPathPool;
+	mpPathPool = NULL;
 }
 
 void GameApp::beginLoop()
@@ -211,37 +208,41 @@ void GameApp::handleEvent(const Event & theEvent)
 	}
 	if (theEvent.getType() == MOUSE_LEFT)
 	{
-		//input manager handles the moveTo message call.
-		//need to change this to start pathfinding towards click
 
 		GridPathfinder* pPathfinder = this->getPathfinder();
 
+		//continue for every unit
 		for (int i = 1; i <= mpUnitManager->getUnitCount(); i++)
 		{
 			GridGraph* pGridGraph = this->getGridGraph();
 			Grid* pGrid = this->getGrid();
+			//ge the from and to index from the grid
 			int fromIndex = pGrid->getSquareIndexFromPixelXY((int)mpUnitManager->getUnit(i)->getPositionComponent()->getPosition().getX(), (int)mpUnitManager->getUnit(i)->getPositionComponent()->getPosition().getY());
 			int toIndex = pGrid->getSquareIndexFromPixelXY((int)mousePosX, (int)mousePosY);
 			Node* pFromNode = pGridGraph->getNode(fromIndex);
 			Node* pToNode = pGridGraph->getNode(toIndex);
 
-
 			//set path
 			FollowPath* pFollowSteering = dynamic_cast<FollowPath*>(mpUnitManager->getUnit(i)->getSteeringComponent()->getSteeringBehavior());
 			Path* newPath;
 			
+			//check to see wheher there is already a path made from the pool
 			if (mpPathPool->getPath(pFromNode, pToNode) != nullptr)
 			{
+				//get that path from the pool
 				newPath = mpPathPool->getPath(pFromNode, pToNode);
 			}
 			else
 			{
+				//otherwise assign it to the pool so that it doesnt need to research it again
 				newPath = pPathfinder->findPath(pFromNode, pToNode);
 				mpPathPool->storePath(pFromNode, pToNode, newPath);
 			}
+			//smooth the path
 			PathSmoothing mySmooth(pGridGraph);
 			newPath = mySmooth.smoothPath(newPath);
 
+			//reset the index every click
 			pFollowSteering->resetIndex();
 			pFollowSteering->setPath(newPath);		
 		}

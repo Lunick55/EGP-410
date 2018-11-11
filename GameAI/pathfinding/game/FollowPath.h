@@ -23,7 +23,6 @@ public:
 
 private:
 	Path mPath;
-	//SeekSteering mSeekSteering;
 	ArriveAndFaceSteering mArriveAndFaceSteering;
 	int index;
 };

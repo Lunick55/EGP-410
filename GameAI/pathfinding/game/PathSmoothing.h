@@ -5,19 +5,8 @@
 #include <vector>
 #include <list>
 
-
-class Path;
-class Graph;
-class GraphicsBuffer;
-class Grid;
-class Connection;
-
 using namespace std;
 
-
-/*
-Finds a path from a start to an end point using the A* pathfinding algorithm
-*/
 class PathSmoothing :public GridPathfinder
 {
 public:

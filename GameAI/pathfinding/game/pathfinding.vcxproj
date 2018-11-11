@@ -153,7 +153,6 @@
     <ClCompile Include="ArriveAndFaceSteering.cpp" />
     <ClCompile Include="ArriveSteering.cpp" />
     <ClCompile Include="AStarPathfinder.cpp" />
-    <ClCompile Include="Cohesion.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentManager.cpp" />
     <ClCompile Include="Connection.cpp" />
@@ -162,7 +161,6 @@
     <ClCompile Include="DijkstraPathfinder.cpp" />
     <ClCompile Include="PathPooling.cpp" />
     <ClCompile Include="FaceSteering.cpp" />
-    <ClCompile Include="Flocking.cpp" />
     <ClCompile Include="FollowPath.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameMessage.cpp" />
@@ -170,7 +168,6 @@
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="GridGraph.cpp" />
     <ClCompile Include="GridPathfinder.cpp" />
-    <ClCompile Include="GroupAlignment.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Path.cpp" />
@@ -181,7 +178,6 @@
     <ClCompile Include="PhysicsComponent.cpp" />
     <ClCompile Include="PositionComponent.cpp" />
     <ClCompile Include="SeekSteering.cpp" />
-    <ClCompile Include="Seperation.cpp" />
     <ClCompile Include="Steering.cpp" />
     <ClCompile Include="SteeringComponent.cpp" />
     <ClCompile Include="Unit.cpp" />

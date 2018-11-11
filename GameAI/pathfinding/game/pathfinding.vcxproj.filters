@@ -332,22 +332,10 @@
     <ClCompile Include="ArriveSteering.cpp">
       <Filter>Source Files\Steering</Filter>
     </ClCompile>
-    <ClCompile Include="Cohesion.cpp">
-      <Filter>Source Files\Steering</Filter>
-    </ClCompile>
     <ClCompile Include="FaceSteering.cpp">
       <Filter>Source Files\Steering</Filter>
     </ClCompile>
-    <ClCompile Include="Flocking.cpp">
-      <Filter>Source Files\Steering</Filter>
-    </ClCompile>
-    <ClCompile Include="GroupAlignment.cpp">
-      <Filter>Source Files\Steering</Filter>
-    </ClCompile>
     <ClCompile Include="SeekSteering.cpp">
-      <Filter>Source Files\Steering</Filter>
-    </ClCompile>
-    <ClCompile Include="Seperation.cpp">
       <Filter>Source Files\Steering</Filter>
     </ClCompile>
     <ClCompile Include="Steering.cpp">
