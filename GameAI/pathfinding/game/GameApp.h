@@ -82,6 +82,8 @@ private:
 
 	int mousePosX;
 	int mousePosY;
+	int indexToStartAt;
+	bool wasCalled;
 
 };
 

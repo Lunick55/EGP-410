@@ -8,6 +8,7 @@
 #include "PhysicsComponent.h"
 #include "Unit.h"
 
+
 class Unit;
 class Sprite;
 struct PositionData;
@@ -36,7 +37,9 @@ public:
 
 	Unit* getPlayerUnit() const { return getUnit(PLAYER_UNIT_ID); };
 	std::map<UnitID, Unit*> getMap() { return mUnitMap; };
-
+	
+	void resetId() { msNextUnitID = 1; };
+	
 	void updateFlockWeights();
 
 private:

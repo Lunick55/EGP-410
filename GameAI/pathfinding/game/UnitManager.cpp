@@ -136,10 +136,10 @@ void UnitManager::deleteRandomUnit()
 	if (mUnitMap.size() >= 1)
 	{
 		Uint32 target = rand() % mUnitMap.size();
-		if (target == 0)//don't allow the 0th element to be deleted as it is the player unit
-		{
-			target = 1;
-		}
+		//if (target == 0)//don't allow the 0th element to be deleted as it is the player unit
+		//{
+		//	target = 1;
+		//}
 		Uint32 cnt = 0;
 		for (auto it = mUnitMap.begin(); it != mUnitMap.end(); ++it, cnt++)
 		{

@@ -60,7 +60,7 @@ bool GameApp::init()
 
 		return false;
 	}
-
+	indexToStartAt = 1;
 	mpMessageManager = new GameMessageManager();
 	mpUnitManager = new UnitManager(MAX_UNITS);
 	mpComponentManager = new ComponentManager(MAX_UNITS);
@@ -69,7 +69,7 @@ bool GameApp::init()
 	mpGridVisualizer = new GridVisualizer( mpGrid );
 	std::ifstream theStream( gFileName );
 	mpGrid->load( theStream );
-
+	wasCalled = false;
 	//create the GridGraph for pathfinding
 	mpGridGraph = new GridGraph(mpGrid);
 	//init the nodes and connections
@@ -187,7 +187,6 @@ void GameApp::processLoop()
 	//draw units
 	mpUnitManager->drawAll();
 	mpDebugDisplay->draw( pBackBuffer );
-
 	mpMessageManager->processMessagesForThisframe();
 
 	//should be last thing in processLoop
@@ -208,9 +207,7 @@ void GameApp::handleEvent(const Event & theEvent)
 	}
 	if (theEvent.getType() == MOUSE_LEFT)
 	{
-
 		GridPathfinder* pPathfinder = this->getPathfinder();
-
 		//continue for every unit
 		for (int i = 1; i <= mpUnitManager->getUnitCount(); i++)
 		{
@@ -244,12 +241,21 @@ void GameApp::handleEvent(const Event & theEvent)
 
 			//reset the index every click
 			pFollowSteering->resetIndex();
-			pFollowSteering->setPath(newPath);		
+			pFollowSteering->setPath(newPath);	
 		}
-
+		
 	}
 	if (theEvent.getType() == S_KEY)
 	{
+		if (!mpUnitManager->getMap().empty())
+		{
+			int i = 0;
+			while (mpUnitManager->getMap().size() >= 1)
+			{
+				mpUnitManager->deleteUnit(++i);
+			}
+			mpUnitManager->resetId();
+		}
 		for (int i = 0; i < 10; i++)
 		{
 			Unit* pUnit = mpUnitManager->createRandomUnit(*mpSpriteManager->getSprite(AI_ICON_SPRITE_ID));
@@ -257,15 +263,7 @@ void GameApp::handleEvent(const Event & theEvent)
 			{
 				mpUnitManager->deleteRandomUnit();
 			}
-
 		}
-		/*if (mpUnitManager->getUnitCount() > 1)
-		{
-			for (int i = 0; i < 10; i++)
-			{
-				mpUnitManager->deleteRandomUnit();
-			}
-		}*/
 		cout << "Add random unit" << endl;
 	}
 	if (theEvent.getType() == D_KEY)
