@@ -8,9 +8,8 @@ How to compile:
 4. Press F5/Ctrl+F5 to run the program
 
 Keyboard Inputs:
-f: Sets pathfinding to be DFS
-a: Sets pathfinding to be A*
-d: Sets pathfinding to be Dijkstra
+s: Deletes existing units and populates the screen with 10 randomly placed units
+Left mouse click: Initiates the units to start a follow-path steering behavior to the mouse click
 Esc: Exits Simulation
 
 Jeff: All commits made by Tcarbone are from Kelly. There was an issue with thte computer I was using at the time and the person using it before 
