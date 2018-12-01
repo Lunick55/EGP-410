@@ -3,7 +3,7 @@
 #include <map>
 #include <Trackable.h>
 
-/*Collection of base classes to implement a StateMachine.  Heavily borrowed from0 
+/*Collection of base classes to implement a StateMachine.  Heavily borrowed from
 	Millington text.
 
 	Dean lawson

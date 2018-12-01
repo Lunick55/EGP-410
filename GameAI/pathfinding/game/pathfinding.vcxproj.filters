@@ -46,6 +46,12 @@
     <Filter Include="Source Files\Units">
       <UniqueIdentifier>{7d5f7c18-cd4e-441b-95ba-2cb1d721a187}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\StateMachines">
+      <UniqueIdentifier>{ff7439b7-4a85-41da-9468-3c079f678f33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\StateMachines">
+      <UniqueIdentifier>{83e74937-d5de-4f92-8e36-6dcba0392056}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\common\Game.h">
@@ -207,6 +213,18 @@
     <ClInclude Include="PathPooling.h">
       <Filter>Header Files\pathfinding</Filter>
     </ClInclude>
+    <ClInclude Include="EndGameState.h">
+      <Filter>Header Files\StateMachines</Filter>
+    </ClInclude>
+    <ClInclude Include="KaboomState.h">
+      <Filter>Header Files\StateMachines</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMachine.h">
+      <Filter>Header Files\StateMachines</Filter>
+    </ClInclude>
+    <ClInclude Include="TickState.h">
+      <Filter>Header Files\StateMachines</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\common\Game.cpp">
@@ -355,6 +373,18 @@
     </ClCompile>
     <ClCompile Include="PathPooling.cpp">
       <Filter>Source Files\pathfinding</Filter>
+    </ClCompile>
+    <ClCompile Include="EndGameState.cpp">
+      <Filter>Source Files\StateMachines</Filter>
+    </ClCompile>
+    <ClCompile Include="KaboomState.cpp">
+      <Filter>Source Files\StateMachines</Filter>
+    </ClCompile>
+    <ClCompile Include="StateMachine.cpp">
+      <Filter>Source Files\StateMachines</Filter>
+    </ClCompile>
+    <ClCompile Include="TickState.cpp">
+      <Filter>Source Files\StateMachines</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

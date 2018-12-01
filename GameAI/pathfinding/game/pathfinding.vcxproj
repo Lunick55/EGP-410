@@ -106,6 +106,8 @@
     <ClInclude Include="DebugDisplay.h" />
     <ClInclude Include="DepthFirstPathfinder.h" />
     <ClInclude Include="DijkstraPathfinder.h" />
+    <ClInclude Include="EndGameState.h" />
+    <ClInclude Include="KaboomState.h" />
     <ClInclude Include="PathPooling.h" />
     <ClInclude Include="FaceSteering.h" />
     <ClInclude Include="Flocking.h" />
@@ -127,8 +129,10 @@
     <ClInclude Include="PositionComponent.h" />
     <ClInclude Include="SeekSteering.h" />
     <ClInclude Include="Seperation.h" />
+    <ClInclude Include="StateMachine.h" />
     <ClInclude Include="Steering.h" />
     <ClInclude Include="SteeringComponent.h" />
+    <ClInclude Include="TickState.h" />
     <ClInclude Include="Unit.h" />
     <ClInclude Include="UnitManager.h" />
     <ClInclude Include="WanderAndChaseSteering.h" />
@@ -159,6 +163,8 @@
     <ClCompile Include="DebugDisplay.cpp" />
     <ClCompile Include="DepthFirstPathfinder.cpp" />
     <ClCompile Include="DijkstraPathfinder.cpp" />
+    <ClCompile Include="EndGameState.cpp" />
+    <ClCompile Include="KaboomState.cpp" />
     <ClCompile Include="PathPooling.cpp" />
     <ClCompile Include="FaceSteering.cpp" />
     <ClCompile Include="FollowPath.cpp" />
@@ -178,8 +184,10 @@
     <ClCompile Include="PhysicsComponent.cpp" />
     <ClCompile Include="PositionComponent.cpp" />
     <ClCompile Include="SeekSteering.cpp" />
+    <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="Steering.cpp" />
     <ClCompile Include="SteeringComponent.cpp" />
+    <ClCompile Include="TickState.cpp" />
     <ClCompile Include="Unit.cpp" />
     <ClCompile Include="UnitManager.cpp" />
     <ClCompile Include="Wander.cpp" />
