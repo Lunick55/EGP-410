@@ -93,6 +93,25 @@ Unit* UnitManager::createRandomUnit(const Sprite& sprite)
 	return pUnit;
 }
 
+Unit * UnitManager::createRandomObject(const Sprite & sprite)
+{
+	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+	Grid* pGrid = pGame->getGrid();
+	int posX = rand() % pGrid->getGridWidth() * 32;
+	int posY = rand() % pGrid->getGridHeight() * 32;
+	int velX = rand() % 50 - 25;
+	int velY = rand() % 40 - 20;
+
+	while (pGrid->getValueAtPixelXY(posX, posY) == BLOCKING_VALUE)
+	{
+		posX = rand() % pGrid->getGridWidth() * 32;
+		posY = rand() % pGrid->getGridHeight() * 32;
+	}
+
+	Unit* pUnit = createUnit(sprite, true, PositionData(Vector2D(posX, posY), 0)/*, PhysicsData(Vector2D(velX, velY), Vector2D(0.1f, 0.1f), 0.1f, 0.05f)*/);
+	return pUnit;
+}
+
 Unit* UnitManager::getUnit(const UnitID& id) const
 {
 	auto it = mUnitMap.find(id);

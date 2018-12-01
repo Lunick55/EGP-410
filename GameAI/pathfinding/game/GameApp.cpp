@@ -27,6 +27,7 @@
 #include "PathSmoothing.h"
 #include "PathPooling.h"
 #include "Score.h"
+#include "Coins.h"
 
 #include <SDL.h>
 #include <fstream>
@@ -103,6 +104,8 @@ bool GameApp::init()
 	mpGraphicsBufferManager->loadBuffer(mPlayerIconBufferID, "arrow.png");
 	mpGraphicsBufferManager->loadBuffer(mEnemyIconBufferID, "enemy-arrow.png");
 	mpGraphicsBufferManager->loadBuffer(mTargetBufferID, "target.png");
+	mpGraphicsBufferManager->loadBuffer(mCoinBufferID, mCoinPath);
+
 
 
 	//setup sprites
@@ -129,6 +132,17 @@ bool GameApp::init()
 	{
 		mpSpriteManager->createAndManageSprite(TARGET_SPRITE_ID, pTargetBuffer, 0, 0, (float)pTargetBuffer->getWidth(), (float)pTargetBuffer->getHeight());
 	}
+
+	GraphicsBuffer* pCoinBuffer = mpGraphicsBufferManager->getBuffer(mCoinBufferID);
+	Sprite* pCoins = NULL;
+	if (pCoinBuffer != NULL)
+	{
+		pCoins = mpSpriteManager->createAndManageSprite(COIN_SPRITE_ID, pCoinBuffer, 0, 0, (float)pCoinBuffer->getWidth(), (float)pCoinBuffer->getHeight());
+	}
+
+	mpCoin = new Coins(*pCoins);
+	mpCoin->addCoins(10);
+	mpCoin->draw();
 
 	PathfindingDebugContent* pContent = new PathfindingDebugContent( mpPathfinder );
 	mpDebugDisplay = new DebugDisplay( Vector2D(0,12), pContent );
@@ -162,6 +176,9 @@ void GameApp::cleanup()
 
 	delete mpScore;
 	mpScore = NULL;
+
+	delete mpCoin;
+	mpCoin = NULL;
 
 	delete mpUnitManager;
 	mpUnitManager = NULL;
@@ -258,7 +275,8 @@ void GameApp::handleEvent(const Event & theEvent)
 	}
 	if (theEvent.getType() == S_KEY)
 	{
-		for (int i = 0; i < 10; i++)
+		
+		/*for (int i = 0; i < 10; i++)
 		{
 			Unit* pUnit = mpUnitManager->createRandomUnit(*mpSpriteManager->getSprite(AI_ICON_SPRITE_ID));
 			if (pUnit == NULL)
@@ -266,7 +284,7 @@ void GameApp::handleEvent(const Event & theEvent)
 				mpUnitManager->deleteRandomUnit();
 			}
 
-		}
+		}*/
 		/*if (mpUnitManager->getUnitCount() > 1)
 		{
 			for (int i = 0; i < 10; i++)

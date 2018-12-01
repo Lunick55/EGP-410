@@ -24,12 +24,14 @@ class KinematicUnit;
 class Timer;
 class ComponentManager;
 class UnitManager;
+class Coins;
 class PathPooling;
 
 const float LOOP_TARGET_TIME = 33.3f;//how long should each frame of execution take? 30fps = 33.3ms/frame
 const IDType PLAYER_ICON_SPRITE_ID = 1;
 const IDType AI_ICON_SPRITE_ID = 2;
 const IDType TARGET_SPRITE_ID = 3;
+const IDType COIN_SPRITE_ID = 4;
 
 class GameApp: public Game
 {
@@ -71,6 +73,7 @@ private:
 	GridGraph* mpGridGraph;
 	DebugDisplay* mpDebugDisplay;
 	Score* mpScore;
+	Coins* mpCoin;
 	InputSystem mInputSystem;
 	ComponentManager* mpComponentManager;
 	UnitManager* mpUnitManager;
@@ -81,9 +84,10 @@ private:
 	GraphicsBufferID mPlayerIconBufferID = "player";
 	GraphicsBufferID mEnemyIconBufferID = "enemy";
 	GraphicsBufferID mTargetBufferID = "target";
+	GraphicsBufferID mCoinBufferID = "coins";
+	const string mCoinPath = "Coin.png";
 
 	int mousePosX;
 	int mousePosY;
 
 };
-
