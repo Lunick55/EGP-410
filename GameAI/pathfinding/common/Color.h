@@ -24,6 +24,7 @@ private:
 };
 
 const Color BLACK_COLOR = Color(0, 0, 0);
+const Color WHITE_COLOR = Color(255, 255, 255);
 const Color RED_COLOR = Color(255, 0, 0);
 const Color YELLOW_COLOR = Color(255, 255, 0);
 const Color GREEN_COLOR = Color(0, 255, 0);

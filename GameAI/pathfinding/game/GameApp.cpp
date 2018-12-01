@@ -26,6 +26,7 @@
 #include "FollowPath.h"
 #include "PathSmoothing.h"
 #include "PathPooling.h"
+#include "Score.h"
 
 #include <SDL.h>
 #include <fstream>
@@ -132,6 +133,9 @@ bool GameApp::init()
 	PathfindingDebugContent* pContent = new PathfindingDebugContent( mpPathfinder );
 	mpDebugDisplay = new DebugDisplay( Vector2D(0,12), pContent );
 
+	//Needs to be data driven
+	mpScore = new Score(Vector2D(5, 5));
+
 	mpMasterTimer->start();
 	return true;
 }
@@ -155,6 +159,9 @@ void GameApp::cleanup()
 
 	delete mpDebugDisplay;
 	mpDebugDisplay = NULL;
+
+	delete mpScore;
+	mpScore = NULL;
 
 	delete mpUnitManager;
 	mpUnitManager = NULL;
@@ -186,7 +193,8 @@ void GameApp::processLoop()
 #endif
 	//draw units
 	mpUnitManager->drawAll();
-	mpDebugDisplay->draw( pBackBuffer );
+	//mpDebugDisplay->draw( pBackBuffer );
+	mpScore->draw(pBackBuffer);
 
 	mpMessageManager->processMessagesForThisframe();
 

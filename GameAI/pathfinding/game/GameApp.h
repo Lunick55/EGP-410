@@ -19,6 +19,7 @@ class GridVisualizer;
 class GridGraph;
 class GridPathfinder;
 class DebugDisplay;
+class Score;
 class KinematicUnit;
 class Timer;
 class ComponentManager;
@@ -69,6 +70,7 @@ private:
 	GridVisualizer* mpGridVisualizer;
 	GridGraph* mpGridGraph;
 	DebugDisplay* mpDebugDisplay;
+	Score* mpScore;
 	InputSystem mInputSystem;
 	ComponentManager* mpComponentManager;
 	UnitManager* mpUnitManager;

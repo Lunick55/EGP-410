@@ -16,7 +16,7 @@
 Game* gpGame = NULL;
 
 const int WIDTH = 1024;
-const int HEIGHT = 768;
+const int HEIGHT = 1024;
 
 Game::Game()
 	:mpGraphicsSystem(NULL)
@@ -63,7 +63,7 @@ bool Game::init()
 	mpGraphicsBufferManager->loadBuffer(mBackgroundBufferID, "wallpaper.bmp");
 
 	//load Font
-	mpFont = new Font("cour.ttf", 24);
+	mpFont = new Font("Joystix.TTF", 24);
 
 	return true;
 }

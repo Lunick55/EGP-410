@@ -52,6 +52,18 @@
     <Filter Include="Source Files\StateMachines">
       <UniqueIdentifier>{83e74937-d5de-4f92-8e36-6dcba0392056}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Objects">
+      <UniqueIdentifier>{17219776-28e5-4a4e-aa1a-0c031d8ea322}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Score">
+      <UniqueIdentifier>{9a175541-fe56-401c-a634-2b5613a75516}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Score">
+      <UniqueIdentifier>{939145c2-1969-4d53-b862-0f3d48d0f898}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects">
+      <UniqueIdentifier>{dda7a0b8-6af7-4774-a87a-c563811bf812}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\common\Game.h">
@@ -225,6 +237,9 @@
     <ClInclude Include="TickState.h">
       <Filter>Header Files\StateMachines</Filter>
     </ClInclude>
+    <ClInclude Include="Score.h">
+      <Filter>Header Files\Score</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\common\Game.cpp">
@@ -385,6 +400,9 @@
     </ClCompile>
     <ClCompile Include="TickState.cpp">
       <Filter>Source Files\StateMachines</Filter>
+    </ClCompile>
+    <ClCompile Include="Score.cpp">
+      <Filter>Source Files\Score</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

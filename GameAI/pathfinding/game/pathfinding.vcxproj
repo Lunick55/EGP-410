@@ -127,6 +127,7 @@
     <ClInclude Include="PathToMessage.h" />
     <ClInclude Include="PhysicsComponent.h" />
     <ClInclude Include="PositionComponent.h" />
+    <ClInclude Include="Score.h" />
     <ClInclude Include="SeekSteering.h" />
     <ClInclude Include="Seperation.h" />
     <ClInclude Include="StateMachine.h" />
@@ -183,6 +184,7 @@
     <ClCompile Include="PathToMessage.cpp" />
     <ClCompile Include="PhysicsComponent.cpp" />
     <ClCompile Include="PositionComponent.cpp" />
+    <ClCompile Include="Score.cpp" />
     <ClCompile Include="SeekSteering.cpp" />
     <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="Steering.cpp" />
