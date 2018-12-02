@@ -26,6 +26,7 @@ public:
 	Unit* createPlayerUnit(const Sprite& sprite, bool shouldWrap = true, const PositionData& posData = ZERO_POSITION_DATA, const PhysicsData& physicsData = ZERO_PHYSICS_DATA);
 	Unit* createRandomUnit(const Sprite& sprite);
 	Unit* createRandomObject(const Sprite& sprite);
+	Unit* createPacman(const Sprite& sprite);
 
 	int getUnitCount() const { return mUnitMap.size(); }
 	Unit* getUnit(const UnitID& id) const;
@@ -44,6 +45,9 @@ private:
 	static UnitID msNextUnitID;
 	MemoryPool mPool;
 	bool mShouldWander;
+	const int PIXEL_SIZE = 32;
+	const int HALF = 2;
+	const int OFFSET = 64;
 	std::map<UnitID, Unit*> mUnitMap;
 };
 

@@ -28,6 +28,7 @@
 #include "PathPooling.h"
 #include "Score.h"
 #include "Coins.h"
+#include "Player.h"
 
 #include <SDL.h>
 #include <fstream>
@@ -104,7 +105,8 @@ bool GameApp::init()
 	mpGraphicsBufferManager->loadBuffer(mPlayerIconBufferID, "arrow.png");
 	mpGraphicsBufferManager->loadBuffer(mEnemyIconBufferID, "enemy-arrow.png");
 	mpGraphicsBufferManager->loadBuffer(mTargetBufferID, "target.png");
-	mpGraphicsBufferManager->loadBuffer(mCoinBufferID, mCoinPath);
+	mpGraphicsBufferManager->loadBuffer(mCoinBufferID, "Coin.png");
+	mpGraphicsBufferManager->loadBuffer(mPacmanBufferID, "PacmanOpen.png");
 
 
 
@@ -143,6 +145,17 @@ bool GameApp::init()
 	mpCoin = new Coins(*pCoins);
 	mpCoin->addCoins(10);
 	mpCoin->draw();
+
+	GraphicsBuffer* pPacmanBuffer = mpGraphicsBufferManager->getBuffer(mPacmanBufferID);
+	Sprite* pPacman = NULL;
+	if (pPacmanBuffer != NULL)
+	{
+		pPacman = mpSpriteManager->createAndManageSprite(PACMAN_SPRITE_ID, pPacmanBuffer, 0, 0, (float)pPacmanBuffer->getWidth(), (float)pPacmanBuffer->getHeight());
+	}
+
+	mpPlayer = new Player(*pPacman);
+	mpPlayer->draw();
+
 
 	PathfindingDebugContent* pContent = new PathfindingDebugContent( mpPathfinder );
 	mpDebugDisplay = new DebugDisplay( Vector2D(0,12), pContent );
@@ -188,6 +201,9 @@ void GameApp::cleanup()
 
 	delete mpPathPool;
 	mpPathPool = NULL;
+
+	delete mpPlayer;
+	mpPlayer = NULL;
 }
 
 void GameApp::beginLoop()

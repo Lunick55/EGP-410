@@ -6,7 +6,6 @@
 Coins::Coins(const Sprite & sprite)
 	:mSprite(sprite)
 {
-	mSprite = sprite;
 	mCoins = 0;
 }
 
