@@ -4,6 +4,7 @@
 #include "Sprite.h"
 #include "UnitManager.h"
 #include "Vector2D.h"
+#include "Timer.h"
 
 class GraphicsBuffer;
 
@@ -17,6 +18,8 @@ public:
 	void moveUp();
 	void moveDown();
 
+	void update(double dt);
+
 	Vector2D getPosition();
 
 	void draw();
@@ -26,5 +29,7 @@ private:
 	int mPosX;
 	int mPosY;
 	double mSpeed;
+	bool isUnitDown, isUnitRight, isUnitLeft, isUnitUp;
+	Timer mTimer;
 
 };

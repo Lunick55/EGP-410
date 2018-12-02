@@ -8,6 +8,11 @@ Player::Player(const Sprite & sprite)
 	mSpeed = 300.0;
 	mPosX = 256;
 	mPosY = 320;
+	isUnitDown = false; 
+	isUnitRight = false;
+	isUnitLeft = false;
+	isUnitUp = false;
+	mTimer.start();
 }
 
 Player::~Player()
@@ -26,6 +31,10 @@ void Player::moveLeft()
 	{
 		mPosX += 32;
 	}
+	isUnitUp = false;
+	isUnitLeft = true;
+	isUnitDown = false;
+	isUnitRight = false;
 	//PositionData(Vector2D(mPosX, mPosY), 0);
 }
 
@@ -41,7 +50,10 @@ void Player::moveRight()
 	{
 		mPosX -= 32;
 	}
-	
+	isUnitUp = false;
+	isUnitLeft = false;
+	isUnitDown = false;
+	isUnitRight = true;
 	//PositionData(Vector2D(mPosX, mPosY), 0);
 }
 
@@ -58,6 +70,10 @@ void Player::moveUp()
 	{
 		mPosY += 32;
 	}
+	isUnitUp = true;
+	isUnitLeft = false;
+	isUnitDown = false;
+	isUnitRight = false;
 	//draw();
 	//Unit* pOwner = pGame->getUnitManager()->getUnit(mOwnerID);
 	//PositionData(Vector2D(mPosX, mPosY), 0);
@@ -76,7 +92,35 @@ void Player::moveDown()
 	{
 		mPosY -= 32;
 	}
+	isUnitUp = false;
+	isUnitLeft = false;
+	isUnitDown = true;
+	isUnitRight = false;
 	//PositionData(Vector2D(mPosX, mPosY), 0);
+}
+
+void Player::update(double dt)
+{
+	if (mTimer.getElapsedTime() > mSpeed)
+	{
+		if (isUnitDown)
+		{
+			moveDown();
+		}
+		else if (isUnitLeft)
+		{
+			moveLeft();
+		}
+		else if (isUnitRight)
+		{
+			moveRight();
+		}
+		else if (isUnitUp)
+		{
+			moveUp();
+		}
+		mTimer.start();
+	}
 }
 
 Vector2D Player::getPosition()

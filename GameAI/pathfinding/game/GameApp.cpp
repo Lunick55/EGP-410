@@ -29,6 +29,7 @@
 #include "Score.h"
 #include "Coins.h"
 #include "Player.h"
+#include "Timer.h"
 
 #include <SDL.h>
 #include <fstream>
@@ -217,6 +218,8 @@ void GameApp::processLoop()
 	mpUnitManager->updateAll(TARGET_ELAPSED_MS);
 	mpComponentManager->update(TARGET_ELAPSED_MS);
 
+	mpPlayer->update(TARGET_ELAPSED_MS);
+
 #ifdef VISUALIZE_PATH
 	//show pathfinder visualizer
 	mpPathfinder->drawVisualization(mpGrid, pBackBuffer);
@@ -263,7 +266,7 @@ void GameApp::handleEvent(const Event & theEvent)
 			//set path
 			FollowPath* pFollowSteering = dynamic_cast<FollowPath*>(mpUnitManager->getUnit(i)->getSteeringComponent()->getSteeringBehavior());
 			Path* newPath;
-			
+
 			//check to see wheher there is already a path made from the pool
 			if (mpPathPool->getPath(pFromNode, pToNode) != nullptr)
 			{
@@ -282,7 +285,7 @@ void GameApp::handleEvent(const Event & theEvent)
 
 			//reset the index every click
 			pFollowSteering->resetIndex();
-			pFollowSteering->setPath(newPath);		
+			pFollowSteering->setPath(newPath);
 		}
 
 	}
@@ -328,4 +331,5 @@ void GameApp::handleEvent(const Event & theEvent)
 		PathfindingDebugContent* pContent = new PathfindingDebugContent(mpPathfinder);
 		mpDebugDisplay = new DebugDisplay(Vector2D(0, 12), pContent);*/
 	}
+
 }

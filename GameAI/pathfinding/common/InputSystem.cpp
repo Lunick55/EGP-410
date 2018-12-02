@@ -69,7 +69,7 @@ void InputSystem::getKeyEvents()
 				}
 			}
 			break;
-		case SDL_KEYDOWN:
+		case SDL_KEYUP:
 			if (mEvent.key.keysym.sym == SDLK_ESCAPE)
 			{
 				cout << "InputSystem: ESC" << endl;
