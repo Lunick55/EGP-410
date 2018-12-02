@@ -118,10 +118,38 @@ Unit * UnitManager::createPacman(const Sprite & sprite)
 	Grid* pGrid = pGame->getGrid();
 	int posX = pGrid->getGridWidth() / HALF * PIXEL_SIZE;
 	int posY = pGrid->getGridHeight() / HALF * PIXEL_SIZE;
-	Unit* pUnit = createUnit(sprite, true, PositionData(Vector2D(posX, posY + OFFSET), 0)/*, PhysicsData(Vector2D(velX, velY), Vector2D(0.1f, 0.1f), 0.1f, 0.05f)*/);
+	Unit* pUnit = createUnit(sprite, true, PositionData(Vector2D(posX, posY + OFFSET), 0), ZERO_PHYSICS_DATA, PLAYER_UNIT_ID);
 	return pUnit;
 }
+bool UnitManager::checkDirection(int posX, int posY)
+{
+	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+	Grid* pGrid = pGame->getGrid();
+	if (pGrid->getValueAtPixelXY(posX, posY) == BLOCKING_VALUE)
+	{
+		//nothing
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+	return true;
 
+}
+void UnitManager::updatePacman(const Sprite & sprite, int posX, int posY)
+{
+	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+	Grid* pGrid = pGame->getGrid();
+	if (pGrid->getValueAtPixelXY(posX, posY) == BLOCKING_VALUE)
+	{
+		//nothing
+	}
+	else
+	{
+		Unit* pUnit = createUnit(sprite, true, PositionData(Vector2D(posX, posY), 0), ZERO_PHYSICS_DATA, PLAYER_UNIT_ID);
+	}
+}
 Unit* UnitManager::getUnit(const UnitID& id) const
 {
 	auto it = mUnitMap.find(id);
@@ -196,3 +224,4 @@ void UnitManager::updateAll(float elapsedTime)
 		it->second->update(elapsedTime);
 	}
 }
+

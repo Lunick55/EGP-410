@@ -11,23 +11,18 @@ enum EventType
 	INVALID_EVENT_TYPE = -1,
 	KEY_DOWN_EVENT,
 	MOUSE_DOWN_EVENT, //Input system events
-
 	ESC,
 	D_KEY,
 	S_KEY,
-	C_KEY,
 	A_KEY,
 	W_KEY,
-	F_KEY,
-	G_KEY,
 	UP_ARROW,//Input translator events, focused on buttons/keys
 	DOWN_ARROW,
 	LEFT_ARROW,
 	RIGHT_ARROW,
 	ENTER,	
-	MOUSE_LEFT,
 	PLAYER_MOVE_TO_MESSAGE,
-
+	MOUSE_LEFT,
 	NUM_EVENT_TYPES //Tracks the number of event types
 };
 

@@ -78,73 +78,49 @@ void InputSystem::getKeyEvents()
 			}
 			if (mEvent.key.keysym.sym == SDLK_d)
 			{
-				cout << "InputSystem: D Key" << endl;
+				//cout << "InputSystem: D Key" << endl;
 				mKeyEvent.setType(D_KEY);
-				EventSystem::getInstance()->fireEvent(mKeyEvent);
-			}
-			if (mEvent.key.keysym.sym == SDLK_f)
-			{
-				cout << "InputSystem: F Key" << endl;
-				mKeyEvent.setType(F_KEY);
 				EventSystem::getInstance()->fireEvent(mKeyEvent);
 			}
 			if (mEvent.key.keysym.sym == SDLK_s)
 			{
-				cout << "InputSystem: S Key" << endl;
+				//cout << "InputSystem: S Key" << endl;
 				mKeyEvent.setType(S_KEY);
-				EventSystem::getInstance()->fireEvent(mKeyEvent);
-			}
-			if (mEvent.key.keysym.sym == SDLK_c)
-			{
-				cout << "InputSystem: C Key" << endl;
-				mKeyEvent.setType(C_KEY);
 				EventSystem::getInstance()->fireEvent(mKeyEvent);
 			}
 			if (mEvent.key.keysym.sym == SDLK_a)
 			{
-				cout << "InputSystem: A Key" << endl;
+				//cout << "InputSystem: A Key" << endl;
 				mKeyEvent.setType(A_KEY);
 				EventSystem::getInstance()->fireEvent(mKeyEvent);
 			}
 			if (mEvent.key.keysym.sym == SDLK_w)
 			{
-				cout << "InputSystem: W Key" << endl;
+				//cout << "InputSystem: W Key" << endl;
 				mKeyEvent.setType(W_KEY);
-				EventSystem::getInstance()->fireEvent(mKeyEvent);
-			}
-			if (mEvent.key.keysym.sym == SDLK_g)
-			{
-				cout << "InputSystem: G Key" << endl;
-				mKeyEvent.setType(G_KEY);
-				EventSystem::getInstance()->fireEvent(mKeyEvent);
-			}
-			if (mEvent.key.keysym.sym == SDLK_RETURN)
-			{
-				cout << "InputSystem: Enter" << endl;
-				mKeyEvent.setType(ENTER);
 				EventSystem::getInstance()->fireEvent(mKeyEvent);
 			}
 			if (mEvent.key.keysym.sym == SDLK_UP)
 			{
-				cout << "InputSystem: Up arrow" << endl;
+				//cout << "InputSystem: Up arrow" << endl;
 				mKeyEvent.setType(UP_ARROW);
 				EventSystem::getInstance()->fireEvent(mKeyEvent);
 			}
 			if (mEvent.key.keysym.sym == SDLK_DOWN)
 			{
-				cout << "InputSystem: Down arrow" << endl;
+				//cout << "InputSystem: Down arrow" << endl;
 				mKeyEvent.setType(DOWN_ARROW);
 				EventSystem::getInstance()->fireEvent(mKeyEvent);
 			}
 			if (mEvent.key.keysym.sym == SDLK_LEFT)
 			{
-				cout << "InputSystem: Left arrow" << endl;
+				//cout << "InputSystem: Left arrow" << endl;
 				mKeyEvent.setType(LEFT_ARROW);
 				EventSystem::getInstance()->fireEvent(mKeyEvent);
 			}
 			if (mEvent.key.keysym.sym == SDLK_RIGHT)
 			{
-				cout << "InputSystem: Right arrow" << endl;
+				//cout << "InputSystem: Right arrow" << endl;
 				mKeyEvent.setType(RIGHT_ARROW);
 				EventSystem::getInstance()->fireEvent(mKeyEvent);
 			}

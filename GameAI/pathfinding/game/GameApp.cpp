@@ -88,12 +88,9 @@ bool GameApp::init()
 	EventSystem::initInstance();
 	EventSystem::getInstance()->addListener(ESC, this);
 	EventSystem::getInstance()->addListener(D_KEY, this);
-	EventSystem::getInstance()->addListener(ENTER, this);
 	EventSystem::getInstance()->addListener(S_KEY, this);
-	EventSystem::getInstance()->addListener(F_KEY, this);
 	EventSystem::getInstance()->addListener(A_KEY, this);
 	EventSystem::getInstance()->addListener(W_KEY, this);
-	EventSystem::getInstance()->addListener(G_KEY, this);
 	EventSystem::getInstance()->addListener(DOWN_ARROW, this);
 	EventSystem::getInstance()->addListener(UP_ARROW, this);
 	EventSystem::getInstance()->addListener(LEFT_ARROW, this);
@@ -152,7 +149,6 @@ bool GameApp::init()
 	{
 		pPacman = mpSpriteManager->createAndManageSprite(PACMAN_SPRITE_ID, pPacmanBuffer, 0, 0, (float)pPacmanBuffer->getWidth(), (float)pPacmanBuffer->getHeight());
 	}
-
 	mpPlayer = new Player(*pPacman);
 	mpPlayer->draw();
 
@@ -220,6 +216,7 @@ void GameApp::processLoop()
 	mpGridVisualizer->draw( *pBackBuffer );
 	mpUnitManager->updateAll(TARGET_ELAPSED_MS);
 	mpComponentManager->update(TARGET_ELAPSED_MS);
+
 #ifdef VISUALIZE_PATH
 	//show pathfinder visualizer
 	mpPathfinder->drawVisualization(mpGrid, pBackBuffer);
@@ -289,55 +286,46 @@ void GameApp::handleEvent(const Event & theEvent)
 		}
 
 	}
-	if (theEvent.getType() == S_KEY)
+	if (theEvent.getType() == S_KEY || theEvent.getType() == DOWN_ARROW)
 	{
-		
-		/*for (int i = 0; i < 10; i++)
-		{
-			Unit* pUnit = mpUnitManager->createRandomUnit(*mpSpriteManager->getSprite(AI_ICON_SPRITE_ID));
-			if (pUnit == NULL)
-			{
-				mpUnitManager->deleteRandomUnit();
-			}
 
-		}*/
-		/*if (mpUnitManager->getUnitCount() > 1)
-		{
-			for (int i = 0; i < 10; i++)
-			{
-				mpUnitManager->deleteRandomUnit();
-			}
-		}*/
-		cout << "Add random unit" << endl;
+		cout << "move down" << endl;
+		mpPlayer->moveDown();
 	}
-	if (theEvent.getType() == D_KEY)
+	if (theEvent.getType() == D_KEY || theEvent.getType() == RIGHT_ARROW)
 	{
-		//dkitsra
-		delete mpPathfinder; 
-		mpPathfinder = new DijkstraPathfinder(mpGridGraph);
+		cout << "move right" << endl;
+		mpPlayer->moveRight();
+		////dkitsra
+		//delete mpPathfinder; 
+		//mpPathfinder = new DijkstraPathfinder(mpGridGraph);
 
-		delete mpDebugDisplay;
-		PathfindingDebugContent* pContent = new PathfindingDebugContent(mpPathfinder);
-		mpDebugDisplay = new DebugDisplay(Vector2D(0, 12), pContent);
+		//delete mpDebugDisplay;
+		//PathfindingDebugContent* pContent = new PathfindingDebugContent(mpPathfinder);
+		//mpDebugDisplay = new DebugDisplay(Vector2D(0, 12), pContent);
 	}
-	if (theEvent.getType() == A_KEY)
+	if (theEvent.getType() == A_KEY || theEvent.getType() == LEFT_ARROW)
 	{
-		//aaaaaaa
-		delete mpPathfinder;
-		mpPathfinder = new AStarPathfinder(mpGridGraph);
+		cout << "move left" << endl;
+		mpPlayer->moveLeft();
+		////aaaaaaa
+		//delete mpPathfinder;
+		//mpPathfinder = new AStarPathfinder(mpGridGraph);
 
-		delete mpDebugDisplay;
-		PathfindingDebugContent* pContent = new PathfindingDebugContent(mpPathfinder);
-		mpDebugDisplay = new DebugDisplay(Vector2D(0, 12), pContent);
+		//delete mpDebugDisplay;
+		//PathfindingDebugContent* pContent = new PathfindingDebugContent(mpPathfinder);
+		//mpDebugDisplay = new DebugDisplay(Vector2D(0, 12), pContent);
 	}
-	if (theEvent.getType() == F_KEY)
+	if (theEvent.getType() == W_KEY || theEvent.getType() == UP_ARROW)
 	{
 		//DFS
-		delete mpPathfinder;
+		cout << "Move up" << endl;
+		mpPlayer->moveUp();
+		/*delete mpPathfinder;
 		mpPathfinder = new DepthFirstPathfinder(mpGridGraph);
 
 		delete mpDebugDisplay;
 		PathfindingDebugContent* pContent = new PathfindingDebugContent(mpPathfinder);
-		mpDebugDisplay = new DebugDisplay(Vector2D(0, 12), pContent);
+		mpDebugDisplay = new DebugDisplay(Vector2D(0, 12), pContent);*/
 	}
 }

@@ -14,6 +14,13 @@ struct PositionData;
 struct PhysicsData;
 
 const UnitID PLAYER_UNIT_ID = 0;
+enum Direction
+{
+	up,
+	down,
+	left,
+	right
+};
 
 
 class UnitManager : public Trackable
@@ -28,6 +35,8 @@ public:
 	Unit* createRandomObject(const Sprite& sprite);
 	Unit* createPacman(const Sprite& sprite);
 
+	bool checkDirection(int posX, int posY);
+
 	int getUnitCount() const { return mUnitMap.size(); }
 	Unit* getUnit(const UnitID& id) const;
 	void deleteUnit(const UnitID& id);
@@ -35,6 +44,7 @@ public:
 
 	void drawAll() const;
 	void updateAll(float elapsedTime);
+	void updatePacman(const Sprite& sprite, int posX, int posY);
 
 	Unit* getPlayerUnit() const { return getUnit(PLAYER_UNIT_ID); };
 	std::map<UnitID, Unit*> getMap() { return mUnitMap; };
