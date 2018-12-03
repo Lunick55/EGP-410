@@ -18,6 +18,7 @@ GridVisualizer::~GridVisualizer()
 void GridVisualizer::refresh()
 {
 	const Color& color = BLACK_COLOR; 
+	const Color& color2 = BLUE_COLOR;	
 	if( mDirty )
 	{
 		//remove old entries first
@@ -27,9 +28,14 @@ void GridVisualizer::refresh()
 		//get any non-zero squares and send them to the visualizer
 		for( int i=0; i<size; i++ )
 		{
-			if( mpGrid->getValueAtIndex(i) != 0 )
+			//if (mpGrid->getValueAtIndex(i) != CLEAR_VALUE)
+			if( mpGrid->getValueAtIndex(i) == BLOCKING_VALUE)
 			{
 				addColor( i, color );
+			}
+			else if (mpGrid->getValueAtIndex(i) == SPAWNING_VALUE)
+			{
+				addColor(i, color2);
 			}
 		}
 	}

@@ -102,7 +102,7 @@ Unit * UnitManager::createRandomObject(const Sprite & sprite)
 	int velX = rand() % 50 - 25;
 	int velY = rand() % 40 - 20;
 
-	while (pGrid->getValueAtPixelXY(posX, posY) == BLOCKING_VALUE)
+	while (pGrid->getValueAtPixelXY(posX, posY) != CLEAR_VALUE)
 	{
 		posX = rand() % pGrid->getGridWidth() * PIXEL_SIZE;
 		posY = rand() % pGrid->getGridHeight() * PIXEL_SIZE;
