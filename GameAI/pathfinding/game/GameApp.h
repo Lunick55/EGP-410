@@ -61,6 +61,8 @@ public:
 	inline SpriteManager* getSpriteManager() const { return mpSpriteManager; };
 	inline void setMousePosition(int x, int y) { mousePosX = x, mousePosY = y;};
 
+	void changeHandle(bool myHandle) { canHandle = myHandle; };
+
 	//Added in functions from other project
 	inline ComponentManager* getComponentManager() { return mpComponentManager; };
 	inline UnitManager* getUnitManager() { return mpUnitManager; };
@@ -77,7 +79,6 @@ private:
 	DebugDisplay* mpDebugDisplay;
 	Score* mpScore;
 	Coins* mpCoin;
-	Player* mpPlayer;
 	InputSystem mInputSystem;
 	ComponentManager* mpComponentManager;
 	UnitManager* mpUnitManager;
@@ -91,6 +92,8 @@ private:
 	GraphicsBufferID mTargetBufferID = "target";
 	GraphicsBufferID mCoinBufferID = "coins";
 	GraphicsBufferID mPacmanBufferID = "pacman";
+
+	bool canHandle = false;
 
 	int mousePosX;
 	int mousePosY;

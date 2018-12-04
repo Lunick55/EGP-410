@@ -9,6 +9,7 @@
 #include "Seperation.h"
 #include "Flocking.h"
 #include "FollowPath.h"
+#include "Player.h"
 SteeringComponent::SteeringComponent(const ComponentID& id, const ComponentID& physicsComponentID)
 	:Component(id)
 	, mPhysicsComponentID(physicsComponentID)
@@ -93,6 +94,12 @@ void SteeringComponent::setData(const SteeringData& data)
 	{
 		delete mpSteering;
 		mpSteering = new FollowPath(data.ownerID, data.targetLoc, data.targetID, false);
+		break;
+	}
+	case Steering::PLAYER_STEER:
+	{
+		delete mpSteering;
+		mpSteering = new Player(data.ownerID, data.targetLoc, data.targetID, false);
 		break;
 	}
 	default:

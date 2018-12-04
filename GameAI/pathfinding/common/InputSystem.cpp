@@ -80,47 +80,63 @@ void InputSystem::getKeyEvents()
 			{
 				//cout << "InputSystem: D Key" << endl;
 				mKeyEvent.setType(D_KEY);
+				GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+				pGame->changeHandle(true);
 				EventSystem::getInstance()->fireEvent(mKeyEvent);
 			}
 			if (mEvent.key.keysym.sym == SDLK_s)
 			{
 				//cout << "InputSystem: S Key" << endl;
+				GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+				pGame->changeHandle(true);
 				mKeyEvent.setType(S_KEY);
 				EventSystem::getInstance()->fireEvent(mKeyEvent);
 			}
 			if (mEvent.key.keysym.sym == SDLK_a)
 			{
 				//cout << "InputSystem: A Key" << endl;
+				GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+				pGame->changeHandle(true);
 				mKeyEvent.setType(A_KEY);
 				EventSystem::getInstance()->fireEvent(mKeyEvent);
 			}
 			if (mEvent.key.keysym.sym == SDLK_w)
 			{
 				//cout << "InputSystem: W Key" << endl;
+				GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+				pGame->changeHandle(true);
 				mKeyEvent.setType(W_KEY);
 				EventSystem::getInstance()->fireEvent(mKeyEvent);
 			}
 			if (mEvent.key.keysym.sym == SDLK_UP)
 			{
 				//cout << "InputSystem: Up arrow" << endl;
+				GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+				pGame->changeHandle(true);
 				mKeyEvent.setType(UP_ARROW);
 				EventSystem::getInstance()->fireEvent(mKeyEvent);
 			}
 			if (mEvent.key.keysym.sym == SDLK_DOWN)
 			{
 				//cout << "InputSystem: Down arrow" << endl;
+				GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+				pGame->changeHandle(true);
 				mKeyEvent.setType(DOWN_ARROW);
 				EventSystem::getInstance()->fireEvent(mKeyEvent);
 			}
 			if (mEvent.key.keysym.sym == SDLK_LEFT)
 			{
 				//cout << "InputSystem: Left arrow" << endl;
+				GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+				pGame->changeHandle(true);
 				mKeyEvent.setType(LEFT_ARROW);
 				EventSystem::getInstance()->fireEvent(mKeyEvent);
 			}
 			if (mEvent.key.keysym.sym == SDLK_RIGHT)
 			{
 				//cout << "InputSystem: Right arrow" << endl;
+				GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+				pGame->changeHandle(true);
 				mKeyEvent.setType(RIGHT_ARROW);
 				EventSystem::getInstance()->fireEvent(mKeyEvent);
 			}

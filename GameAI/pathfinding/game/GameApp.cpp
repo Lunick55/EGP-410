@@ -141,8 +141,8 @@ bool GameApp::init()
 	}
 
 	mpCoin = new Coins(*pCoins);
-	mpCoin->addCoins(10);
-	mpCoin->draw();
+	//mpCoin->addCoins(10);
+	//mpCoin->draw();
 
 	GraphicsBuffer* pPacmanBuffer = mpGraphicsBufferManager->getBuffer(mPacmanBufferID);
 	Sprite* pPacman = NULL;
@@ -150,8 +150,9 @@ bool GameApp::init()
 	{
 		pPacman = mpSpriteManager->createAndManageSprite(PACMAN_SPRITE_ID, pPacmanBuffer, 0, 0, (float)pPacmanBuffer->getWidth(), (float)pPacmanBuffer->getHeight());
 	}
-	mpPlayer = new Player(*pPacman);
-	mpPlayer->draw();
+
+	Unit* pPlayer = mpUnitManager->createPlayerUnit(*pPacman,true,PositionData(Vector2D(256,320), 0));
+	pPlayer->setSteering(Steering::PLAYER_STEER, ZERO_VECTOR2D);
 
 
 	PathfindingDebugContent* pContent = new PathfindingDebugContent( mpPathfinder );
@@ -199,8 +200,7 @@ void GameApp::cleanup()
 	delete mpPathPool;
 	mpPathPool = NULL;
 
-	delete mpPlayer;
-	mpPlayer = NULL;
+
 }
 
 void GameApp::beginLoop()
@@ -215,10 +215,9 @@ void GameApp::processLoop()
 	GraphicsBuffer* pBackBuffer = mpGraphicsSystem->getBackBuffer();
 	//copy to back buffer
 	mpGridVisualizer->draw( *pBackBuffer );
-	mpUnitManager->updateAll(TARGET_ELAPSED_MS);
+	//mpUnitManager->updateAll(TARGET_ELAPSED_MS);
 	mpComponentManager->update(TARGET_ELAPSED_MS);
 
-	mpPlayer->update(TARGET_ELAPSED_MS);
 
 #ifdef VISUALIZE_PATH
 	//show pathfinder visualizer
@@ -243,93 +242,115 @@ bool GameApp::endLoop()
 
 void GameApp::handleEvent(const Event & theEvent)
 {
-	if (theEvent.getType() == ESC)
-	{
-		markForExit();
-	}
-	if (theEvent.getType() == MOUSE_LEFT)
-	{
-
-		GridPathfinder* pPathfinder = this->getPathfinder();
-
-		//continue for every unit
-		for (int i = 1; i <= mpUnitManager->getUnitCount(); i++)
+	
+		if (theEvent.getType() == ESC)
 		{
-			GridGraph* pGridGraph = this->getGridGraph();
-			Grid* pGrid = this->getGrid();
-			//ge the from and to index from the grid
-			int fromIndex = pGrid->getSquareIndexFromPixelXY((int)mpUnitManager->getUnit(i)->getPositionComponent()->getPosition().getX(), (int)mpUnitManager->getUnit(i)->getPositionComponent()->getPosition().getY());
-			int toIndex = pGrid->getSquareIndexFromPixelXY((int)mousePosX, (int)mousePosY);
-			Node* pFromNode = pGridGraph->getNode(fromIndex);
-			Node* pToNode = pGridGraph->getNode(toIndex);
-
-			//set path
-			FollowPath* pFollowSteering = dynamic_cast<FollowPath*>(mpUnitManager->getUnit(i)->getSteeringComponent()->getSteeringBehavior());
-			Path* newPath;
-
-			//check to see wheher there is already a path made from the pool
-			if (mpPathPool->getPath(pFromNode, pToNode) != nullptr)
-			{
-				//get that path from the pool
-				newPath = mpPathPool->getPath(pFromNode, pToNode);
-			}
-			else
-			{
-				//otherwise assign it to the pool so that it doesnt need to research it again
-				newPath = pPathfinder->findPath(pFromNode, pToNode);
-				mpPathPool->storePath(pFromNode, pToNode, newPath);
-			}
-			//smooth the path
-			PathSmoothing mySmooth(pGridGraph);
-			newPath = mySmooth.smoothPath(newPath);
-
-			//reset the index every click
-			pFollowSteering->resetIndex();
-			pFollowSteering->setPath(newPath);
+			markForExit();
 		}
+		if (theEvent.getType() == MOUSE_LEFT)
+		{
 
-	}
-	if (theEvent.getType() == S_KEY || theEvent.getType() == DOWN_ARROW)
-	{
+			GridPathfinder* pPathfinder = this->getPathfinder();
 
-		cout << "move down" << endl;
-		mpPlayer->moveDown();
-	}
-	if (theEvent.getType() == D_KEY || theEvent.getType() == RIGHT_ARROW)
-	{
-		cout << "move right" << endl;
-		mpPlayer->moveRight();
-		////dkitsra
-		//delete mpPathfinder; 
-		//mpPathfinder = new DijkstraPathfinder(mpGridGraph);
+			//continue for every unit
+			for (int i = 1; i <= mpUnitManager->getUnitCount(); i++)
+			{
+				GridGraph* pGridGraph = this->getGridGraph();
+				Grid* pGrid = this->getGrid();
+				//ge the from and to index from the grid
+				int fromIndex = pGrid->getSquareIndexFromPixelXY((int)mpUnitManager->getUnit(i)->getPositionComponent()->getPosition().getX(), (int)mpUnitManager->getUnit(i)->getPositionComponent()->getPosition().getY());
+				int toIndex = pGrid->getSquareIndexFromPixelXY((int)mousePosX, (int)mousePosY);
+				Node* pFromNode = pGridGraph->getNode(fromIndex);
+				Node* pToNode = pGridGraph->getNode(toIndex);
 
-		//delete mpDebugDisplay;
-		//PathfindingDebugContent* pContent = new PathfindingDebugContent(mpPathfinder);
-		//mpDebugDisplay = new DebugDisplay(Vector2D(0, 12), pContent);
-	}
-	if (theEvent.getType() == A_KEY || theEvent.getType() == LEFT_ARROW)
-	{
-		cout << "move left" << endl;
-		mpPlayer->moveLeft();
-		////aaaaaaa
-		//delete mpPathfinder;
-		//mpPathfinder = new AStarPathfinder(mpGridGraph);
+				//set path
+				FollowPath* pFollowSteering = dynamic_cast<FollowPath*>(mpUnitManager->getUnit(i)->getSteeringComponent()->getSteeringBehavior());
+				Path* newPath;
 
-		//delete mpDebugDisplay;
-		//PathfindingDebugContent* pContent = new PathfindingDebugContent(mpPathfinder);
-		//mpDebugDisplay = new DebugDisplay(Vector2D(0, 12), pContent);
-	}
-	if (theEvent.getType() == W_KEY || theEvent.getType() == UP_ARROW)
-	{
-		//DFS
-		cout << "Move up" << endl;
-		mpPlayer->moveUp();
-		/*delete mpPathfinder;
-		mpPathfinder = new DepthFirstPathfinder(mpGridGraph);
+				//check to see wheher there is already a path made from the pool
+				if (mpPathPool->getPath(pFromNode, pToNode) != nullptr)
+				{
+					//get that path from the pool
+					newPath = mpPathPool->getPath(pFromNode, pToNode);
+				}
+				else
+				{
+					//otherwise assign it to the pool so that it doesnt need to research it again
+					newPath = pPathfinder->findPath(pFromNode, pToNode);
+					mpPathPool->storePath(pFromNode, pToNode, newPath);
+				}
+				//smooth the path
+				PathSmoothing mySmooth(pGridGraph);
+				newPath = mySmooth.smoothPath(newPath);
 
-		delete mpDebugDisplay;
-		PathfindingDebugContent* pContent = new PathfindingDebugContent(mpPathfinder);
-		mpDebugDisplay = new DebugDisplay(Vector2D(0, 12), pContent);*/
-	}
+				//reset the index every click
+				pFollowSteering->resetIndex();
+				pFollowSteering->setPath(newPath);
+			}
+
+		}
+		if (theEvent.getType() == S_KEY || theEvent.getType() == DOWN_ARROW)
+		{
+			if (canHandle)
+			{
+				cout << "move down" << endl;
+				Player* pPlayer = dynamic_cast<Player*>(mpUnitManager->getPlayerUnit()->getSteeringComponent()->getSteeringBehavior());
+				pPlayer->moveDown();
+				canHandle = false;
+			}
+		}
+		if (theEvent.getType() == D_KEY || theEvent.getType() == RIGHT_ARROW)
+		{
+			if (canHandle)
+			{
+				cout << "move right" << endl;
+				Player* pPlayer = dynamic_cast<Player*>(mpUnitManager->getPlayerUnit()->getSteeringComponent()->getSteeringBehavior());
+				pPlayer->moveRight();
+				canHandle = false;
+			}
+			////dkitsra
+			//delete mpPathfinder; 
+			//mpPathfinder = new DijkstraPathfinder(mpGridGraph);
+
+			//delete mpDebugDisplay;
+			//PathfindingDebugContent* pContent = new PathfindingDebugContent(mpPathfinder);
+			//mpDebugDisplay = new DebugDisplay(Vector2D(0, 12), pContent);
+		}
+		if (theEvent.getType() == A_KEY || theEvent.getType() == LEFT_ARROW)
+		{
+			
+			if (canHandle)
+			{
+				cout << "move left" << endl;
+				Player* pPlayer = dynamic_cast<Player*>(mpUnitManager->getPlayerUnit()->getSteeringComponent()->getSteeringBehavior());
+				pPlayer->moveLeft();
+				canHandle = false;
+			}
+			////aaaaaaa
+			//delete mpPathfinder;
+			//mpPathfinder = new AStarPathfinder(mpGridGraph);
+
+			//delete mpDebugDisplay;
+			//PathfindingDebugContent* pContent = new PathfindingDebugContent(mpPathfinder);
+			//mpDebugDisplay = new DebugDisplay(Vector2D(0, 12), pContent);
+		}
+		if (theEvent.getType() == W_KEY || theEvent.getType() == UP_ARROW)
+		{
+			//DFS
+			
+			if (canHandle)
+			{
+				cout << "Move up" << endl;
+				Player* pPlayer = dynamic_cast<Player*>(mpUnitManager->getPlayerUnit()->getSteeringComponent()->getSteeringBehavior());
+				pPlayer->moveUp();
+				canHandle = false;
+			}
+			/*delete mpPathfinder;
+			mpPathfinder = new DepthFirstPathfinder(mpGridGraph);
+
+			delete mpDebugDisplay;
+			PathfindingDebugContent* pContent = new PathfindingDebugContent(mpPathfinder);
+			mpDebugDisplay = new DebugDisplay(Vector2D(0, 12), pContent);*/
+		}
 
 }

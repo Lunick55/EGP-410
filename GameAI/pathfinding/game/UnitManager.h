@@ -35,7 +35,7 @@ public:
 	Unit* createRandomObject(const Sprite& sprite);
 	Unit* createPacman(const Sprite& sprite);
 
-	bool checkDirection(int posX, int posY);
+	bool checkWall(int posX, int posY);
 
 	int getUnitCount() const { return mUnitMap.size(); }
 	Unit* getUnit(const UnitID& id) const;
