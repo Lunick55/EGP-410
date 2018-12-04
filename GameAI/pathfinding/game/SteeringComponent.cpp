@@ -10,6 +10,8 @@
 #include "Flocking.h"
 #include "FollowPath.h"
 #include "Player.h"
+#include "PacSteering.h"
+
 SteeringComponent::SteeringComponent(const ComponentID& id, const ComponentID& physicsComponentID)
 	:Component(id)
 	, mPhysicsComponentID(physicsComponentID)
@@ -100,6 +102,12 @@ void SteeringComponent::setData(const SteeringData& data)
 	{
 		delete mpSteering;
 		mpSteering = new Player(data.ownerID, data.targetLoc, data.targetID, false);
+		break;
+	}
+	case Steering::PAC_STEER:
+	{
+		delete mpSteering;
+		mpSteering = new PacSteering(data.ownerID, data.targetLoc, data.targetID, false);
 		break;
 	}
 	default:

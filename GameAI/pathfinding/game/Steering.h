@@ -29,7 +29,8 @@ public:
 		COHESION,
 		GROUP_ALIGNMENT,
 		FOLLOW_PATH,
-		PLAYER_STEER
+		PLAYER_STEER,
+		PAC_STEER
 	};
 
 	//constructors and destructors

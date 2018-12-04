@@ -109,6 +109,7 @@
     <ClInclude Include="DijkstraPathfinder.h" />
     <ClInclude Include="EndGameState.h" />
     <ClInclude Include="KaboomState.h" />
+    <ClInclude Include="PacSteering.h" />
     <ClInclude Include="PathPooling.h" />
     <ClInclude Include="FaceSteering.h" />
     <ClInclude Include="Flocking.h" />
@@ -169,6 +170,7 @@
     <ClCompile Include="DijkstraPathfinder.cpp" />
     <ClCompile Include="EndGameState.cpp" />
     <ClCompile Include="KaboomState.cpp" />
+    <ClCompile Include="PacSteering.cpp" />
     <ClCompile Include="PathPooling.cpp" />
     <ClCompile Include="FaceSteering.cpp" />
     <ClCompile Include="FollowPath.cpp" />
