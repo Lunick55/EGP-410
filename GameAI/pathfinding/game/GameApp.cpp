@@ -26,6 +26,7 @@
 #include "FollowPath.h"
 #include "PathSmoothing.h"
 #include "PathPooling.h"
+#include "PacSteering.h"
 #include "Score.h"
 #include "Coins.h"
 #include "Player.h"
@@ -152,7 +153,7 @@ bool GameApp::init()
 	}
 
 	Unit* pPlayer = mpUnitManager->createPlayerUnit(*pPacman,true,PositionData(Vector2D(256,320), 0));
-	pPlayer->setSteering(Steering::FOLLOW_PATH, Vector2D(256, 320));
+	pPlayer->setSteering(Steering::PAC_STEER, Vector2D(256, 320));
 
 
 	PathfindingDebugContent* pContent = new PathfindingDebugContent( mpPathfinder );
@@ -218,6 +219,7 @@ void GameApp::processLoop()
 	//mpUnitManager->updateAll(TARGET_ELAPSED_MS);
 	mpComponentManager->update(TARGET_ELAPSED_MS);
 
+	movePacman();
 
 #ifdef VISUALIZE_PATH
 	//show pathfinder visualizer
@@ -238,6 +240,39 @@ void GameApp::processLoop()
 bool GameApp::endLoop()
 {
 	return Game::endLoop();
+}
+
+void GameApp::movePacman()
+{
+	if (mPacCanMove)
+	{
+		GridPathfinder* pPathfinder = this->getPathfinder();
+
+		GridGraph* pGridGraph = this->getGridGraph();
+		Grid* pGrid = this->getGrid();
+		//ge the from and to index from the grid
+		int fromIndex = pGrid->getSquareIndexFromPixelXY((int)mpUnitManager->getPlayerUnit()->getPositionComponent()->getPosition().getX(), (int)mpUnitManager->getPlayerUnit()->getPositionComponent()->getPosition().getY());
+		int toIndex = pGrid->getSquareIndexFromPixelXY((int)mpUnitManager->getPlayerUnit()->getPositionComponent()->getPosition().getX() + mPacXDist, (int)mpUnitManager->getPlayerUnit()->getPositionComponent()->getPosition().getY() + mPacYDist);
+		Node* pFromNode = pGridGraph->getNode(fromIndex);
+		Node* pToNode = pGridGraph->getNode(toIndex);
+
+		if (pGrid->getValueAtIndex(toIndex) != BLOCKING_VALUE)
+		{
+			//set path
+			PacSteering* pPacSteer = dynamic_cast<PacSteering*>(mpUnitManager->getPlayerUnit()->getSteeringComponent()->getSteeringBehavior());
+			Path* newPath;
+
+			pPacSteer->getPlayerSteering()->moveDirection(mPacXDir, mPacYDir);
+
+			newPath = pPathfinder->findPath(pFromNode, pToNode);
+
+			//reset the index every click
+			pPacSteer->resetIndex();
+			pPacSteer->setPath(newPath);
+		}
+
+		mPacCanMove = false;
+	}
 }
 
 void GameApp::handleEvent(const Event & theEvent)
@@ -294,8 +329,15 @@ void GameApp::handleEvent(const Event & theEvent)
 			if (canHandle)
 			{
 				cout << "move down" << endl;
-				Player* pPlayer = dynamic_cast<Player*>(mpUnitManager->getPlayerUnit()->getSteeringComponent()->getSteeringBehavior());
-				pPlayer->moveDown();
+
+				mPacXDist = 0;
+				mPacYDist = 32;
+				mPacXDir = Vector2D(0, 0);
+				mPacYDir = Vector2D(0, 1);
+
+				mPacCanMove = true;
+				//movePacman();
+
 				canHandle = false;
 			}
 		}
@@ -303,51 +345,18 @@ void GameApp::handleEvent(const Event & theEvent)
 		{
 			if (canHandle)
 			{
-				cout << "move right" << endl;
-				//Player* pPlayer = dynamic_cast<Player*>(mpUnitManager->getPlayerUnit()->getSteeringComponent()->getSteeringBehavior());
-				//pPlayer->moveRight();
-				///-----------------------------------------------------
-				GridPathfinder* pPathfinder = this->getPathfinder();
+				cout << "move left" << endl;
 
-				GridGraph* pGridGraph = this->getGridGraph();
-				Grid* pGrid = this->getGrid();
-				//ge the from and to index from the grid
-				int fromIndex = pGrid->getSquareIndexFromPixelXY((int)mpUnitManager->getPlayerUnit()->getPositionComponent()->getPosition().getX(), (int)mpUnitManager->getPlayerUnit()->getPositionComponent()->getPosition().getY());
-				int toIndex = pGrid->getSquareIndexFromPixelXY((int)mpUnitManager->getPlayerUnit()->getPositionComponent()->getPosition().getX() + 32, (int)mpUnitManager->getPlayerUnit()->getPositionComponent()->getPosition().getY());
-				Node* pFromNode = pGridGraph->getNode(fromIndex);
-				Node* pToNode = pGridGraph->getNode(toIndex);
+				mPacXDist = 32;
+				mPacYDist = 0;
+				mPacXDir = Vector2D(0, 1);
+				mPacYDir = Vector2D(0, 0);
 
-				//set path
-				FollowPath* pFollowSteering = dynamic_cast<FollowPath*>(mpUnitManager->getPlayerUnit()->getSteeringComponent()->getSteeringBehavior());
-				Path* newPath;
+				mPacCanMove = true;
+				//movePacman();
 
-				//check to see wheher there is already a path made from the pool
-				if (mpPathPool->getPath(pFromNode, pToNode) != nullptr)
-				{
-					//get that path from the pool
-					newPath = mpPathPool->getPath(pFromNode, pToNode);
-				}
-				else
-				{
-					//otherwise assign it to the pool so that it doesnt need to research it again
-					newPath = pPathfinder->findPath(pFromNode, pToNode);
-					//mpPathPool->storePath(pFromNode, pToNode, newPath);
-				}
-				//smooth the path
-				//PathSmoothing mySmooth(pGridGraph);
-				//newPath = mySmooth.smoothPath(newPath);
-
-				pFollowSteering->resetIndex();
-				pFollowSteering->setPath(newPath);
 				canHandle = false;
 			}
-			////dkitsra
-			//delete mpPathfinder; 
-			//mpPathfinder = new DijkstraPathfinder(mpGridGraph);
-
-			//delete mpDebugDisplay;
-			//PathfindingDebugContent* pContent = new PathfindingDebugContent(mpPathfinder);
-			//mpDebugDisplay = new DebugDisplay(Vector2D(0, 12), pContent);
 		}
 		if (theEvent.getType() == A_KEY || theEvent.getType() == LEFT_ARROW)
 		{
@@ -355,52 +364,18 @@ void GameApp::handleEvent(const Event & theEvent)
 			if (canHandle)
 			{
 				cout << "move left" << endl;
-				//Player* pPlayer = dynamic_cast<Player*>(mpUnitManager->getPlayerUnit()->getSteeringComponent()->getSteeringBehavior());
-				//pPlayer->moveLeft();
+				
+				mPacXDist = -32;
+				mPacYDist = 0;
+				mPacXDir = Vector2D(1, 0);
+				mPacYDir = Vector2D(0, 0);
+
+				mPacCanMove = true;
+				//movePacman();
+
 				canHandle = false;
-
-				///-----------------------------------------------------
-				GridPathfinder* pPathfinder = this->getPathfinder();
-
-				GridGraph* pGridGraph = this->getGridGraph();
-				Grid* pGrid = this->getGrid();
-				//ge the from and to index from the grid
-				int fromIndex = pGrid->getSquareIndexFromPixelXY((int)mpUnitManager->getPlayerUnit()->getPositionComponent()->getPosition().getX(), (int)mpUnitManager->getPlayerUnit()->getPositionComponent()->getPosition().getY());
-				int toIndex = pGrid->getSquareIndexFromPixelXY((int)mpUnitManager->getPlayerUnit()->getPositionComponent()->getPosition().getX() -32, (int)mpUnitManager->getPlayerUnit()->getPositionComponent()->getPosition().getY());
-				Node* pFromNode = pGridGraph->getNode(fromIndex);
-				Node* pToNode = pGridGraph->getNode(toIndex);
-
-				//set path
-				FollowPath* pFollowSteering = dynamic_cast<FollowPath*>(mpUnitManager->getPlayerUnit()->getSteeringComponent()->getSteeringBehavior());
-				Path* newPath;
-
-				//check to see wheher there is already a path made from the pool
-				if (mpPathPool->getPath(pFromNode, pToNode) != nullptr)
-				{
-					//get that path from the pool
-					newPath = mpPathPool->getPath(pFromNode, pToNode);
-				}
-				else
-				{
-					//otherwise assign it to the pool so that it doesnt need to research it again
-					newPath = pPathfinder->findPath(pFromNode, pToNode);
-					mpPathPool->storePath(pFromNode, pToNode, newPath);
-				}
-				//smooth the path
-				//PathSmoothing mySmooth(pGridGraph);
-				//newPath = mySmooth.smoothPath(newPath);
-
-				//reset the index every click
-				pFollowSteering->resetIndex();
-				pFollowSteering->setPath(newPath);
 			}
-			////aaaaaaa
-			//delete mpPathfinder;
-			//mpPathfinder = new AStarPathfinder(mpGridGraph);
-
-			//delete mpDebugDisplay;
-			//PathfindingDebugContent* pContent = new PathfindingDebugContent(mpPathfinder);
-			//mpDebugDisplay = new DebugDisplay(Vector2D(0, 12), pContent);
+			
 		}
 		if (theEvent.getType() == W_KEY || theEvent.getType() == UP_ARROW)
 		{
@@ -408,17 +383,19 @@ void GameApp::handleEvent(const Event & theEvent)
 			
 			if (canHandle)
 			{
-				cout << "Move up" << endl;
-				Player* pPlayer = dynamic_cast<Player*>(mpUnitManager->getPlayerUnit()->getSteeringComponent()->getSteeringBehavior());
-				pPlayer->moveUp();
+				cout << "move up" << endl;
+
+				mPacXDist = 0;
+				mPacYDist = -32;
+				mPacXDir = Vector2D(0, 0);
+				mPacYDir = Vector2D(1, 0);
+
+				mPacCanMove = true;
+				//movePacman();
+
 				canHandle = false;
 			}
-			/*delete mpPathfinder;
-			mpPathfinder = new DepthFirstPathfinder(mpGridGraph);
-
-			delete mpDebugDisplay;
-			PathfindingDebugContent* pContent = new PathfindingDebugContent(mpPathfinder);
-			mpDebugDisplay = new DebugDisplay(Vector2D(0, 12), pContent);*/
+			
 		}
 
 }

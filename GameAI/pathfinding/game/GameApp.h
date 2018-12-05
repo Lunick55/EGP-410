@@ -8,6 +8,7 @@ Champlain College
 */
 
 #include "Game.h"
+#include "Vector2D.h"
 
 //forward declarations
 class GraphicsBuffer;
@@ -28,6 +29,7 @@ class Coins;
 class PathPooling;
 class Player;
 class Timer;
+class Vector2D;
 
 const float LOOP_TARGET_TIME = 33.3f;//how long should each frame of execution take? 30fps = 33.3ms/frame
 const IDType PLAYER_ICON_SPRITE_ID = 1;
@@ -69,6 +71,8 @@ public:
 	inline Timer* getMasterTimer() const { return mpMasterTimer; };
 	inline double getCurrentTime() const { return mpMasterTimer->getElapsedTime(); };
 
+	void movePacman();
+
 	void handleEvent(const Event & theEvent);
 
 private:
@@ -94,6 +98,13 @@ private:
 	GraphicsBufferID mPacmanBufferID = "pacman";
 
 	bool canHandle = false;
+	bool mPacCanMove = false;
+
+	int mPacXDist = 0;
+	int mPacYDist = 0;
+
+	Vector2D mPacXDir;// = Vector2D(0, 0);
+	Vector2D mPacYDir;// = Vector2D(0, 0);
 
 	int mousePosX;
 	int mousePosY;

@@ -18,6 +18,8 @@ public:
 	PacSteering(const UnitID & ownerID, const Vector2D & targetLoc, const UnitID & targetID, bool shouldFlee);
 	virtual Steering* getSteering();
 
+	Player* getPlayerSteering() { return &mPlayerSteering; };
+
 	void setPath(Path* myPath);
 	void resetIndex();
 

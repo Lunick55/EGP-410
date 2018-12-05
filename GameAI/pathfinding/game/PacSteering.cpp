@@ -14,7 +14,7 @@ PacSteering::PacSteering(const UnitID & ownerID, const Vector2D & targetLoc, con
 	}
 	else
 	{
-		mType = Steering::FOLLOW_PATH;
+		mType = Steering::PAC_STEER;
 	}
 	setOwnerID(ownerID);
 	setTargetID(targetID);
@@ -44,10 +44,14 @@ Steering * PacSteering::getSteering()
 
 	Vector2D direction;
 	float distance;
-	float targetRadius = 30.0f;
+	float targetRadius = 1.0f;
+
+	Vector2D temp = mTargetLoc;
+	Vector2D temp2 = mTargetLoc + Vector2D(16, 16);
 
 	//get the target location for each of the nodes
-	direction = mTargetLoc - pOwner->getPositionComponent()->getPosition();
+	direction = (mTargetLoc + Vector2D(16, 16)) - (pOwner->getPositionComponent()->getPosition() + Vector2D(16,16));
+	//direction = (mTargetLoc - pOwner->getPositionComponent()->getPosition());
 	distance = direction.getLength();
 
 	//As long as we havent gotten to the end node
@@ -61,13 +65,20 @@ Steering * PacSteering::getSteering()
 		//increase the index for the next node
 		index++;
 	}
-
+	
 	//now do stuff
 	Steering* mPlayerSteer = mPlayerSteering.getSteering();
 
 	//set the acceleration, velocity, and rotationacceleration to what arrive and face have declared it to be
 	data.vel = mPlayerSteer->getData().vel;
 
+	if (distance < targetRadius && mPath.peekNode(index) == NULL)
+	{
+		//cout << "STTOOOOOPPPP" << endl;
+		data.vel = 0;
+		pOwner->getPositionComponent()->setPosition(mTargetLoc);
+		
+	}
 	//return the data
 	this->mData = data;
 

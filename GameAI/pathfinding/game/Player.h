@@ -18,10 +18,9 @@ public:
 	void moveRight();
 	void moveUp();
 	void moveDown();
+	void moveDirection(Vector2D directionX, Vector2D directionY);
 
 	bool rayClear(Node * outputPath, Node * inputPath);
-
-	void update(double dt);
 
 	Vector2D getPosition();
 
