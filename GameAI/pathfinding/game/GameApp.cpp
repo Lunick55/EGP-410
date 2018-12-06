@@ -106,10 +106,10 @@ bool GameApp::init()
 	mpGraphicsBufferManager->loadBuffer(mTargetBufferID, "target.png");
 	mpGraphicsBufferManager->loadBuffer(mCoinBufferID, "Coin.png");
 	mpGraphicsBufferManager->loadBuffer(mPacmanBufferID, "PacmanOpen.png");
-	mpGraphicsBufferManager->loadBuffer(mPacmanBufferID, "BlueGhost.png");
-	mpGraphicsBufferManager->loadBuffer(mPacmanBufferID, "RedGhost.png");
-	mpGraphicsBufferManager->loadBuffer(mPacmanBufferID, "PinkGhost.png");
-	mpGraphicsBufferManager->loadBuffer(mPacmanBufferID, "OrangeGhost.png");
+	mpGraphicsBufferManager->loadBuffer(mBlueGhostBufferID, "BlueGhost.png");
+	mpGraphicsBufferManager->loadBuffer(mRedGhostBufferID, "RedGhost.png");
+	mpGraphicsBufferManager->loadBuffer(mPinkGhostBufferID, "PinkGhost.png");
+	mpGraphicsBufferManager->loadBuffer(mOrangeGhostBufferID, "OrangeGhost.png");
 
 
 
@@ -156,7 +156,7 @@ bool GameApp::init()
 	{
 		pRGhost = mpSpriteManager->createAndManageSprite(RED_SPRITE_ID, pRedGhost, 0, 0, (float)pRedGhost->getWidth(), (float)pRedGhost->getHeight());
 	}
-
+	Unit* pRdGhost = mpUnitManager->createUnit(*pRGhost, true, PositionData(Vector2D(256, 130), 0));
 	//set up orange ghost
 	GraphicsBuffer* pOrangeGhost = mpGraphicsBufferManager->getBuffer(mOrangeGhostBufferID);
 	Sprite* pOGhost = NULL;
@@ -164,7 +164,7 @@ bool GameApp::init()
 	{
 		pOGhost = mpSpriteManager->createAndManageSprite(ORANGE_SPRITE_ID, pOrangeGhost, 0, 0, (float)pOrangeGhost->getWidth(), (float)pOrangeGhost->getHeight());
 	}
-
+	Unit* pOrGhost = mpUnitManager->createUnit(*pOGhost, true, PositionData(Vector2D(224, 130), 0));
 	//set up pink ghost
 	GraphicsBuffer* pPinkGhost = mpGraphicsBufferManager->getBuffer(mPinkGhostBufferID);
 	Sprite* pPGhost = NULL;
@@ -172,14 +172,15 @@ bool GameApp::init()
 	{
 		pPGhost = mpSpriteManager->createAndManageSprite(PINK_SPRITE_ID, pPinkGhost, 0, 0, (float)pPinkGhost->getWidth(), (float)pPinkGhost->getHeight());
 	}
-
+	Unit* pPkGhost = mpUnitManager->createUnit(*pPGhost, true, PositionData(Vector2D(288, 130), 0));
 	//set up blue ghost
-	GraphicsBuffer* pBlueGhost = mpGraphicsBufferManager->getBuffer(mCoinBufferID);
+	GraphicsBuffer* pBlueGhost = mpGraphicsBufferManager->getBuffer(mBlueGhostBufferID);
 	Sprite* pBlue = NULL;
 	if (pBlueGhost != NULL)
 	{
 		pBlue = mpSpriteManager->createAndManageSprite(BLUE_SPRITE_ID, pBlueGhost, 0, 0, (float)pBlueGhost->getWidth(), (float)pBlueGhost->getHeight());
 	}
+	Unit* pBlueBoi = mpUnitManager->createUnit(*pBlue, true, PositionData(Vector2D(192, 130), 0));
 
 	GraphicsBuffer* pPacmanBuffer = mpGraphicsBufferManager->getBuffer(mPacmanBufferID);
 	Sprite* pPacman = NULL;
