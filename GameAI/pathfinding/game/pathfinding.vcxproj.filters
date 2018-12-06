@@ -249,6 +249,18 @@
     <ClInclude Include="PacSteering.h">
       <Filter>Header Files\Steering</Filter>
     </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyFleeState.h">
+      <Filter>Header Files\StateMachines</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAttackState.h">
+      <Filter>Header Files\StateMachines</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyIdleState.h">
+      <Filter>Header Files\StateMachines</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\common\Game.cpp">
@@ -421,6 +433,18 @@
     </ClCompile>
     <ClCompile Include="PacSteering.cpp">
       <Filter>Source Files\Steering</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyFleeState.cpp">
+      <Filter>Source Files\StateMachines</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyAttackState.cpp">
+      <Filter>Source Files\StateMachines</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyIdleState.cpp">
+      <Filter>Source Files\StateMachines</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

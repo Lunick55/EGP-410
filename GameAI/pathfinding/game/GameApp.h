@@ -37,6 +37,10 @@ const IDType AI_ICON_SPRITE_ID = 2;
 const IDType TARGET_SPRITE_ID = 3;
 const IDType COIN_SPRITE_ID = 4;
 const IDType PACMAN_SPRITE_ID = 5;
+const IDType RED_SPRITE_ID = 5;
+const IDType BLUE_SPRITE_ID = 5;
+const IDType PINK_SPRITE_ID = 5;
+const IDType ORANGE_SPRITE_ID = 5;
 
 class GameApp: public Game
 {
@@ -96,6 +100,10 @@ private:
 	GraphicsBufferID mTargetBufferID = "target";
 	GraphicsBufferID mCoinBufferID = "coins";
 	GraphicsBufferID mPacmanBufferID = "pacman";
+	GraphicsBufferID mRedGhostBufferID = "redGhost";
+	GraphicsBufferID mBlueGhostBufferID = "blueGhost";
+	GraphicsBufferID mOrangeGhostBufferID = "redGhost";
+	GraphicsBufferID mPinkGhostBufferID = "pinkGhost";
 
 	bool canHandle = false;
 	bool mPacCanMove = false;
