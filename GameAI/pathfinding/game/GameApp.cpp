@@ -288,48 +288,40 @@ void GameApp::movePacman()
 
 		GridGraph* pGridGraph = this->getGridGraph();
 		Grid* pGrid = this->getGrid();
-		//ge the from and to index from the grid
+		//get the from and to index from the grid
 		float playerX = mpUnitManager->getPlayerUnit()->getPositionComponent()->getPosition().getX() + 16;
 		float playerY = mpUnitManager->getPlayerUnit()->getPositionComponent()->getPosition().getY() + 16;
 
-
 		int fromIndex = pGrid->getSquareIndexFromPixelXY((int)playerX, (int)playerY);
-		int nextIndex = pGrid->getSquareIndexFromPixelXY((int)playerX + mPacXDist, (int)playerY + mPacYDist);
-
 		int toIndex = pGrid->getSquareIndexFromPixelXY((int)playerX + mPacXDist, (int)playerY + mPacYDist);
 
-		//for (int i = 1; pGrid->getValueAtIndex(nextIndex) != BLOCKING_VALUE; i++)
-		//{
-		//	toIndex = nextIndex;//pGrid->getSquareIndexFromPixelXY((int)playerX + mPacXDist*i, (int)playerY + mPacYDist*i);
-		//	nextIndex = pGrid->getSquareIndexFromPixelXY((int)playerX + mPacXDist * i, (int)playerY + mPacYDist * i);
-		//}
+		//Look for any intersections or walls in a straight line
 		for (int i = 1; pGrid->getValueAtIndex(toIndex) != INTERSECTION_VALUE && pGrid->getValueAtIndex(toIndex) != BLOCKING_VALUE; i++)
 		{
 			toIndex = pGrid->getSquareIndexFromPixelXY((int)playerX + mPacXDist*i, (int)playerY + mPacYDist*i);
-			//nextIndex = pGrid->getSquareIndexFromPixelXY((int)playerX + mPacXDist * i, (int)playerY + mPacYDist * i);
+		}
+
+		//If we're going into a wall, stop where you are
+		if (pGrid->getValueAtIndex(toIndex) == BLOCKING_VALUE)
+		{
+			toIndex = pGrid->getSquareIndexFromPixelXY((int)playerX, (int)playerY);
 		}
 
 		Node* pFromNode = pGridGraph->getNode(fromIndex);
 		Node* pToNode = pGridGraph->getNode(toIndex);
 
-		if (pGrid->getValueAtIndex(toIndex) != BLOCKING_VALUE)
-		{
-			//set path
-			PacSteering* pPacSteer = dynamic_cast<PacSteering*>(mpUnitManager->getPlayerUnit()->getSteeringComponent()->getSteeringBehavior());
-			Path* newPath;
+		PacSteering* pPacSteer = dynamic_cast<PacSteering*>(mpUnitManager->getPlayerUnit()->getSteeringComponent()->getSteeringBehavior());
+		pPacSteer->moveDirection(mPacXDir, mPacYDir);
 
-			pPacSteer->moveDirection(mPacXDir, mPacYDir);
+		Path*	newPath = pPathfinder->findPath(pFromNode, pToNode);
 
-			newPath = pPathfinder->findPath(pFromNode, pToNode);
+		//smooth the path
+		PathSmoothing mySmooth(pGridGraph);
+		newPath = mySmooth.smoothPath(newPath);
 
-			//smooth the path
-			PathSmoothing mySmooth(pGridGraph);
-			newPath = mySmooth.smoothPath(newPath);
-
-			//reset the index every click
-			pPacSteer->resetIndex();
-			pPacSteer->setPath(newPath);
-		}
+		//reset the index every click
+		pPacSteer->resetIndex();
+		pPacSteer->setPath(newPath);
 
 		mPacCanMove = false;
 	}

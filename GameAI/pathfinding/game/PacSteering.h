@@ -24,10 +24,21 @@ public:
 	void resetIndex();
 	void checkDirection(Unit* owner);
 
+	void centerToNode();
+
 private:
 	Path mPath;
 	//Player mPlayerSteering;
 	bool isUnitDown, isUnitRight, isUnitLeft, isUnitUp;
 	int mSpeedX, mSpeedY;
 	int mIndex;
+
+	string oldDir, newDir; 
+
+	int mSquareIndexShifted;	//the index of the node a few pixels past the sprites edge
+	int mSquareIndexAtCenter;	//the index of the node at the center of the sprite
+	Vector2D mPositionCentered;//the pixel coord at the center of the sprite
 };
+
+
+
