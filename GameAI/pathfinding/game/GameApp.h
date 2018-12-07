@@ -76,6 +76,7 @@ public:
 	inline double getCurrentTime() const { return mpMasterTimer->getElapsedTime(); };
 
 	void movePacman();
+	inline void SetPacCanMove(bool moveStatus){mPacCanMove = moveStatus;};
 
 	void handleEvent(const Event & theEvent);
 

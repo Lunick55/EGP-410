@@ -191,6 +191,7 @@ bool GameApp::init()
 
 	Unit* pPlayer = mpUnitManager->createPlayerUnit(*pPacman,true,PositionData(Vector2D(256,320), 0));
 	pPlayer->setSteering(Steering::PAC_STEER, Vector2D(256, 320));
+	pPlayer->setShowTarget(true);
 
 
 	PathfindingDebugContent* pContent = new PathfindingDebugContent( mpPathfinder );
@@ -288,8 +289,26 @@ void GameApp::movePacman()
 		GridGraph* pGridGraph = this->getGridGraph();
 		Grid* pGrid = this->getGrid();
 		//ge the from and to index from the grid
-		int fromIndex = pGrid->getSquareIndexFromPixelXY((int)mpUnitManager->getPlayerUnit()->getPositionComponent()->getPosition().getX(), (int)mpUnitManager->getPlayerUnit()->getPositionComponent()->getPosition().getY());
-		int toIndex = pGrid->getSquareIndexFromPixelXY((int)mpUnitManager->getPlayerUnit()->getPositionComponent()->getPosition().getX() + mPacXDist, (int)mpUnitManager->getPlayerUnit()->getPositionComponent()->getPosition().getY() + mPacYDist);
+		float playerX = mpUnitManager->getPlayerUnit()->getPositionComponent()->getPosition().getX() + 16;
+		float playerY = mpUnitManager->getPlayerUnit()->getPositionComponent()->getPosition().getY() + 16;
+
+
+		int fromIndex = pGrid->getSquareIndexFromPixelXY((int)playerX, (int)playerY);
+		int nextIndex = pGrid->getSquareIndexFromPixelXY((int)playerX + mPacXDist, (int)playerY + mPacYDist);
+
+		int toIndex = pGrid->getSquareIndexFromPixelXY((int)playerX + mPacXDist, (int)playerY + mPacYDist);
+
+		//for (int i = 1; pGrid->getValueAtIndex(nextIndex) != BLOCKING_VALUE; i++)
+		//{
+		//	toIndex = nextIndex;//pGrid->getSquareIndexFromPixelXY((int)playerX + mPacXDist*i, (int)playerY + mPacYDist*i);
+		//	nextIndex = pGrid->getSquareIndexFromPixelXY((int)playerX + mPacXDist * i, (int)playerY + mPacYDist * i);
+		//}
+		for (int i = 1; pGrid->getValueAtIndex(toIndex) != INTERSECTION_VALUE && pGrid->getValueAtIndex(toIndex) != BLOCKING_VALUE; i++)
+		{
+			toIndex = pGrid->getSquareIndexFromPixelXY((int)playerX + mPacXDist*i, (int)playerY + mPacYDist*i);
+			//nextIndex = pGrid->getSquareIndexFromPixelXY((int)playerX + mPacXDist * i, (int)playerY + mPacYDist * i);
+		}
+
 		Node* pFromNode = pGridGraph->getNode(fromIndex);
 		Node* pToNode = pGridGraph->getNode(toIndex);
 
@@ -299,9 +318,13 @@ void GameApp::movePacman()
 			PacSteering* pPacSteer = dynamic_cast<PacSteering*>(mpUnitManager->getPlayerUnit()->getSteeringComponent()->getSteeringBehavior());
 			Path* newPath;
 
-			pPacSteer->getPlayerSteering()->moveDirection(mPacXDir, mPacYDir);
+			pPacSteer->moveDirection(mPacXDir, mPacYDir);
 
 			newPath = pPathfinder->findPath(pFromNode, pToNode);
+
+			//smooth the path
+			PathSmoothing mySmooth(pGridGraph);
+			newPath = mySmooth.smoothPath(newPath);
 
 			//reset the index every click
 			pPacSteer->resetIndex();

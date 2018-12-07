@@ -19,6 +19,8 @@ void GridVisualizer::refresh()
 {
 	const Color& color = BLACK_COLOR; 
 	const Color& color2 = BLUE_COLOR;	
+	const Color& color3 = WHITE_COLOR;
+
 	if( mDirty )
 	{
 		//remove old entries first
@@ -36,6 +38,10 @@ void GridVisualizer::refresh()
 			else if (mpGrid->getValueAtIndex(i) == SPAWNING_VALUE)
 			{
 				addColor(i, color2);
+			}
+			else if (mpGrid->getValueAtIndex(i) == INTERSECTION_VALUE)
+			{
+				addColor(i, color3);
 			}
 		}
 	}
