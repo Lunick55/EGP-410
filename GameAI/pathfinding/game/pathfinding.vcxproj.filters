@@ -64,6 +64,12 @@
     <Filter Include="Source Files\Objects">
       <UniqueIdentifier>{dda7a0b8-6af7-4774-a87a-c563811bf812}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Managers">
+      <UniqueIdentifier>{b874d5de-1dbc-4631-bc49-b1ef17b97ad8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Managers">
+      <UniqueIdentifier>{e6bc9b87-567f-426a-a56a-b363bb76e669}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\common\Game.h">
@@ -249,17 +255,23 @@
     <ClInclude Include="PacSteering.h">
       <Filter>Header Files\Steering</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Header Files\Objects</Filter>
-    </ClInclude>
     <ClInclude Include="EnemyFleeState.h">
-      <Filter>Header Files\StateMachines</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyAttackState.h">
       <Filter>Header Files\StateMachines</Filter>
     </ClInclude>
     <ClInclude Include="EnemyIdleState.h">
       <Filter>Header Files\StateMachines</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyWanderState.h">
+      <Filter>Header Files\StateMachines</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyChaseState.h">
+      <Filter>Header Files\StateMachines</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemySpawnManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemySteering.h">
+      <Filter>Header Files\Steering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -434,17 +446,23 @@
     <ClCompile Include="PacSteering.cpp">
       <Filter>Source Files\Steering</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Source Files\Objects</Filter>
-    </ClCompile>
     <ClCompile Include="EnemyFleeState.cpp">
-      <Filter>Source Files\StateMachines</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyAttackState.cpp">
       <Filter>Source Files\StateMachines</Filter>
     </ClCompile>
     <ClCompile Include="EnemyIdleState.cpp">
       <Filter>Source Files\StateMachines</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyWanderState.cpp">
+      <Filter>Source Files\StateMachines</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyChaseState.cpp">
+      <Filter>Source Files\StateMachines</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemySpawnManager.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemySteering.cpp">
+      <Filter>Source Files\Steering</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

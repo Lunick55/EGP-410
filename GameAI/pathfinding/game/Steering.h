@@ -30,7 +30,8 @@ public:
 		GROUP_ALIGNMENT,
 		FOLLOW_PATH,
 		PLAYER_STEER,
-		PAC_STEER
+		PAC_STEER,
+		ENEMY_STEER
 	};
 
 	//constructors and destructors

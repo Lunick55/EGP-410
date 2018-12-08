@@ -9,9 +9,12 @@
 #include "PositionComponent.h"
 #include "Sprite.h"
 #include "Steering.h"
+#include "StateMachine.h"
+#include "EnemyWanderState.h"
 //#include "CircularQueue.h"
 //#include "Transaction.h"
 //#include "TransactionProcessor.h"
+#include <typeinfo>
 
 class PhysicsComponent;
 class SteeringComponent;
@@ -24,10 +27,11 @@ const Uint32 DEFAULT_QUEUE_CAPACITY = 8;
 //class Unit : public TransactionProcessor
 class Unit : public Trackable
 {
+	
 public:
 	void draw() const;
 	float getFacing() const;
-	void update(float elapsedTime) {};
+	void update(float elapsedTime);
 
 	PositionComponent* getPositionComponent() const;
 	PhysicsComponent* getPhysicsComponent() const;
@@ -40,12 +44,22 @@ public:
 
 
 	void setSteering(Steering::SteeringType type, Vector2D targetLoc = ZERO_VECTOR2D, UnitID targetUnitID = INVALID_UNIT_ID);
+	void whatIsState()
+	{
+		if (typeid(mpWanderState) == typeid(EnemyWanderState))
+		{
+			std::cout << "Wander State";
+		}
+	}
 
 private:
 	UnitID mID;
 	ComponentID mPhysicsComponentID;
 	ComponentID mPositionComponentID;
 	ComponentID mSteeringComponentID;
+	StateMachine* mpStateMachine;
+	StateMachineState* mpWanderState;
+
 	PositionComponent* mpPositionComponent = NULL;
 	Sprite mSprite;
 	float mMaxAcc;
@@ -53,6 +67,9 @@ private:
 	float mMaxRotAcc;
 	float mMaxRotVel;
 	bool mShowTarget;
+
+	int mHealth;
+	int mDamageRadius;
 
 	Unit(const Sprite& sprite);
 	virtual ~Unit();

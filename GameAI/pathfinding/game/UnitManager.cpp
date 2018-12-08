@@ -33,7 +33,7 @@ Unit* UnitManager::createUnit(const Sprite& sprite, bool shouldWrap, const Posit
 			theID = msNextUnitID;
 			msNextUnitID++;
 		}
-
+		 
 		//place in map
 		mUnitMap[theID] = pUnit;
 
@@ -111,17 +111,7 @@ Unit * UnitManager::createRandomObject(const Sprite & sprite)
 	Unit* pUnit = createUnit(sprite, true, PositionData(Vector2D(posX, posY), 0)/*, PhysicsData(Vector2D(velX, velY), Vector2D(0.1f, 0.1f), 0.1f, 0.05f)*/);
 	return pUnit;
 }
-
-//Unit * UnitManager::createPacman(const Sprite & sprite)
-//{
-//	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
-//	Grid* pGrid = pGame->getGrid();
-//	int posX = pGrid->getGridWidth() / HALF * PIXEL_SIZE;
-//	int posY = pGrid->getGridHeight() / HALF * PIXEL_SIZE;
-//	Unit* pUnit = createUnit(sprite, true, PositionData(Vector2D(posX, posY + OFFSET), 0), ZERO_PHYSICS_DATA, PLAYER_UNIT_ID);
-//	cout << "SOME BOGUS POS: " << posX << endl;
-//	return pUnit;
-//}
+ 
 bool UnitManager::checkWall(int posX, int posY)
 {
 	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);

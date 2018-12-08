@@ -10,6 +10,7 @@
 #include "ComponentManager.h"
 #include "SpriteManager.h"
 #include "GameApp.h"
+#include "UnitManager.h"
 
 
 Unit::Unit(const Sprite& sprite)
@@ -17,12 +18,22 @@ Unit::Unit(const Sprite& sprite)
 	, mPositionComponentID(INVALID_COMPONENT_ID)
 	, mPhysicsComponentID(INVALID_COMPONENT_ID)
 	, mSteeringComponentID(INVALID_COMPONENT_ID)
-	, mShowTarget(false)
+	, mShowTarget(true)
 {
+	mpStateMachine = new StateMachine();
+
+	//create the states
+	mpWanderState = new EnemyWanderState(0);
+
+	mpStateMachine->addState(mpWanderState);
+	mpStateMachine->setInitialStateID(0);
+
 }
 
 Unit::~Unit()
 {
+	delete mpStateMachine;
+	delete mpWanderState;
 }
 
 void Unit::draw() const
@@ -51,6 +62,13 @@ float Unit::getFacing() const
 	PositionComponent* pPosition = getPositionComponent();
 	assert(pPosition != NULL);
 	return pPosition->getFacing();
+}
+
+void Unit::update(float elapsedTime)
+{
+	//std::map<UnitID, Unit*> unitMap = gpGame->getUnitManager()->getMap();
+
+	mpStateMachine->update();
 }
 
 PositionComponent* Unit::getPositionComponent() const

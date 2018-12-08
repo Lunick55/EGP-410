@@ -14,5 +14,12 @@ void EnemyIdleState::onExit()
 
 StateTransition * EnemyIdleState::update()
 {
-	return nullptr;
+	map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(ENEMY_WANDER_TRANSITION);
+	if (iter != mTransitions.end())//found?
+	{
+		StateTransition* pTransition = iter->second;
+		return pTransition;
+	}
+
+	return NULL;//no transition
 }

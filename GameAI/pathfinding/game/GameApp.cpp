@@ -27,6 +27,7 @@
 #include "PathSmoothing.h"
 #include "PathPooling.h"
 #include "PacSteering.h"
+#include "EnemySteering.h"
 #include "Score.h"
 #include "Coins.h"
 #include "Player.h"
@@ -156,31 +157,35 @@ bool GameApp::init()
 	{
 		pRGhost = mpSpriteManager->createAndManageSprite(RED_SPRITE_ID, pRedGhost, 0, 0, (float)pRedGhost->getWidth(), (float)pRedGhost->getHeight());
 	}
-	Unit* pRdGhost = mpUnitManager->createUnit(*pRGhost, true, PositionData(Vector2D(256, 130), 0));
-	//set up orange ghost
-	GraphicsBuffer* pOrangeGhost = mpGraphicsBufferManager->getBuffer(mOrangeGhostBufferID);
-	Sprite* pOGhost = NULL;
-	if (pOrangeGhost != NULL)
-	{
-		pOGhost = mpSpriteManager->createAndManageSprite(ORANGE_SPRITE_ID, pOrangeGhost, 0, 0, (float)pOrangeGhost->getWidth(), (float)pOrangeGhost->getHeight());
-	}
-	Unit* pOrGhost = mpUnitManager->createUnit(*pOGhost, true, PositionData(Vector2D(224, 130), 0));
-	//set up pink ghost
-	GraphicsBuffer* pPinkGhost = mpGraphicsBufferManager->getBuffer(mPinkGhostBufferID);
-	Sprite* pPGhost = NULL;
-	if (pPinkGhost != NULL)
-	{
-		pPGhost = mpSpriteManager->createAndManageSprite(PINK_SPRITE_ID, pPinkGhost, 0, 0, (float)pPinkGhost->getWidth(), (float)pPinkGhost->getHeight());
-	}
-	Unit* pPkGhost = mpUnitManager->createUnit(*pPGhost, true, PositionData(Vector2D(288, 130), 0));
-	//set up blue ghost
-	GraphicsBuffer* pBlueGhost = mpGraphicsBufferManager->getBuffer(mBlueGhostBufferID);
-	Sprite* pBlue = NULL;
-	if (pBlueGhost != NULL)
-	{
-		pBlue = mpSpriteManager->createAndManageSprite(BLUE_SPRITE_ID, pBlueGhost, 0, 0, (float)pBlueGhost->getWidth(), (float)pBlueGhost->getHeight());
-	}
-	Unit* pBlueBoi = mpUnitManager->createUnit(*pBlue, true, PositionData(Vector2D(192, 130), 0));
+	Unit* pRdGhost = mpUnitManager->createUnit(*pRGhost, true, PositionData(Vector2D(224, 130), 0));
+	pRdGhost->setSteering(Steering::ENEMY_STEER, Vector2D(224, 130));
+
+
+
+	////set up orange ghost
+	//GraphicsBuffer* pOrangeGhost = mpGraphicsBufferManager->getBuffer(mOrangeGhostBufferID);
+	//Sprite* pOGhost = NULL;
+	//if (pOrangeGhost != NULL)
+	//{
+	//	pOGhost = mpSpriteManager->createAndManageSprite(ORANGE_SPRITE_ID, pOrangeGhost, 0, 0, (float)pOrangeGhost->getWidth(), (float)pOrangeGhost->getHeight());
+	//}
+	//Unit* pOrGhost = mpUnitManager->createUnit(*pOGhost, true, PositionData(Vector2D(224, 130), 0));
+	////set up pink ghost
+	//GraphicsBuffer* pPinkGhost = mpGraphicsBufferManager->getBuffer(mPinkGhostBufferID);
+	//Sprite* pPGhost = NULL;
+	//if (pPinkGhost != NULL)
+	//{
+	//	pPGhost = mpSpriteManager->createAndManageSprite(PINK_SPRITE_ID, pPinkGhost, 0, 0, (float)pPinkGhost->getWidth(), (float)pPinkGhost->getHeight());
+	//}
+	//Unit* pPkGhost = mpUnitManager->createUnit(*pPGhost, true, PositionData(Vector2D(288, 130), 0));
+	////set up blue ghost
+	//GraphicsBuffer* pBlueGhost = mpGraphicsBufferManager->getBuffer(mBlueGhostBufferID);
+	//Sprite* pBlue = NULL;
+	//if (pBlueGhost != NULL)
+	//{
+	//	pBlue = mpSpriteManager->createAndManageSprite(BLUE_SPRITE_ID, pBlueGhost, 0, 0, (float)pBlueGhost->getWidth(), (float)pBlueGhost->getHeight());
+	//}
+	//Unit* pBlueBoi = mpUnitManager->createUnit(*pBlue, true, PositionData(Vector2D(192, 130), 0));
 
 	GraphicsBuffer* pPacmanBuffer = mpGraphicsBufferManager->getBuffer(mPacmanBufferID);
 	Sprite* pPacman = NULL;
@@ -254,10 +259,11 @@ void GameApp::processLoop()
 	GraphicsBuffer* pBackBuffer = mpGraphicsSystem->getBackBuffer();
 	//copy to back buffer
 	mpGridVisualizer->draw( *pBackBuffer );
-	//mpUnitManager->updateAll(TARGET_ELAPSED_MS);
+	mpUnitManager->updateAll(TARGET_ELAPSED_MS);
 	mpComponentManager->update(TARGET_ELAPSED_MS);
 
 	movePacman();
+	moveEnemy();
 
 #ifdef VISUALIZE_PATH
 	//show pathfinder visualizer
@@ -313,18 +319,57 @@ void GameApp::movePacman()
 		PacSteering* pPacSteer = dynamic_cast<PacSteering*>(mpUnitManager->getPlayerUnit()->getSteeringComponent()->getSteeringBehavior());
 		pPacSteer->moveDirection(mPacXDir, mPacYDir);
 
-		Path*	newPath = pPathfinder->findPath(pFromNode, pToNode);
+		Path* newPath = pPathfinder->findPath(pFromNode, pToNode);
 
-		//smooth the path
-		PathSmoothing mySmooth(pGridGraph);
-		newPath = mySmooth.smoothPath(newPath);
 
 		//reset the index every click
 		pPacSteer->resetIndex();
 		pPacSteer->setPath(newPath);
 
-		mPacCanMove = false;
+		//mPacCanMove = false;
 	}
+}
+
+void GameApp::moveEnemy()
+{
+		//GridPathfinder* pPathfinder = this->getPathfinder();
+		//for (int i = 1; i < mpUnitManager->getUnitCount() ; i++)
+		//{
+		//	GridGraph* pGridGraph = this->getGridGraph();
+		//	Grid* pGrid = this->getGrid();
+		//	//get the from and to index from the grid
+		//	float enemyX = mpUnitManager->getUnit(i)->getPositionComponent()->getPosition().getX() + 16;
+		//	float enemyY = mpUnitManager->getUnit(i)->getPositionComponent()->getPosition().getY() + 16;
+
+		//	int fromIndex = pGrid->getSquareIndexFromPixelXY((int)enemyX, (int)enemyY);
+		//	int toIndex = pGrid->getSquareIndexFromPixelXY((int)enemyX + -32, (int)enemyY);
+
+		//	//Look for any intersections or walls in a straight line
+		//	//for (int i = 1;/* pGrid->getValueAtIndex(toIndex) != INTERSECTION_VALUE &&*/ pGrid->getValueAtIndex(toIndex) != BLOCKING_VALUE; i++)
+		//	//{
+		//		toIndex = pGrid->getSquareIndexFromPixelXY((int)enemyX + -32 * i, (int)enemyY * i);
+		//	//}
+
+		//	//If we're going into a wall, stop where you are
+		//	if (pGrid->getValueAtIndex(toIndex) == BLOCKING_VALUE)
+		//	{
+		//		toIndex = pGrid->getSquareIndexFromPixelXY((int)enemyX, (int)enemyY);
+		//	}
+
+		//	Node* pFromNode = pGridGraph->getNode(fromIndex);
+		//	Node* pToNode = pGridGraph->getNode(toIndex);
+
+		//	EnemySteering* pEnemySteer = dynamic_cast<EnemySteering*>(mpUnitManager->getUnit(i)->getSteeringComponent()->getSteeringBehavior());
+		//	pEnemySteer->moveDirection(-32, 0);
+
+		//	Path* newPath = pPathfinder->findPath(pFromNode, pToNode);
+
+
+		//	//reset the index every click
+		//	pEnemySteer->resetIndex();
+		//	pEnemySteer->setPath(newPath);
+		//}
+	
 }
 
 void GameApp::handleEvent(const Event & theEvent)

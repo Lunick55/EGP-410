@@ -40,7 +40,7 @@ Steering * FollowPath::getSteering()
 	Unit* pOwner = pGame->getUnitManager()->getUnit(mOwnerID);
 	PhysicsData data = pOwner->getPhysicsComponent()->getData();
 	//draw the path for each of the arrows
-	//pGame->getPathfinder()->drawPath(pGame->getGrid(), pGame->getGraphicsSystem()->getBackBuffer() , mPath);
+	pGame->getPathfinder()->drawPath(pGame->getGrid(), pGame->getGraphicsSystem()->getBackBuffer() , mPath);
 
 	Vector2D direction;
 	float distance;

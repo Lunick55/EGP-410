@@ -76,7 +76,9 @@ public:
 	inline double getCurrentTime() const { return mpMasterTimer->getElapsedTime(); };
 
 	void movePacman();
+	void moveEnemy();
 	inline void SetPacCanMove(bool moveStatus){mPacCanMove = moveStatus;};
+
 
 	void handleEvent(const Event & theEvent);
 
@@ -94,6 +96,7 @@ private:
 	GridPathfinder* mpPathfinder;
 	PathPooling* mpPathPool;
 	Timer mTimer;
+
 
 	GraphicsBufferID mBackgroundBufferID = "woods";
 	GraphicsBufferID mPlayerIconBufferID = "player";

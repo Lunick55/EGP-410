@@ -11,6 +11,7 @@
 #include "FollowPath.h"
 #include "Player.h"
 #include "PacSteering.h"
+#include "EnemySteering.h"
 
 SteeringComponent::SteeringComponent(const ComponentID& id, const ComponentID& physicsComponentID)
 	:Component(id)
@@ -108,6 +109,12 @@ void SteeringComponent::setData(const SteeringData& data)
 	{
 		delete mpSteering;
 		mpSteering = new PacSteering(data.ownerID, data.targetLoc, data.targetID, false);
+		break;
+	}
+	case Steering::ENEMY_STEER:
+	{
+		delete mpSteering;
+		mpSteering = new EnemySteering(data.ownerID, data.targetLoc, data.targetID, false);
 		break;
 	}
 	default:

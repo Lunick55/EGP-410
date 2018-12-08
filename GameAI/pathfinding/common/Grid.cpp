@@ -64,12 +64,12 @@ std::vector<int> Grid::getAdjacentIndices( int theSquareIndex ) const
 	static const int NUM_DIRS = 8;
 	//										  N   NE	E SE	S	SW	 W	  NW
 	//uncomment to Makes lines jittery
-	static int xMods[NUM_DIRS] = {  0,  1,	1,	1,	0,	-1, -1, -1 };
-	static int yMods[NUM_DIRS] = { -1, -1,	0,	1,	1,	 1,  0, -1 };
+	//static int xMods[NUM_DIRS] = {  0,  1,	1,	1,	0,	-1, -1, -1 };
+	//static int yMods[NUM_DIRS] = { -1, -1,	0,	1,	1,	 1,  0, -1 };
 
 	//uncomment to makes lines smooth
-	//static int xMods[NUM_DIRS] = { 0,  0,	1,	0,	0,	0, -1, 0 };
-	//static int yMods[NUM_DIRS] = { -1, 0,	0,	0,	1,	 0,  0, 0 };
+	static int xMods[NUM_DIRS] = { 0,  0,	1,	0,	0,	0, -1, 0 };
+	static int yMods[NUM_DIRS] = { -1, 0,	0,	0,	1,	 0,  0, 0 };
 
 
 	//find the x,y of the passed in index

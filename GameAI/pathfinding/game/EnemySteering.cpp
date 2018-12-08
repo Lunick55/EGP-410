@@ -1,11 +1,11 @@
-#include "PacSteering.h"
+#include "EnemySteering.h"
 #include "ArriveAndFaceSteering.h"
 #include "Graph.h"
 #include "GameApp.h"
 #include "UnitManager.h"
 #include "GraphicsSystem.h"
 
-PacSteering::PacSteering(const UnitID & ownerID, const Vector2D & targetLoc, const UnitID & targetID, bool shouldFlee)
+EnemySteering::EnemySteering(const UnitID & ownerID, const Vector2D & targetLoc, const UnitID & targetID, bool shouldFlee)
 	: Steering()//, mPlayerSteering(Player(ownerID, targetLoc, targetID, shouldFlee))
 {
 	if (shouldFlee)
@@ -31,18 +31,18 @@ PacSteering::PacSteering(const UnitID & ownerID, const Vector2D & targetLoc, con
 	mIndex = 0;
 }
 
-void PacSteering::setPath(Path* myPath)
+void EnemySteering::setPath(Path* myPath)
 {
 	mPath = *myPath;
 }
 
-void PacSteering::resetIndex()
+void EnemySteering::resetIndex()
 {
 	mIndex = 0;
 }
 
 
-Steering * PacSteering::getSteering()
+Steering * EnemySteering::getSteering()
 {
 	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
 	Unit* pOwner = pGame->getUnitManager()->getUnit(mOwnerID);
@@ -59,14 +59,14 @@ Steering * PacSteering::getSteering()
 		//increase the index for the next node
 		mIndex++;
 	}
-	
+
 	//now do stuff
 	checkDirection(pOwner);
 
-	mPositionCentered = pOwner->getPositionComponent()->getPosition() + Vector2D(16,16);
+	mPositionCentered = pOwner->getPositionComponent()->getPosition() + Vector2D(16, 16);
 
 	//As long as we havent gotten to the end node
-	
+
 	int xVal = ((16 * mSpeedX) / mSpeed) + mSpeedX;
 	int yVal = ((16 * mSpeedY) / mSpeed) + mSpeedY;
 
@@ -74,10 +74,11 @@ Steering * PacSteering::getSteering()
 	mSquareIndexShifted = pGrid->getSquareIndexFromPixelXY(mPositionCentered.getX() + xVal, mPositionCentered.getY() + yVal);
 	if (pGrid->getValueAtIndex(mSquareIndexAtCenter) == INTERSECTION_VALUE)
 	{
-		pGame->SetPacCanMove(true);
+		cout << "I'M HOME" << endl;
 	}
 	if (pGrid->getValueAtIndex(mSquareIndexShifted) == BLOCKING_VALUE)
 	{
+		cout << "I'M BACKED AGAINST THE WALL" << endl;
 		pOwner->getPositionComponent()->setPosition(mTargetLoc);
 	}
 
@@ -93,7 +94,7 @@ Steering * PacSteering::getSteering()
 	return this;
 }
 
-void PacSteering::checkDirection(Unit* owner)
+void EnemySteering::checkDirection(Unit* owner)
 {
 	if (isUnitLeft)
 	{
@@ -129,7 +130,7 @@ void PacSteering::checkDirection(Unit* owner)
 	}
 }
 
-void PacSteering::moveDirection(Vector2D directionX, Vector2D directionY)
+void EnemySteering::moveDirection(Vector2D directionX, Vector2D directionY)
 {
 	isUnitLeft = directionX.getX();
 	isUnitRight = directionX.getY();
@@ -137,7 +138,7 @@ void PacSteering::moveDirection(Vector2D directionX, Vector2D directionY)
 	isUnitDown = directionY.getY();
 }
 
-void PacSteering::centerToNode()
+void EnemySteering::centerToNode()
 {
 	Grid* pGrid = dynamic_cast<GameApp*>(gpGame)->getGrid();
 	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
