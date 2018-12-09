@@ -3,6 +3,7 @@
 #include <map>
 #include <Trackable.h>
 
+
 /*Collection of base classes to implement a StateMachine.  Heavily borrowed from
 	Millington text.
 
@@ -20,18 +21,19 @@ enum TransitionType
 	END_GAME_TRANSITION = 1,
 	ENEMY_WANDER_TRANSITION = 2,
 	ENEMY_FLEE_TRANSITION = 3,
-	ENEMY_IDLE_TRANSTION = 4
+	ENEMY_IDLE_TRANSTION = 4,
+	ENEMY_CHASE_TRANSITION = 5
 };
 
 typedef int SM_idType;
 
-class StateMachineState:public Trackable
+class StateMachineState :public Trackable
 {
 public:
-	StateMachineState( const SM_idType& id ):mID(id){};
+	StateMachineState(const SM_idType& id) :mID(id) {};
 	~StateMachineState();
 
-	void addTransition( StateTransition* pTransition );
+	void addTransition(StateTransition* pTransition);
 	inline const SM_idType& getID() const { return mID; };
 
 	virtual void onEntrance()=0;//code to run when the state is entered
@@ -40,6 +42,7 @@ public:
 
 protected:
 	SM_idType mID;
+	int currentID;
 	std::map<TransitionType, StateTransition*> mTransitions;
 };
 

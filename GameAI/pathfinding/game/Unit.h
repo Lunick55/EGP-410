@@ -11,9 +11,7 @@
 #include "Steering.h"
 #include "StateMachine.h"
 #include "EnemyWanderState.h"
-//#include "CircularQueue.h"
-//#include "Transaction.h"
-//#include "TransactionProcessor.h"
+#include "EnemyChaseState.h"
 #include <typeinfo>
 
 class PhysicsComponent;
@@ -59,6 +57,9 @@ private:
 	ComponentID mSteeringComponentID;
 	StateMachine* mpStateMachine;
 	StateMachineState* mpWanderState;
+	StateMachineState* mpChaseState;
+	StateTransition* pChaseTrans;
+	StateTransition* pWanderTrans;
 
 	PositionComponent* mpPositionComponent = NULL;
 	Sprite mSprite;

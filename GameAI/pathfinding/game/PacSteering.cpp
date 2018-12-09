@@ -25,7 +25,7 @@ PacSteering::PacSteering(const UnitID & ownerID, const Vector2D & targetLoc, con
 	isUnitLeft = false;
 	isUnitUp = false;
 
-	mSpeed = 1.6;
+	mSpeed = 2.0;
 	mSpeedX = mSpeedY = 0;
 
 	mIndex = 0;

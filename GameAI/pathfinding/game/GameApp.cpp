@@ -157,8 +157,8 @@ bool GameApp::init()
 	{
 		pRGhost = mpSpriteManager->createAndManageSprite(RED_SPRITE_ID, pRedGhost, 0, 0, (float)pRedGhost->getWidth(), (float)pRedGhost->getHeight());
 	}
-	Unit* pRdGhost = mpUnitManager->createUnit(*pRGhost, true, PositionData(Vector2D(224, 130), 0));
-	pRdGhost->setSteering(Steering::ENEMY_STEER, Vector2D(224, 130));
+	Unit* pRdGhost = mpUnitManager->createUnit(*pRGhost, true, PositionData(Vector2D(32, 32), 0));
+	pRdGhost->setSteering(Steering::ENEMY_STEER, Vector2D(32, 32));
 
 
 
@@ -169,7 +169,8 @@ bool GameApp::init()
 	//{
 	//	pOGhost = mpSpriteManager->createAndManageSprite(ORANGE_SPRITE_ID, pOrangeGhost, 0, 0, (float)pOrangeGhost->getWidth(), (float)pOrangeGhost->getHeight());
 	//}
-	//Unit* pOrGhost = mpUnitManager->createUnit(*pOGhost, true, PositionData(Vector2D(224, 130), 0));
+	//Unit* pOrGhost = mpUnitManager->createUnit(*pOGhost, true, PositionData(Vector2D(256, 130), 0));
+	//pOrGhost->setSteering(Steering::ENEMY_STEER, Vector2D(256, 130));
 	////set up pink ghost
 	//GraphicsBuffer* pPinkGhost = mpGraphicsBufferManager->getBuffer(mPinkGhostBufferID);
 	//Sprite* pPGhost = NULL;
@@ -178,7 +179,8 @@ bool GameApp::init()
 	//	pPGhost = mpSpriteManager->createAndManageSprite(PINK_SPRITE_ID, pPinkGhost, 0, 0, (float)pPinkGhost->getWidth(), (float)pPinkGhost->getHeight());
 	//}
 	//Unit* pPkGhost = mpUnitManager->createUnit(*pPGhost, true, PositionData(Vector2D(288, 130), 0));
-	////set up blue ghost
+	//pPkGhost->setSteering(Steering::ENEMY_STEER, Vector2D(288, 130));
+	//////set up blue ghost
 	//GraphicsBuffer* pBlueGhost = mpGraphicsBufferManager->getBuffer(mBlueGhostBufferID);
 	//Sprite* pBlue = NULL;
 	//if (pBlueGhost != NULL)
@@ -186,6 +188,7 @@ bool GameApp::init()
 	//	pBlue = mpSpriteManager->createAndManageSprite(BLUE_SPRITE_ID, pBlueGhost, 0, 0, (float)pBlueGhost->getWidth(), (float)pBlueGhost->getHeight());
 	//}
 	//Unit* pBlueBoi = mpUnitManager->createUnit(*pBlue, true, PositionData(Vector2D(192, 130), 0));
+	//pBlueBoi->setSteering(Steering::ENEMY_STEER, Vector2D(192, 130));
 
 	GraphicsBuffer* pPacmanBuffer = mpGraphicsBufferManager->getBuffer(mPacmanBufferID);
 	Sprite* pPacman = NULL;

@@ -14,7 +14,7 @@ EnemySteering::EnemySteering(const UnitID & ownerID, const Vector2D & targetLoc,
 	}
 	else
 	{
-		mType = Steering::PAC_STEER;
+		mType = Steering::ENEMY_STEER;
 	}
 	setOwnerID(ownerID);
 	setTargetID(targetID);
@@ -74,11 +74,10 @@ Steering * EnemySteering::getSteering()
 	mSquareIndexShifted = pGrid->getSquareIndexFromPixelXY(mPositionCentered.getX() + xVal, mPositionCentered.getY() + yVal);
 	if (pGrid->getValueAtIndex(mSquareIndexAtCenter) == INTERSECTION_VALUE)
 	{
-		cout << "I'M HOME" << endl;
+		//cout << "I'M HOME" << endl;
 	}
 	if (pGrid->getValueAtIndex(mSquareIndexShifted) == BLOCKING_VALUE)
 	{
-		cout << "I'M BACKED AGAINST THE WALL" << endl;
 		pOwner->getPositionComponent()->setPosition(mTargetLoc);
 	}
 
@@ -101,7 +100,7 @@ void EnemySteering::checkDirection(Unit* owner)
 		mSpeedX = -mSpeed;
 		mSpeedY = 0;
 		newDir = "left";
-		owner->getPositionComponent()->setFacing(PI);
+		//owner->getPositionComponent()->setFacing(PI);
 		owner->getPositionComponent()->setPosition(owner->getPositionComponent()->getPosition() + Vector2D(mSpeedX, mSpeedY));
 	}
 	else if (isUnitRight)
@@ -109,7 +108,7 @@ void EnemySteering::checkDirection(Unit* owner)
 		mSpeedX = mSpeed;
 		mSpeedY = 0;
 		newDir = "right";
-		owner->getPositionComponent()->setFacing(0);
+		//owner->getPositionComponent()->setFacing(0);
 		owner->getPositionComponent()->setPosition(owner->getPositionComponent()->getPosition() + Vector2D(mSpeedX, mSpeedY));
 	}
 	else if (isUnitUp)
@@ -117,7 +116,7 @@ void EnemySteering::checkDirection(Unit* owner)
 		mSpeedX = 0;
 		mSpeedY = -mSpeed;
 		newDir = "up";
-		owner->getPositionComponent()->setFacing(3 * PI / 2);
+		//owner->getPositionComponent()->setFacing(3 * PI / 2);
 		owner->getPositionComponent()->setPosition(owner->getPositionComponent()->getPosition() + Vector2D(mSpeedX, mSpeedY));
 	}
 	else if (isUnitDown)
@@ -125,7 +124,7 @@ void EnemySteering::checkDirection(Unit* owner)
 		mSpeedX = 0;
 		mSpeedY = mSpeed;
 		newDir = "down";
-		owner->getPositionComponent()->setFacing(PI / 2);
+		//owner->getPositionComponent()->setFacing(PI / 2);
 		owner->getPositionComponent()->setPosition(owner->getPositionComponent()->getPosition() + Vector2D(mSpeedX, mSpeedY));
 	}
 }

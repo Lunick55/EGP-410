@@ -15,6 +15,7 @@ public:
 	virtual void onExit();
 	virtual StateTransition* update();
 
+	void setId(int myId) { mID = myId; };
 	inline void stopRun() { mContinueRun = false; };
 
 private:
@@ -24,6 +25,8 @@ private:
 	int mEnemyYDist;
 	Vector2D mEnemyXDir;
 	Vector2D mEnemyYDir;
+
+	int mID;
 
 	std::pair<Vector2D, Vector2D> mEnemyDir;
 
