@@ -124,14 +124,18 @@ StateTransition * EnemyWanderState::update()
 	//reset the index every click
 
 	//when pacman is within a certain radius of ghost
-	if (abs(enemyPosCenter.getX() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getX()) < 60
-		&& abs(enemyPosCenter.getY() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getY()) < 60)
+	//needs to be at an intersection in order to change to chase
+	if (pGrid->getValueAtIndex(fromIndex) == INTERSECTION_VALUE)
 	{
-		map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(ENEMY_CHASE_TRANSITION);
-		if (iter != mTransitions.end())//found?
+		if (abs(enemyPosCenter.getX() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getX()) < 60
+			&& abs(enemyPosCenter.getY() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getY()) < 60)
 		{
-			StateTransition* pTransition = iter->second;
-			return pTransition;
+			map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(ENEMY_CHASE_TRANSITION);
+			if (iter != mTransitions.end())//found?
+			{
+				StateTransition* pTransition = iter->second;
+				return pTransition;
+			}
 		}
 	}
 
