@@ -14,9 +14,13 @@ public:
 
 	void addCoins(int amount);
 	void draw();
+	void update();
+
+	void setID(int myID) { mID = myID; };
+	int getID() { return mID; };
 
 private:
 	int mCoins;
 	Sprite mSprite;
-
+	int mID;
 };

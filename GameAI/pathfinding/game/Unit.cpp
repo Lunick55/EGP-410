@@ -11,6 +11,7 @@
 #include "SpriteManager.h"
 #include "GameApp.h"
 #include "UnitManager.h"
+#include "Coins.h"
 
 
 
@@ -80,6 +81,27 @@ void Unit::draw() const
 	}
 }
 
+void Unit::drawCoins() const
+{
+	PositionComponent* pPosition = getPositionComponent();
+	assert(pPosition != NULL);
+	const Vector2D& pos = pPosition->getPosition();
+	gpGame->getGraphicsSystem()->draw(mSprite, pos.getX(), pos.getY(), pPosition->getFacing());
+
+	if (mShowTarget)
+	{
+		//SteeringComponent* pSteering = getSteeringComponent();
+		//assert(pSteering != NULL);
+		//const Vector2D& targetLoc = pSteering->getTargetLoc();
+		//if (&targetLoc != &ZERO_VECTOR2D)
+		//{
+			Sprite* pTargetSprite = gpGame->getSpriteManager()->getSprite(TARGET_SPRITE_ID);
+			assert(pTargetSprite != NULL);
+			gpGame->getGraphicsSystem()->draw(*pTargetSprite, pTargetSprite->getSize().getX(), pTargetSprite->getSize().getX());
+		//}
+	}
+}
+
 float Unit::getFacing() const
 {
 	PositionComponent* pPosition = getPositionComponent();
@@ -100,6 +122,14 @@ void Unit::update(float elapsedTime)
 		pChase->setId(mID);
 		mpStateMachine->update();
 	}
+}
+
+void Unit::updateCoins()
+{
+	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+	pGame->getCoins()->setID(mID);
+	if(pGame->getCoins()->getID() != NULL)
+		pGame->getCoins()->update();
 }
 
 PositionComponent* Unit::getPositionComponent() const

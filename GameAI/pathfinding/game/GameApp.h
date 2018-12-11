@@ -66,6 +66,7 @@ public:
 	inline GraphicsBufferManager* getGraphicsBufferManager() const { return mpGraphicsBufferManager; };
 	inline SpriteManager* getSpriteManager() const { return mpSpriteManager; };
 	inline void setMousePosition(int x, int y) { mousePosX = x, mousePosY = y;};
+	Coins* getCoins() { return mpCoin; };
 
 	void changeHandle(bool myHandle) { canHandle = myHandle; };
 

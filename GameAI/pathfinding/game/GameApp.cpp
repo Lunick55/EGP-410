@@ -147,8 +147,8 @@ bool GameApp::init()
 	}
 
 	mpCoin = new Coins(*pCoins);
-	//mpCoin->addCoins(10);
-	//mpCoin->draw();
+	mpCoin->addCoins(10);
+	mpCoin->draw();
 
 	//setup red ghost
 	GraphicsBuffer* pRedGhost = mpGraphicsBufferManager->getBuffer(mRedGhostBufferID);
@@ -275,9 +275,8 @@ void GameApp::processLoop()
 	mpUnitManager->drawAll();
 	//mpDebugDisplay->draw( pBackBuffer );
 	mpScore->draw(pBackBuffer);
-
 	mpMessageManager->processMessagesForThisframe();
-
+	//mpCoin->update();
 	//should be last thing in processLoop
 	mInputSystem.update();
 	Game::processLoop();
