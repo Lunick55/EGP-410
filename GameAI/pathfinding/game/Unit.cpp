@@ -25,20 +25,25 @@ Unit::Unit(const Sprite& sprite)
 	
 
 	//create the states
-	mpWanderState = new EnemyWanderState(0);
-	mpChaseState = new EnemyChaseState(1);
+	mpIdleState = new EnemyIdleState(0);
+	mpWanderState = new EnemyWanderState(1);
+	mpChaseState = new EnemyChaseState(2);
 	//set id
-	pChaseTrans = new StateTransition(ENEMY_CHASE_TRANSITION, 1);
-	pWanderTrans = new StateTransition(ENEMY_WANDER_TRANSITION, 2);
+	pChaseTrans = new StateTransition(ENEMY_CHASE_TRANSITION, 2);
+	pWanderTrans = new StateTransition(ENEMY_WANDER_TRANSITION, 1);
+	pIdleTrans = new StateTransition(ENEMY_IDLE_TRANSTION, 0);
 
 	//add the transitions to the states
+	mpIdleState->addTransition(pWanderTrans);
 	mpWanderState->addTransition(pChaseTrans);
 	mpChaseState->addTransition(pWanderTrans);
+	//mpIdleState->addTransition(pIdleTrans);
 
 
 
 	mpStateMachine->addState(mpWanderState);
 	mpStateMachine->addState(mpChaseState);
+	mpStateMachine->addState(mpIdleState);
 	mpStateMachine->setInitialStateID(0);
 
 }
@@ -50,6 +55,8 @@ Unit::~Unit()
 	delete mpChaseState;
 	delete pChaseTrans;
 	delete pWanderTrans;
+	delete mpIdleState;
+	delete pIdleTrans;
 }
 
 void Unit::draw() const
@@ -85,6 +92,8 @@ void Unit::update(float elapsedTime)
 	//std::map<UnitID, Unit*> unitMap = gpGame->getUnitManager()->getMap();
 	if (mID != 0)
 	{
+		EnemyIdleState* pIdle = dynamic_cast<EnemyIdleState*>(mpIdleState);
+		pIdle->setId(mID);
 		EnemyWanderState* pWander = dynamic_cast<EnemyWanderState*>(mpWanderState);
 		pWander->setId(mID);
 		EnemyChaseState* pChase = dynamic_cast<EnemyChaseState*>(mpChaseState);

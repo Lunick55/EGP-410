@@ -28,6 +28,7 @@ private:
 	Vector2D mEnemyYDir;
 	Path* mpPath;
 	int mID, mPathIndex;
+	int timer;
 
 
 	std::pair<Vector2D, Vector2D> mEnemyDir;

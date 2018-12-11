@@ -12,6 +12,7 @@
 #include "StateMachine.h"
 #include "EnemyWanderState.h"
 #include "EnemyChaseState.h"
+#include "EnemyIdleState.h"
 #include <typeinfo>
 
 class PhysicsComponent;
@@ -58,8 +59,11 @@ private:
 	StateMachine* mpStateMachine;
 	StateMachineState* mpWanderState;
 	StateMachineState* mpChaseState;
+	StateMachineState* mpIdleState;
 	StateTransition* pChaseTrans;
 	StateTransition* pWanderTrans;
+	StateTransition* pIdleTrans;
+
 
 	PositionComponent* mpPositionComponent = NULL;
 	Sprite mSprite;
