@@ -251,9 +251,7 @@ void UnitManager::deleteCoinUnit(const UnitID & id)
 		//remove components
 		GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
 		ComponentManager* pComponentManager = pGame->getComponentManager();
-		//pComponentManager->deallocatePhysicsComponent(pUnit->mPhysicsComponentID);
 		pComponentManager->deallocatePositionComponent(pUnit->mPositionComponentID);
-		//pComponentManager->deallocateSteeringComponent(pUnit->mSteeringComponentID);
 
 		//call destructor
 		pUnit->~Unit();
