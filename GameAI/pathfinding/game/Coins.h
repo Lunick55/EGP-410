@@ -3,6 +3,8 @@
 #include <Trackable.h>
 #include "Sprite.h"
 #include "UnitManager.h"
+#include "GameApp.h"
+#include "Game.h"
 
 class GraphicsBuffer;
 
@@ -13,6 +15,7 @@ public:
 	~Coins();
 
 	void addCoins(int amount);
+	void addCoin();
 	void draw();
 	void update();
 
@@ -23,4 +26,5 @@ private:
 	int mCoins;
 	Sprite mSprite;
 	int mID;
+	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
 };

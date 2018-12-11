@@ -1,6 +1,4 @@
 #include "Coins.h"
-#include "Game.h"
-#include "GameApp.h"
 #include "Sprite.h"
 #include "GridPathfinder.h"
 #include "UnitManager.h"
@@ -27,9 +25,14 @@ void Coins::addCoins(int amount)
 	mCoins += amount;
 }
 
+void Coins::addCoin()
+{
+	mCoins++;
+	Unit* pUnit = pGame->getUnitManager()->createCoinObject(mSprite);
+}
+
 void Coins::draw()
 {
-	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
 	for (int i = 0; i < mCoins; i++)
 	{
 		Unit* pUnit = pGame->getUnitManager()->createCoinObject(mSprite);
@@ -38,7 +41,6 @@ void Coins::draw()
 
 void Coins::update()
 {
-	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
 	GridPathfinder* pPathfinder = pGame->getPathfinder();
 	GridGraph* pGridGraph = pGame->getGridGraph();
 	Grid* pGrid = pGame->getGrid();

@@ -7,6 +7,7 @@
 #include "GraphicsSystem.h"
 #include "GameApp.h"
 #include "Grid.h"
+#include "Coins.h"
 
 UnitID UnitManager::msNextUnitID = PLAYER_UNIT_ID + 1;
 
@@ -70,11 +71,11 @@ Unit * UnitManager::createCoinUnit(const Sprite & sprite, bool shouldWrap, const
 {
 	Unit* pUnit = NULL;
 
-	//Byte* ptr = mPool.allocateObject();
-	//if (ptr != NULL)
+	Byte* ptr = mPool.allocateObject();
+	if (ptr != NULL)
 	{
 		//create unit
-		pUnit = new Unit(sprite);//placement new
+		pUnit = new (ptr)Unit(sprite);//placement new
 
 		UnitID theID = id;
 		if (theID == INVALID_UNIT_ID)
@@ -95,14 +96,6 @@ Unit * UnitManager::createCoinUnit(const Sprite & sprite, bool shouldWrap, const
 		ComponentID id = pComponentManager->allocatePositionComponent(posData, shouldWrap);
 		pUnit->mPositionComponentID = id;
 		pUnit->mpPositionComponent = pComponentManager->getPositionComponent(id);
-		//pUnit->mPhysicsComponentID = pComponentManager->allocatePhysicsComponent(pUnit->mPositionComponentID, physicsData);
-		//pUnit->mSteeringComponentID = pComponentManager->allocateSteeringComponent(pUnit->mPhysicsComponentID);
-
-		//set max's
-		//pUnit->mMaxSpeed = MAX_SPEED;
-		//pUnit->mMaxAcc = MAX_ACC;
-		//pUnit->mMaxRotAcc = MAX_ROT_ACC;
-		//pUnit->mMaxRotVel = MAX_ROT_VEL;
 
 	}
 
@@ -266,7 +259,7 @@ void UnitManager::deleteCoinUnit(const UnitID & id)
 		pUnit->~Unit();
 
 		//free the object in the pool
-		//smPool.freeObject((Byte*)pUnit);
+		mPool.freeObject((Byte*)pUnit);
 	}
 }
 
@@ -305,6 +298,7 @@ void UnitManager::drawAll() const
 
 void UnitManager::updateAll(float elapsedTime)
 {
+	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
 	for (auto it = mUnitMap.begin(); it != mUnitMap.end(); ++it)
 	{
 		it->second->update(elapsedTime);
@@ -317,6 +311,7 @@ void UnitManager::updateAll(float elapsedTime)
 	for (auto& it : toBeDeleted)
 	{
 		deleteCoinUnit(it);
+		pGame->getCoins()->addCoin();
 	}
 	toBeDeleted.clear();
 	
