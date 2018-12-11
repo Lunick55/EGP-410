@@ -32,6 +32,7 @@
 #include "Coins.h"
 #include "Player.h"
 #include "Timer.h"
+#include "AllMightyCandy.h"
 
 #include <SDL.h>
 #include <fstream>
@@ -50,6 +51,8 @@ GameApp::GameApp()
 ,mpDebugDisplay(NULL)
 , mpUnitManager(NULL)
 , mpComponentManager(NULL)
+, mpMightyCandy(NULL)
+, mCanDestroyEnemies(false)
 {
 }
 
@@ -111,6 +114,7 @@ bool GameApp::init()
 	mpGraphicsBufferManager->loadBuffer(mRedGhostBufferID, "RedGhost.png");
 	mpGraphicsBufferManager->loadBuffer(mPinkGhostBufferID, "PinkGhost.png");
 	mpGraphicsBufferManager->loadBuffer(mOrangeGhostBufferID, "OrangeGhost.png");
+	mpGraphicsBufferManager->loadBuffer(mCherryBufferID, "Cherry.png");
 
 
 
@@ -149,6 +153,15 @@ bool GameApp::init()
 	mpCoin = new Coins(*pCoins);
 	mpCoin->addCoins(10);
 	mpCoin->draw();
+
+	GraphicsBuffer* pCherryBuffer = mpGraphicsBufferManager->getBuffer(mCherryBufferID);
+	Sprite* pCherry = NULL;
+	if (pCherryBuffer != NULL)
+	{
+		pCherry = mpSpriteManager->createAndManageSprite(CHERRY_SPRITE_ID, pCherryBuffer, 0, 0, (float)pCherryBuffer->getWidth(), (float)pCherryBuffer->getHeight());
+	}
+	mpMightyCandy = new AllMightyCandy(*pCherry);
+	mpMightyCandy->draw();
 
 	//setup red ghost
 	GraphicsBuffer* pRedGhost = mpGraphicsBufferManager->getBuffer(mRedGhostBufferID);
@@ -245,6 +258,9 @@ void GameApp::cleanup()
 
 	delete mpPathPool;
 	mpPathPool = NULL;
+
+	delete mpMightyCandy;
+	mpMightyCandy = NULL;
 
 
 }

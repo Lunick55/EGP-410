@@ -30,6 +30,7 @@ class PathPooling;
 class Player;
 class Timer;
 class Vector2D;
+class AllMightyCandy;
 
 const float LOOP_TARGET_TIME = 33.3f;//how long should each frame of execution take? 30fps = 33.3ms/frame
 const IDType PLAYER_ICON_SPRITE_ID = 1;
@@ -41,6 +42,7 @@ const IDType RED_SPRITE_ID = 6;
 const IDType BLUE_SPRITE_ID = 7;
 const IDType PINK_SPRITE_ID = 8;
 const IDType ORANGE_SPRITE_ID = 9;
+const IDType CHERRY_SPRITE_ID = 10;
 
 class GameApp: public Game
 {
@@ -67,7 +69,10 @@ public:
 	inline SpriteManager* getSpriteManager() const { return mpSpriteManager; };
 	inline void setMousePosition(int x, int y) { mousePosX = x, mousePosY = y;};
 	Coins* getCoins() { return mpCoin; };
+	AllMightyCandy* getCandy() { return mpMightyCandy; };
 	Score* getScore() { return mpScore; };
+	void setCanDestroyEnemies(bool myBool) { mCanDestroyEnemies = myBool; };
+	bool getCanDestroyEnemies() { return mCanDestroyEnemies; };
 
 	void changeHandle(bool myHandle) { canHandle = myHandle; };
 
@@ -97,6 +102,7 @@ private:
 	UnitManager* mpUnitManager;
 	GridPathfinder* mpPathfinder;
 	PathPooling* mpPathPool;
+	AllMightyCandy* mpMightyCandy;
 	Timer mTimer;
 
 
@@ -110,9 +116,12 @@ private:
 	GraphicsBufferID mBlueGhostBufferID = "blueGhost";
 	GraphicsBufferID mOrangeGhostBufferID = "orangeGhost";
 	GraphicsBufferID mPinkGhostBufferID = "pinkGhost";
+	GraphicsBufferID mCherryBufferID = "allmightyCandy";
+	
 
 	bool canHandle = false;
 	bool mPacCanMove = false;
+	bool mCanDestroyEnemies;
 
 	int mPacXDist = 0;
 	int mPacYDist = 0;

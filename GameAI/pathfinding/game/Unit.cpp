@@ -12,6 +12,7 @@
 #include "GameApp.h"
 #include "UnitManager.h"
 #include "Coins.h"
+#include "AllMightyCandy.h"
 
 
 
@@ -104,6 +105,27 @@ void Unit::drawCoins() const
 	}
 }
 
+void Unit::drawCandy() const
+{
+	PositionComponent* pPosition = getPositionComponent();
+	assert(pPosition != NULL);
+	const Vector2D& pos = pPosition->getPosition();
+	gpGame->getGraphicsSystem()->draw(mSprite, pos.getX(), pos.getY(), pPosition->getFacing());
+
+	if (mShowTarget)
+	{
+		//SteeringComponent* pSteering = getSteeringComponent();
+		//assert(pSteering != NULL);
+		//const Vector2D& targetLoc = pSteering->getTargetLoc();
+		//if (&targetLoc != &ZERO_VECTOR2D)
+		//{
+		Sprite* pTargetSprite = gpGame->getSpriteManager()->getSprite(TARGET_SPRITE_ID);
+		assert(pTargetSprite != NULL);
+		gpGame->getGraphicsSystem()->draw(*pTargetSprite, pTargetSprite->getSize().getX(), pTargetSprite->getSize().getX());
+		//}
+	}
+}
+
 float Unit::getFacing() const
 {
 	PositionComponent* pPosition = getPositionComponent();
@@ -132,6 +154,14 @@ void Unit::updateCoins()
 	pGame->getCoins()->setID(mID);
 	if(pGame->getCoins()->getID() != NULL)
 		pGame->getCoins()->update();
+}
+
+void Unit::updateCandy()
+{
+	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+	pGame->getCandy()->setID(mID);
+	if (pGame->getCandy()->getID() != NULL)
+		pGame->getCandy()->update();
 }
 
 PositionComponent* Unit::getPositionComponent() const

@@ -30,9 +30,11 @@ class Unit : public Trackable
 public:
 	void draw() const;
 	void drawCoins() const;
+	void drawCandy() const;
 	float getFacing() const;
 	void update(float elapsedTime);
 	void updateCoins();
+	void updateCandy();
 
 	PositionComponent* getPositionComponent() const;
 	PhysicsComponent* getPhysicsComponent() const;
