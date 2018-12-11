@@ -9,6 +9,7 @@
 #include "Unit.h"
 #include "EnemySteering.h"
 #include "SteeringComponent.h"
+#include "Score.h"
 
 Coins::Coins(const Sprite & sprite)
 	:mSprite(sprite)
@@ -49,9 +50,9 @@ void Coins::update()
 	if (abs(enemyPosCenter.getX() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getX()) < 20
 		&& abs(enemyPosCenter.getY() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getY()) < 20)
 	{
-		cout << "Eat me" << endl;
-		//cout << i << endl;
-		//pGame->getUnitManager()->deleteCoinUnit(i);
+		
+ 		pGame->getUnitManager()->addToDelete(i);
+		pGame->getScore()->addToScore(100);
 	}
 
 

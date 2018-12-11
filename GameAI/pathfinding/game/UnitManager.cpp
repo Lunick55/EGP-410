@@ -193,6 +193,7 @@ void UnitManager::updatePacman(const Sprite & sprite, int posX, int posY)
 	Grid* pGrid = pGame->getGrid();
 	Unit* pUnit = createUnit(sprite, true, PositionData(Vector2D(posX, posY), 0), ZERO_PHYSICS_DATA, PLAYER_UNIT_ID);
 }
+
 Unit* UnitManager::getUnit(const UnitID& id) const
 {
 	auto it = mUnitMap.find(id);
@@ -257,9 +258,9 @@ void UnitManager::deleteCoinUnit(const UnitID & id)
 		//remove components
 		GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
 		ComponentManager* pComponentManager = pGame->getComponentManager();
-		pComponentManager->deallocatePhysicsComponent(pUnit->mPhysicsComponentID);
+		//pComponentManager->deallocatePhysicsComponent(pUnit->mPhysicsComponentID);
 		pComponentManager->deallocatePositionComponent(pUnit->mPositionComponentID);
-		pComponentManager->deallocateSteeringComponent(pUnit->mSteeringComponentID);
+		//pComponentManager->deallocateSteeringComponent(pUnit->mSteeringComponentID);
 
 		//call destructor
 		pUnit->~Unit();
@@ -312,5 +313,16 @@ void UnitManager::updateAll(float elapsedTime)
 	{
 		it->second->updateCoins();
 	}
+
+	for (auto& it : toBeDeleted)
+	{
+		deleteCoinUnit(it);
+	}
+	toBeDeleted.clear();
+	
+}
+void UnitManager::addToDelete(UnitID myID)
+{
+	toBeDeleted.push_back(myID);
 }
 

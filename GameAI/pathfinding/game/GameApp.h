@@ -67,6 +67,7 @@ public:
 	inline SpriteManager* getSpriteManager() const { return mpSpriteManager; };
 	inline void setMousePosition(int x, int y) { mousePosX = x, mousePosY = y;};
 	Coins* getCoins() { return mpCoin; };
+	Score* getScore() { return mpScore; };
 
 	void changeHandle(bool myHandle) { canHandle = myHandle; };
 

@@ -265,7 +265,6 @@ void GameApp::processLoop()
 	mpComponentManager->update(TARGET_ELAPSED_MS);
 
 	movePacman();
-	moveEnemy();
 
 #ifdef VISUALIZE_PATH
 	//show pathfinder visualizer
@@ -331,47 +330,6 @@ void GameApp::movePacman()
 	}
 }
 
-void GameApp::moveEnemy()
-{
-		//GridPathfinder* pPathfinder = this->getPathfinder();
-		//for (int i = 1; i < mpUnitManager->getUnitCount() ; i++)
-		//{
-		//	GridGraph* pGridGraph = this->getGridGraph();
-		//	Grid* pGrid = this->getGrid();
-		//	//get the from and to index from the grid
-		//	float enemyX = mpUnitManager->getUnit(i)->getPositionComponent()->getPosition().getX() + 16;
-		//	float enemyY = mpUnitManager->getUnit(i)->getPositionComponent()->getPosition().getY() + 16;
-
-		//	int fromIndex = pGrid->getSquareIndexFromPixelXY((int)enemyX, (int)enemyY);
-		//	int toIndex = pGrid->getSquareIndexFromPixelXY((int)enemyX + -32, (int)enemyY);
-
-		//	//Look for any intersections or walls in a straight line
-		//	//for (int i = 1;/* pGrid->getValueAtIndex(toIndex) != INTERSECTION_VALUE &&*/ pGrid->getValueAtIndex(toIndex) != BLOCKING_VALUE; i++)
-		//	//{
-		//		toIndex = pGrid->getSquareIndexFromPixelXY((int)enemyX + -32 * i, (int)enemyY * i);
-		//	//}
-
-		//	//If we're going into a wall, stop where you are
-		//	if (pGrid->getValueAtIndex(toIndex) == BLOCKING_VALUE)
-		//	{
-		//		toIndex = pGrid->getSquareIndexFromPixelXY((int)enemyX, (int)enemyY);
-		//	}
-
-		//	Node* pFromNode = pGridGraph->getNode(fromIndex);
-		//	Node* pToNode = pGridGraph->getNode(toIndex);
-
-		//	EnemySteering* pEnemySteer = dynamic_cast<EnemySteering*>(mpUnitManager->getUnit(i)->getSteeringComponent()->getSteeringBehavior());
-		//	pEnemySteer->moveDirection(-32, 0);
-
-		//	Path* newPath = pPathfinder->findPath(pFromNode, pToNode);
-
-
-		//	//reset the index every click
-		//	pEnemySteer->resetIndex();
-		//	pEnemySteer->setPath(newPath);
-		//}
-	
-}
 
 void GameApp::handleEvent(const Event & theEvent)
 {

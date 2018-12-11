@@ -7,6 +7,7 @@
 #include "PositionComponent.h"
 #include "PhysicsComponent.h"
 #include "Unit.h"
+#include <vector>
 
 class Unit;
 class Sprite;
@@ -65,6 +66,7 @@ public:
 	Unit* getPlayerUnit() const { return getUnit(PLAYER_UNIT_ID); };
 	std::map<UnitID, Unit*> getMap() { return mUnitMap; };
 	std::map<UnitID, Unit*> getCoinMap() { return mCoinUnitMap; };
+	void addToDelete(UnitID myID);
 
 	void updateFlockWeights();
 
@@ -77,5 +79,6 @@ private:
 	const int OFFSET = 64;
 	std::map<UnitID, Unit*> mUnitMap;
 	std::map<UnitID, Unit*> mCoinUnitMap;
+	std::vector<UnitID> toBeDeleted;
 };
 
