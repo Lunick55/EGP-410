@@ -26,7 +26,7 @@ private:
 	int mEnemyYDist;
 	Vector2D mEnemyXDir;
 	Vector2D mEnemyYDir;
-
+	int timer;
 	Path* mpPath;
 
 	int mID, mPathIndex;

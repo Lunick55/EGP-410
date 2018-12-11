@@ -16,6 +16,7 @@ void EnemyChaseState::onEntrance()
 	mEnemyYDir = Vector2D(0, 0);
 	mPathIndex = 1;
 	//mID = 1;
+	timer = 0;
 	mEnemyDir = make_pair(Vector2D(0, 0), Vector2D(0, 0));
 }
 
@@ -29,7 +30,7 @@ StateTransition * EnemyChaseState::update()
 	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
 	GridPathfinder* pPathfinder = pGame->getPathfinder();
 	int i = mID;
-
+	timer++;
 	GridGraph* pGridGraph = pGame->getGridGraph();
 	Grid* pGrid = pGame->getGrid();
 	//get the from and to index from the grid
@@ -110,6 +111,16 @@ StateTransition * EnemyChaseState::update()
 				StateTransition* pTransition = iter->second;
 				return pTransition;
 			}
+		}
+	}
+
+	if (pGrid->getValueAtIndex(fromIndex) == SPAWNING_VALUE && timer > 60)
+	{
+		map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(ENEMY_IDLE_TRANSTION);
+		if (iter != mTransitions.end())//found?
+		{
+			StateTransition* pTransition = iter->second;
+			return pTransition;
 		}
 	}
 

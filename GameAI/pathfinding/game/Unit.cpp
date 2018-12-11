@@ -37,7 +37,9 @@ Unit::Unit(const Sprite& sprite)
 	//add the transitions to the states
 	mpIdleState->addTransition(pWanderTrans);
 	mpWanderState->addTransition(pChaseTrans);
+	mpWanderState->addTransition(pIdleTrans);
 	mpChaseState->addTransition(pWanderTrans);
+	mpChaseState->addTransition(pIdleTrans);
 	//mpIdleState->addTransition(pIdleTrans);
 
 

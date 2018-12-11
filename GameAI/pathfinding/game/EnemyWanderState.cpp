@@ -17,6 +17,7 @@ void EnemyWanderState::onEntrance()
 	mEnemyXDir = Vector2D(0, 0);
 	mEnemyYDir = Vector2D(1, 0);
 	//mID = 1;
+	timer = 0;
 	mEnemyDir = make_pair(Vector2D(0, 0), Vector2D(1, 0));
 }
 
@@ -29,7 +30,7 @@ StateTransition * EnemyWanderState::update()
 {
 	srand(time(NULL));
 	/*set enemy distances*/
-
+	timer++;
 	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
 	GridPathfinder* pPathfinder = pGame->getPathfinder();
 	int i = mID;
@@ -136,6 +137,16 @@ StateTransition * EnemyWanderState::update()
 				StateTransition* pTransition = iter->second;
 				return pTransition;
 			}
+		}
+	}
+
+	if (pGrid->getValueAtIndex(fromIndex) == SPAWNING_VALUE && timer > 60)
+	{
+		map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(ENEMY_IDLE_TRANSTION);
+		if (iter != mTransitions.end())//found?
+		{
+			StateTransition* pTransition = iter->second;
+			return pTransition;
 		}
 	}
 

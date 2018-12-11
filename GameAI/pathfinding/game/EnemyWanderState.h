@@ -25,6 +25,7 @@ private:
 	int mEnemyYDist;
 	Vector2D mEnemyXDir;
 	Vector2D mEnemyYDir;
+	int timer;
 
 	int mID;
 
