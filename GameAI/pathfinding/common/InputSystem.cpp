@@ -76,6 +76,12 @@ void InputSystem::getKeyEvents()
 				mKeyEvent.setType(ESC);
 				EventSystem::getInstance()->fireEvent(mKeyEvent);
 			}
+			if (mEvent.key.keysym.sym == SDLK_SPACE)
+			{
+				cout << "InputSystem: SPACE" << endl;
+				mKeyEvent.setType(SPACE);
+				EventSystem::getInstance()->fireEvent(mKeyEvent);
+			}
 			if (mEvent.key.keysym.sym == SDLK_d)
 			{
 				//cout << "InputSystem: D Key" << endl;

@@ -285,6 +285,9 @@
     <ClInclude Include="PlayerWanderState.h">
       <Filter>Header Files\StateMachines</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerChaseState.h">
+      <Filter>Header Files\StateMachines</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\common\Game.cpp">
@@ -486,6 +489,9 @@
       <Filter>Source Files\pathfinding</Filter>
     </ClCompile>
     <ClCompile Include="PlayerWanderState.cpp">
+      <Filter>Source Files\StateMachines</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerChaseState.cpp">
       <Filter>Source Files\StateMachines</Filter>
     </ClCompile>
   </ItemGroup>

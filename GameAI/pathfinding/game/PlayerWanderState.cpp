@@ -131,7 +131,15 @@ StateTransition * PlayerWanderState::update()
 
 	//means the enemy is allowed to hurt the enemy
 
-
+	if (pGame->getCanDestroyEnemies() == true)
+	{
+		map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(PLAYER_CHASE_TRANSITION);
+		if (iter != mTransitions.end())//found?
+		{
+			StateTransition* pTransition = iter->second;
+			return pTransition;
+		}
+	}
 
 
 	return NULL;//no transition

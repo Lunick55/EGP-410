@@ -28,7 +28,7 @@ void EnemyWanderState::onExit()
 
 StateTransition * EnemyWanderState::update()
 {
-	srand(time(NULL));
+	srand(time(NULL)+mID);
 	/*set enemy distances*/
 	timer++;
 	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);

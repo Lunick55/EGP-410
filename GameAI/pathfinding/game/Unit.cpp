@@ -31,11 +31,14 @@ Unit::Unit(const Sprite& sprite)
 	mpIdleState = NULL;
 	mpFleeState = NULL;
 	mpPlayerWanderState = NULL;
+	mpPlayerChaseState = NULL;
 
 	pChaseTrans = NULL;
 	pWanderTrans = NULL;
 	pIdleTrans = NULL;
 	pFleeTrans = NULL;
+	pPlayerChaseTrans = NULL;
+	pPlayerWanderTrans = NULL;
 }
 
 Unit::~Unit()
@@ -50,6 +53,9 @@ Unit::~Unit()
 	delete pIdleTrans;
 	delete pFleeTrans;
 	delete mpPlayerWanderState;
+	delete mpPlayerChaseState;
+	delete pPlayerChaseTrans;
+	delete pPlayerWanderTrans;
 }
 
 void Unit::draw() const
@@ -164,6 +170,9 @@ void Unit::update(float elapsedTime)
 	{
 		PlayerWanderState* pWander = dynamic_cast<PlayerWanderState*>(mpPlayerWanderState);
 		pWander->setId(mID);
+		PlayerChaseState* pChase = dynamic_cast<PlayerChaseState*>(mpPlayerChaseState);
+		pChase->setId(mID);
+
 		mpStateMachine->update();
 	}
 }
@@ -202,9 +211,20 @@ void Unit::alignStateMachine()
 		else
 		{
 			mpPlayerWanderState = new PlayerWanderState(0);
+			mpPlayerChaseState = new PlayerChaseState(1);
+
+			pPlayerWanderTrans = new StateTransition(PLAYER_WANDER_TRANSITION, 0);
+			pPlayerChaseTrans = new StateTransition(PLAYER_CHASE_TRANSITION, 1);
+
 			mpStateMachine->addState(mpPlayerWanderState);
+			mpStateMachine->addState(mpPlayerChaseState);
+
+			mpPlayerWanderState->addTransition(pPlayerChaseTrans);
+			mpPlayerChaseState->addTransition(pPlayerWanderTrans);
+
 			mpStateMachine->setInitialStateID(0);
 		}
+
 }
 
 void Unit::updateCoins()

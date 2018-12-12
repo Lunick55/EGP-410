@@ -96,6 +96,8 @@ public:
 	void addToPowerUpDelete(UnitID myID);
 	void addToEnemyDelete(UnitID myID);
 
+	UnitID findClosestUnit(Vector2D pos);
+
 	void updateFlockWeights();
 
 private:

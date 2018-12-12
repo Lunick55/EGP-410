@@ -107,6 +107,7 @@ bool GameApp::init()
 	EventSystem::getInstance()->addListener(LEFT_ARROW, this);
 	EventSystem::getInstance()->addListener(RIGHT_ARROW, this);
 	EventSystem::getInstance()->addListener(MOUSE_LEFT, this);
+	EventSystem::getInstance()->addListener(SPACE, this);
 
 	//load buffers
 	mpGraphicsBufferManager->loadBuffer(mBackgroundBufferID, "wallpaper.bmp");
@@ -455,20 +456,29 @@ void GameApp::handleEvent(const Event & theEvent)
 				}
 
 			}
+			if (theEvent.getType() == SPACE)
+			{
+				mPacCanMove = false;
+				mpUnitManager->getPlayerUnit()->swapControl();
+	
+				if (!mpUnitManager->getPlayerUnit()->getControl())
+				{
+					mPacCanMove = true;
+				}
+			}
 			if (theEvent.getType() == S_KEY || theEvent.getType() == DOWN_ARROW)
 			{
 				if (canHandle)
 				{
-					//cout << "move down" << endl;
+					cout << "move down" << endl;
 
-					//mPacXDist = 0;
-					//mPacYDist = 32;
-					//mPacXDir = Vector2D(0, 0);
-					//mPacYDir = Vector2D(0, 1);
+					mPacXDist = 0;
+					mPacYDist = 32;
+					mPacXDir = Vector2D(0, 0);
+					mPacYDir = Vector2D(0, 1);
 
-					mPacCanMove = false;
-					////movePacman();
-					mpUnitManager->getPlayerUnit()->swapControl();
+					mPacCanMove = true;
+					//movePacman();
 
 					canHandle = false;
 				}

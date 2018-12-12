@@ -12,6 +12,7 @@
 #include "StateMachine.h"
 #include "EnemyWanderState.h"
 #include "PlayerWanderState.h"
+#include "PlayerChaseState.h"
 #include "EnemyChaseState.h"
 #include "EnemyIdleState.h"
 #include "EnemyFleeState.h"
@@ -48,10 +49,12 @@ public:
 	float getMaxSpeed() const { return mMaxSpeed; };
 	float getMaxRotAcc() const { return mMaxRotAcc; };
 	float getMaxRotVel() const { return mMaxRotVel; };
+	UnitID getID(){return mID;};
 	void setShowTarget(bool val) { mShowTarget = val; };
 	int getHealth() { return mHealth; };
 	void subtractHealth(int subtractNumber) { mHealth -= subtractNumber; };
 	void swapControl(){isAIControlled = !isAIControlled;};
+	bool getControl(){return isAIControlled;};
 
 	void setSteering(Steering::SteeringType type, Vector2D targetLoc = ZERO_VECTOR2D, UnitID targetUnitID = INVALID_UNIT_ID);
 	void whatIsState()
@@ -73,11 +76,14 @@ private:
 	StateMachineState* mpIdleState;
 	StateMachineState* mpFleeState;
 	StateMachineState* mpPlayerWanderState;
+	StateMachineState* mpPlayerChaseState;
 
 	StateTransition* pChaseTrans;
 	StateTransition* pWanderTrans;
 	StateTransition* pIdleTrans;
 	StateTransition* pFleeTrans;
+	StateTransition* pPlayerWanderTrans;
+	StateTransition* pPlayerChaseTrans;
 	//StateTransition*
 	int mHealth;
 	int mDamageRadius;

@@ -609,3 +609,27 @@ void UnitManager::deletePowerUpUnit(const UnitID & id)
 		mPool.freeObject((Byte*)pUnit);
 	}
 }
+
+UnitID UnitManager::findClosestUnit(Vector2D pos)
+{
+	UnitID smallestIndex = 0;
+	
+	if (mUnitMap.size() > 1)
+	{
+		auto firstIt = mUnitMap.begin();
+		firstIt++;
+		smallestIndex = firstIt->second->mID;
+		Vector2D diff = firstIt->second->getPositionComponent()->getPosition() - pos;
+
+		for (auto it = firstIt; it != mUnitMap.end(); ++it)
+		{
+			if ((it->second->getPositionComponent()->getPosition() - pos).getLength() < diff.getLength())
+			{
+				diff = it->second->getPositionComponent()->getPosition() - pos;
+				smallestIndex = it->second->mID;
+			}
+		}
+	}
+
+	return smallestIndex;
+}

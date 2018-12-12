@@ -21,6 +21,7 @@ enum EventType
 	LEFT_ARROW,
 	RIGHT_ARROW,
 	ENTER,	
+	SPACE,
 	PLAYER_MOVE_TO_MESSAGE,
 	MOUSE_LEFT,
 	NUM_EVENT_TYPES //Tracks the number of event types
