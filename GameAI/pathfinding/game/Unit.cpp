@@ -31,17 +31,26 @@ Unit::Unit(const Sprite& sprite)
 	mpIdleState = new EnemyIdleState(0);
 	mpWanderState = new EnemyWanderState(1);
 	mpChaseState = new EnemyChaseState(2);
+	mpFleeState = new EnemyFleeState(3);
 	//set id
 	pChaseTrans = new StateTransition(ENEMY_CHASE_TRANSITION, 2);
 	pWanderTrans = new StateTransition(ENEMY_WANDER_TRANSITION, 1);
 	pIdleTrans = new StateTransition(ENEMY_IDLE_TRANSTION, 0);
+	pFleeTrans = new StateTransition(ENEMY_FLEE_TRANSITION, 3);
 
 	//add the transitions to the states
 	mpIdleState->addTransition(pWanderTrans);
+
 	mpWanderState->addTransition(pChaseTrans);
+	mpWanderState->addTransition(pFleeTrans);
 	mpWanderState->addTransition(pIdleTrans);
+
 	mpChaseState->addTransition(pWanderTrans);
+	mpChaseState->addTransition(pFleeTrans);
 	mpChaseState->addTransition(pIdleTrans);
+
+	mpFleeState->addTransition(pWanderTrans);
+	
 	//mpIdleState->addTransition(pIdleTrans);
 
 
@@ -49,6 +58,7 @@ Unit::Unit(const Sprite& sprite)
 	mpStateMachine->addState(mpWanderState);
 	mpStateMachine->addState(mpChaseState);
 	mpStateMachine->addState(mpIdleState);
+	mpStateMachine->addState(mpFleeState);
 	mpStateMachine->setInitialStateID(0);
 
 }
@@ -58,10 +68,12 @@ Unit::~Unit()
 	delete mpStateMachine;
 	delete mpWanderState;
 	delete mpChaseState;
+	delete mpFleeState;
 	delete pChaseTrans;
 	delete pWanderTrans;
 	delete mpIdleState;
 	delete pIdleTrans;
+	delete pFleeTrans;
 }
 
 void Unit::draw() const
@@ -167,6 +179,8 @@ void Unit::update(float elapsedTime)
 		pWander->setId(mID);
 		EnemyChaseState* pChase = dynamic_cast<EnemyChaseState*>(mpChaseState);
 		pChase->setId(mID);
+		EnemyFleeState* pFlee = dynamic_cast<EnemyFleeState*>(mpFleeState);
+		pFlee->setId(mID);
 		pGame->getPowerUp()->setEnemyID(mID);
 		mpStateMachine->update();
 	}

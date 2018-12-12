@@ -15,6 +15,7 @@
 #include "DepthFirstPathfinder.h"
 #include "DijkstraPathfinder.h"
 #include "AStarPathFinder.h"
+#include "AStarPathFleeing.h"
 #include "Pathfinder.h"
 #include "GridPathfinder.h"
 #include "GridVisualizer.h"
@@ -49,6 +50,7 @@ GameApp::GameApp()
 ,mpGrid(NULL)
 ,mpGridGraph(NULL)
 ,mpPathfinder(NULL)
+,mpPathFleeing(NULL)
 ,mpDebugDisplay(NULL)
 , mpUnitManager(NULL)
 , mpComponentManager(NULL)
@@ -89,6 +91,7 @@ bool GameApp::init()
 
 	mpPathfinder = new AStarPathfinder(mpGridGraph);
 	//mpPathfinder = new DepthFirstPathfinder(mpGridGraph);
+	mpPathFleeing = new AStarPathFleeing(mpGridGraph);
 
 	//create new pathPool
 	mpPathPool = new PathPooling;
@@ -255,6 +258,9 @@ void GameApp::cleanup()
 
 	delete mpPathfinder;
 	mpPathfinder = NULL;
+
+	delete mpPathFleeing;
+	mpPathFleeing = NULL;
 
 	delete mpDebugDisplay;
 	mpDebugDisplay = NULL;

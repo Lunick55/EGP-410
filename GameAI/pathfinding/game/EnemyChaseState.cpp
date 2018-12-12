@@ -99,8 +99,8 @@ StateTransition * EnemyChaseState::update()
 
 
 	//check within radius of player and take damage if you are
-	if (abs(enemyPosCenter.getX() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getX()) < 60
-		&& abs(enemyPosCenter.getY() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getY()) < 60)
+	if (abs(enemyPosCenter.getX() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getX()) < 20
+		&& abs(enemyPosCenter.getY() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getY()) < 20)
 	{
 		if (timer > 20)
 		{
@@ -113,7 +113,12 @@ StateTransition * EnemyChaseState::update()
 
 	if (pGame->getCanDestroyEnemies())
 	{
-		//transition back to flee
+		map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(ENEMY_FLEE_TRANSITION);
+		if (iter != mTransitions.end())//found?
+		{
+			StateTransition* pTransition = iter->second;
+			return pTransition;
+		}
 	}
 
 	//IF PLAYER IS OUTSIDE OF RADIUS

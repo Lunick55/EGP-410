@@ -13,6 +13,7 @@
 #include "EnemyWanderState.h"
 #include "EnemyChaseState.h"
 #include "EnemyIdleState.h"
+#include "EnemyFleeState.h"
 #include <typeinfo>
 
 class PhysicsComponent;
@@ -68,9 +69,13 @@ private:
 	StateMachineState* mpWanderState;
 	StateMachineState* mpChaseState;
 	StateMachineState* mpIdleState;
+	StateMachineState* mpFleeState;
+	//EnemyFleeState*	mpFleeState;
+
 	StateTransition* pChaseTrans;
 	StateTransition* pWanderTrans;
 	StateTransition* pIdleTrans;
+	StateTransition* pFleeTrans;
 	//StateTransition*
 	int mHealth;
 	int mDamageRadius;

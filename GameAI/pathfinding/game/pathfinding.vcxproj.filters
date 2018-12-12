@@ -279,6 +279,9 @@
     <ClInclude Include="Powerup.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
+    <ClInclude Include="AStarPathFleeing.h">
+      <Filter>Header Files\pathfinding</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\common\Game.cpp">
@@ -475,6 +478,9 @@
     </ClCompile>
     <ClCompile Include="Powerup.cpp">
       <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="AStarPathFleeing.cpp">
+      <Filter>Source Files\pathfinding</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

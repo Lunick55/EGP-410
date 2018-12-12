@@ -38,15 +38,17 @@ void Powerup::update()
 	int toIndex = pGrid->getSquareIndexFromPixelXY((int)enemyPosCenter.getX(), (int)enemyPosCenter.getY());
 
 
-
-	if (abs(enemyPosCenter.getX() - pGame->getUnitManager()->getUnit(j)->getPositionComponent()->getPosition().getX()) < 20
-		&& abs(enemyPosCenter.getY() - pGame->getUnitManager()->getUnit(j)->getPositionComponent()->getPosition().getY()) < 20)
+	if (pGame->getUnitManager()->getUnit(j) != NULL)
 	{
-		pGame->getUnitManager()->addToPowerUpDelete(i);
-		pGame->setEnemySpeed(1.6);
-		//pGame->getScore()->addToScore(1000);
-	}
+		if (abs(enemyPosCenter.getX() - pGame->getUnitManager()->getUnit(j)->getPositionComponent()->getPosition().getX()) < 20
+			&& abs(enemyPosCenter.getY() - pGame->getUnitManager()->getUnit(j)->getPositionComponent()->getPosition().getY()) < 20)
+		{
+			pGame->getUnitManager()->addToPowerUpDelete(i);
+			pGame->setEnemySpeed(1.6);
+			//pGame->getScore()->addToScore(1000);
+		}
 
+	}
 
 }
 

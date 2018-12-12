@@ -99,6 +99,7 @@
     <ClInclude Include="ArriveAndFaceSteering.h" />
     <ClInclude Include="ArriveSteering.h" />
     <ClInclude Include="AStarPathfinder.h" />
+    <ClInclude Include="AStarPathFleeing.h" />
     <ClInclude Include="Cohesion.h" />
     <ClInclude Include="Coins.h" />
     <ClInclude Include="Component.h" />
@@ -170,6 +171,7 @@
     <ClCompile Include="ArriveAndFaceSteering.cpp" />
     <ClCompile Include="ArriveSteering.cpp" />
     <ClCompile Include="AStarPathfinder.cpp" />
+    <ClCompile Include="AStarPathFleeing.cpp" />
     <ClCompile Include="Coins.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentManager.cpp" />

@@ -64,6 +64,7 @@ public:
 	inline GameMessageManager* getMessageManager() { return mpMessageManager; };
 	inline GridVisualizer* getGridVisualizer() { return mpGridVisualizer; };
 	inline GridPathfinder* getPathfinder() { return mpPathfinder; };
+	inline GridPathfinder* getPathFleeing() { return mpPathFleeing; };
 	inline Grid* getGrid() { return mpGrid; };
 	inline GridGraph* getGridGraph() { return mpGridGraph; };
 	inline GraphicsSystem* getGraphicsSystem() const { return mpGraphicsSystem; };
@@ -110,6 +111,7 @@ private:
 	ComponentManager* mpComponentManager;
 	UnitManager* mpUnitManager;
 	GridPathfinder* mpPathfinder;
+	GridPathfinder* mpPathFleeing;
 	PathPooling* mpPathPool;
 	AllMightyCandy* mpMightyCandy;
 	Powerup* mpPowerUp;

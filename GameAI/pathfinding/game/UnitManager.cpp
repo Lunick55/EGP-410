@@ -469,6 +469,13 @@ void UnitManager::updateAll(float elapsedTime)
 	}
 	powerUpToBeDeleted.clear();
 
+	for (auto& it : enemyToBeDeleted)
+	{
+		deleteUnit(it);
+		//pGame->getCoins()->addCoin();
+	}
+	enemyToBeDeleted.clear();
+
 	resetCandyUnit(elapsedTime);
 	checkIfPlayerDead();
 }
@@ -485,6 +492,11 @@ void UnitManager::addToCandyDelete(UnitID myID)
 void UnitManager::addToPowerUpDelete(UnitID myID)
 {
 	powerUpToBeDeleted.push_back(myID);
+}
+
+void UnitManager::addToEnemyDelete(UnitID myID)
+{
+	enemyToBeDeleted.push_back(myID);
 }
 
 Unit * UnitManager::createPowerUpUnit(const Sprite & sprite, bool shouldWrap, const PositionData & posData, const PhysicsData & physicsData, const UnitID & id)

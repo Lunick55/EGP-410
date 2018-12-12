@@ -154,7 +154,12 @@ StateTransition * EnemyWanderState::update()
 	//means the enemy is allowed to hurt the enemy
 	if (pGame->getCanDestroyEnemies())
 	{
-		//transition back to flee
+		map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(ENEMY_FLEE_TRANSITION);
+		if (iter != mTransitions.end())//found?
+		{
+			StateTransition* pTransition = iter->second;
+			return pTransition;
+		}
 	}
 	if (pGrid->getValueAtIndex(fromIndex) == SPAWNING_VALUE && timer > 60)
 	{

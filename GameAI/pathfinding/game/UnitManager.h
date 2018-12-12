@@ -92,6 +92,7 @@ public:
 	void addToDelete(UnitID myID);
 	void addToCandyDelete(UnitID myID);
 	void addToPowerUpDelete(UnitID myID);
+	void addToEnemyDelete(UnitID myID);
 
 	void updateFlockWeights();
 
@@ -110,6 +111,7 @@ private:
 	std::map<UnitID, Unit*> mCoinUnitMap;
 	std::map<UnitID, Unit*> mCandyUnitMap;
 	std::map<UnitID, Unit*> mPowerUpUnitMap;
+	std::vector<UnitID> enemyToBeDeleted;
 	std::vector<UnitID> toBeDeleted;
 	std::vector<UnitID> candyToBeDeleted;
 	std::vector<UnitID> powerUpToBeDeleted;
