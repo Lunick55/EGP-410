@@ -30,7 +30,7 @@ private:
 	Path mPath;
 	//Player mPlayerSteering;
 	bool isUnitDown, isUnitRight, isUnitLeft, isUnitUp;
-	int mSpeed, mSpeedX, mSpeedY;
+	float mSpeed, mSpeedX, mSpeedY;
 	int mIndex;
 
 	string oldDir, newDir; 

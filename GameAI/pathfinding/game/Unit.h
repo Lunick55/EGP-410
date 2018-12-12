@@ -31,10 +31,12 @@ public:
 	void draw() const;
 	void drawCoins() const;
 	void drawCandy() const;
+	void drawPowerUp() const;
 	float getFacing() const;
 	void update(float elapsedTime);
 	void updateCoins();
 	void updateCandy();
+	void updatePowerUp();
 
 	PositionComponent* getPositionComponent() const;
 	PhysicsComponent* getPhysicsComponent() const;
@@ -44,6 +46,8 @@ public:
 	float getMaxRotAcc() const { return mMaxRotAcc; };
 	float getMaxRotVel() const { return mMaxRotVel; };
 	void setShowTarget(bool val) { mShowTarget = val; };
+	int getHealth() { return mHealth; };
+	void subtractHealth(int subtractNumber) { mHealth -= subtractNumber; };
 
 
 	void setSteering(Steering::SteeringType type, Vector2D targetLoc = ZERO_VECTOR2D, UnitID targetUnitID = INVALID_UNIT_ID);
@@ -67,7 +71,9 @@ private:
 	StateTransition* pChaseTrans;
 	StateTransition* pWanderTrans;
 	StateTransition* pIdleTrans;
-
+	//StateTransition*
+	int mHealth;
+	int mDamageRadius;
 
 	PositionComponent* mpPositionComponent = NULL;
 	Sprite mSprite;
@@ -76,9 +82,6 @@ private:
 	float mMaxRotAcc;
 	float mMaxRotVel;
 	bool mShowTarget;
-
-	int mHealth;
-	int mDamageRadius;
 
 	Unit(const Sprite& sprite);
 	virtual ~Unit();

@@ -29,6 +29,17 @@ int Score::getCurrentScore()
 
 void Score::draw(GraphicsBuffer * pBuffer)
 {
+	mBuffer = pBuffer;
 	string toDisplay = "Score: " + to_string(mScore);
-	gpGame->getGraphicsSystem()->writeText(*pBuffer, *(gpGame->getFont()), mPos.getX(), mPos.getY(), toDisplay, WHITE_COLOR);
+	gpGame->getGraphicsSystem()->writeText(*mBuffer, *(gpGame->getFont()), mPos.getX(), mPos.getY(), toDisplay, WHITE_COLOR);
+}
+
+void Score::draw()
+{
+	string toDisplay = "Sorry you lose";
+	gpGame->getGraphicsSystem()->writeText(*mBuffer, *(gpGame->getFont()), 32, 68, toDisplay, WHITE_COLOR);
+	string toDisplay2 = "your score is: " + to_string(mScore);
+	gpGame->getGraphicsSystem()->writeText(*mBuffer, *(gpGame->getFont()), 32, 100, toDisplay2, WHITE_COLOR);
+	string toDisplay3 = "Press esc to exit!";
+	gpGame->getGraphicsSystem()->writeText(*mBuffer, *(gpGame->getFont()), 32, 300, toDisplay3, WHITE_COLOR);
 }

@@ -14,9 +14,11 @@ public:
 	void addToScore(int addScore);
 	int getCurrentScore();
 	void draw(GraphicsBuffer* pBuffer);
+	void draw();
 
 private:
 	Vector2D mPos;
 	int mScore;
+	GraphicsBuffer* mBuffer;
 
 };

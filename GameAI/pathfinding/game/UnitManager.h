@@ -45,6 +45,11 @@ public:
 			it->second->~Unit();
 		}
 		mCandyUnitMap.clear();
+		for (auto it = mPowerUpUnitMap.begin(); it != mPowerUpUnitMap.end(); ++it)
+		{
+			it->second->~Unit();
+		}
+		mPowerUpUnitMap.clear();
 	};
 
 	Unit* createUnit(const Sprite& sprite, bool shouldWrap = true, const PositionData& posData = ZERO_POSITION_DATA, const PhysicsData& physicsData = ZERO_PHYSICS_DATA, const UnitID& id = INVALID_UNIT_ID);
@@ -52,6 +57,7 @@ public:
 	Unit* createRandomUnit(const Sprite& sprite);
 	Unit* createRandomObject(const Sprite& sprite);
 	Unit* createPacman(const Sprite& sprite);
+	void checkIfPlayerDead();
 
 	bool checkWall(int posX, int posY);
 
@@ -73,12 +79,19 @@ public:
 	Unit* createCandyObject(const Sprite& sprite);
 	Unit* getCandyUnit(const UnitID& id) const;
 	void deleteCandyUnit(const UnitID& id);
+	void resetCandyUnit(float elapsedTime);
+
+	Unit* createPowerUpUnit(const Sprite& sprite, bool shouldWrap = true, const PositionData& posData = ZERO_POSITION_DATA, const PhysicsData& physicsData = ZERO_PHYSICS_DATA, const UnitID& id = INVALID_UNIT_ID);
+	Unit* createPowerUpObject(const Sprite& sprite);
+	Unit* getPowerUpUnit(const UnitID& id) const;
+	void deletePowerUpUnit(const UnitID& id);
 
 	Unit* getPlayerUnit() const { return getUnit(PLAYER_UNIT_ID); };
 	std::map<UnitID, Unit*> getMap() { return mUnitMap; };
 	std::map<UnitID, Unit*> getCoinMap() { return mCoinUnitMap; };
 	void addToDelete(UnitID myID);
 	void addToCandyDelete(UnitID myID);
+	void addToPowerUpDelete(UnitID myID);
 
 	void updateFlockWeights();
 
@@ -89,10 +102,16 @@ private:
 	const int PIXEL_SIZE = 32;
 	const int HALF = 2;
 	const int OFFSET = 64;
+	float timer;
+	int respawnTime = 60;
+	bool canAdd = false;
+	
 	std::map<UnitID, Unit*> mUnitMap;
 	std::map<UnitID, Unit*> mCoinUnitMap;
 	std::map<UnitID, Unit*> mCandyUnitMap;
+	std::map<UnitID, Unit*> mPowerUpUnitMap;
 	std::vector<UnitID> toBeDeleted;
 	std::vector<UnitID> candyToBeDeleted;
+	std::vector<UnitID> powerUpToBeDeleted;
 };
 

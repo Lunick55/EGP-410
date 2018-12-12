@@ -95,6 +95,26 @@ StateTransition * EnemyChaseState::update()
 	pEnemySteer->setPath(mpPath);
 	//reset the index every click
 
+	
+
+
+	//check within radius of player and take damage if you are
+	if (abs(enemyPosCenter.getX() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getX()) < 60
+		&& abs(enemyPosCenter.getY() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getY()) < 60)
+	{
+		if (timer > 20)
+		{
+			pGame->getUnitManager()->getPlayerUnit()->subtractHealth(1);
+			timer = 0;
+			cout << pGame->getUnitManager()->getPlayerUnit()->getHealth() << endl;
+		}
+
+	}
+
+	if (pGame->getCanDestroyEnemies())
+	{
+		//transition back to flee
+	}
 
 	//IF PLAYER IS OUTSIDE OF RADIUS
 	//when pacman is within a certain radius of ghost

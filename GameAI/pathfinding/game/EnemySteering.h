@@ -24,13 +24,16 @@ public:
 	void resetIndex();
 	void checkDirection(Unit* owner);
 
+	void setSpeed(int mySpeed) { mSpeed = mySpeed; };
+	float getSpeed() { return mSpeed; };
+
 	void centerToNode();
 
 private:
 	Path mPath;
 	//Player mPlayerSteering;
 	bool isUnitDown, isUnitRight, isUnitLeft, isUnitUp;
-	int mSpeed, mSpeedX, mSpeedY;
+	float mSpeed, mSpeedX, mSpeedY;
 	int mIndex;
 
 	string oldDir, newDir;

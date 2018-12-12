@@ -276,6 +276,9 @@
     <ClInclude Include="AllMightyCandy.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
+    <ClInclude Include="Powerup.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\common\Game.cpp">
@@ -468,6 +471,9 @@
       <Filter>Source Files\Steering</Filter>
     </ClCompile>
     <ClCompile Include="AllMightyCandy.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Powerup.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
   </ItemGroup>

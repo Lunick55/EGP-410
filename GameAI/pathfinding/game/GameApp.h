@@ -31,6 +31,7 @@ class Player;
 class Timer;
 class Vector2D;
 class AllMightyCandy;
+class Powerup;
 
 const float LOOP_TARGET_TIME = 33.3f;//how long should each frame of execution take? 30fps = 33.3ms/frame
 const IDType PLAYER_ICON_SPRITE_ID = 1;
@@ -43,6 +44,7 @@ const IDType BLUE_SPRITE_ID = 7;
 const IDType PINK_SPRITE_ID = 8;
 const IDType ORANGE_SPRITE_ID = 9;
 const IDType CHERRY_SPRITE_ID = 10;
+const IDType POWER_UP_ID = 11;
 
 class GameApp: public Game
 {
@@ -71,10 +73,17 @@ public:
 	Coins* getCoins() { return mpCoin; };
 	AllMightyCandy* getCandy() { return mpMightyCandy; };
 	Score* getScore() { return mpScore; };
+	Powerup* getPowerUp() { return mpPowerUp; };
 	void setCanDestroyEnemies(bool myBool) { mCanDestroyEnemies = myBool; };
 	bool getCanDestroyEnemies() { return mCanDestroyEnemies; };
+	void markForExiting() { startingToExit = true; };
+	void resetTimer();
+
+	void setEnemySpeed(float mySpeed) { enemySpeed = mySpeed; };
+	float getEnemySpeed() { return enemySpeed; };
 
 	void changeHandle(bool myHandle) { canHandle = myHandle; };
+	void checkForExit();
 
 	//Added in functions from other project
 	inline ComponentManager* getComponentManager() { return mpComponentManager; };
@@ -103,7 +112,12 @@ private:
 	GridPathfinder* mpPathfinder;
 	PathPooling* mpPathPool;
 	AllMightyCandy* mpMightyCandy;
+	Powerup* mpPowerUp;
 	Timer mTimer;
+	int timer;
+	float candyRespawn;
+	bool startingToExit;
+	float enemySpeed;
 
 
 	GraphicsBufferID mBackgroundBufferID = "woods";
@@ -117,6 +131,7 @@ private:
 	GraphicsBufferID mOrangeGhostBufferID = "orangeGhost";
 	GraphicsBufferID mPinkGhostBufferID = "pinkGhost";
 	GraphicsBufferID mCherryBufferID = "allmightyCandy";
+	GraphicsBufferID mPowerUpID = "powerUp";
 	
 
 	bool canHandle = false;

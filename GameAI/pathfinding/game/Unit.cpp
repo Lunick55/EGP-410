@@ -13,6 +13,7 @@
 #include "UnitManager.h"
 #include "Coins.h"
 #include "AllMightyCandy.h"
+#include "Powerup.h"
 
 
 
@@ -126,6 +127,27 @@ void Unit::drawCandy() const
 	}
 }
 
+void Unit::drawPowerUp() const
+{
+	PositionComponent* pPosition = getPositionComponent();
+	assert(pPosition != NULL);
+	const Vector2D& pos = pPosition->getPosition();
+	gpGame->getGraphicsSystem()->draw(mSprite, pos.getX(), pos.getY(), pPosition->getFacing());
+
+	if (mShowTarget)
+	{
+		//SteeringComponent* pSteering = getSteeringComponent();
+		//assert(pSteering != NULL);
+		//const Vector2D& targetLoc = pSteering->getTargetLoc();
+		//if (&targetLoc != &ZERO_VECTOR2D)
+		//{
+		Sprite* pTargetSprite = gpGame->getSpriteManager()->getSprite(TARGET_SPRITE_ID);
+		assert(pTargetSprite != NULL);
+		gpGame->getGraphicsSystem()->draw(*pTargetSprite, pTargetSprite->getSize().getX(), pTargetSprite->getSize().getX());
+		//}
+	}
+}
+
 float Unit::getFacing() const
 {
 	PositionComponent* pPosition = getPositionComponent();
@@ -136,6 +158,7 @@ float Unit::getFacing() const
 void Unit::update(float elapsedTime)
 {
 	//std::map<UnitID, Unit*> unitMap = gpGame->getUnitManager()->getMap();
+	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
 	if (mID != 0)
 	{
 		EnemyIdleState* pIdle = dynamic_cast<EnemyIdleState*>(mpIdleState);
@@ -144,6 +167,7 @@ void Unit::update(float elapsedTime)
 		pWander->setId(mID);
 		EnemyChaseState* pChase = dynamic_cast<EnemyChaseState*>(mpChaseState);
 		pChase->setId(mID);
+		pGame->getPowerUp()->setEnemyID(mID);
 		mpStateMachine->update();
 	}
 }
@@ -162,6 +186,14 @@ void Unit::updateCandy()
 	pGame->getCandy()->setID(mID);
 	if (pGame->getCandy()->getID() != NULL)
 		pGame->getCandy()->update();
+}
+
+void Unit::updatePowerUp()
+{
+	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+	pGame->getPowerUp()->setID(mID);
+	if (pGame->getPowerUp()->getID() != NULL)
+		pGame->getPowerUp()->update();
 }
 
 PositionComponent* Unit::getPositionComponent() const

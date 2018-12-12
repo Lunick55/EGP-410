@@ -33,6 +33,7 @@
 #include "Player.h"
 #include "Timer.h"
 #include "AllMightyCandy.h"
+#include "Powerup.h"
 
 #include <SDL.h>
 #include <fstream>
@@ -53,6 +54,9 @@ GameApp::GameApp()
 , mpComponentManager(NULL)
 , mpMightyCandy(NULL)
 , mCanDestroyEnemies(false)
+, candyRespawn(0.0)
+, enemySpeed(1.0)
+, mpPowerUp(NULL)
 {
 }
 
@@ -66,10 +70,9 @@ bool GameApp::init()
 	bool retVal = Game::init();
 	if( retVal == false )
 	{
-
 		return false;
 	}
-
+	startingToExit = false;
 	mpMessageManager = new GameMessageManager();
 	mpUnitManager = new UnitManager(MAX_UNITS);
 	mpComponentManager = new ComponentManager(MAX_UNITS);
@@ -115,6 +118,7 @@ bool GameApp::init()
 	mpGraphicsBufferManager->loadBuffer(mPinkGhostBufferID, "PinkGhost.png");
 	mpGraphicsBufferManager->loadBuffer(mOrangeGhostBufferID, "OrangeGhost.png");
 	mpGraphicsBufferManager->loadBuffer(mCherryBufferID, "Cherry.png");
+	mpGraphicsBufferManager->loadBuffer(mPowerUpID, "EnemyPowerUp.png");
 
 
 
@@ -153,6 +157,17 @@ bool GameApp::init()
 	mpCoin = new Coins(*pCoins);
 	mpCoin->addCoins(10);
 	mpCoin->draw();
+
+	GraphicsBuffer* pPowerUpBuffer = mpGraphicsBufferManager->getBuffer(mPowerUpID);
+	Sprite* pPowerUp = NULL;
+	if (pPowerUpBuffer != NULL)
+	{
+		pPowerUp = mpSpriteManager->createAndManageSprite(POWER_UP_ID, pPowerUpBuffer, 0, 0, (float)pPowerUpBuffer->getWidth(), (float)pPowerUpBuffer->getHeight());
+	}
+
+	mpPowerUp = new Powerup(*pPowerUp);
+	for(int i = 0; i < 10; i++)
+		mpPowerUp->draw();
 
 	GraphicsBuffer* pCherryBuffer = mpGraphicsBufferManager->getBuffer(mCherryBufferID);
 	Sprite* pCherry = NULL;
@@ -262,6 +277,9 @@ void GameApp::cleanup()
 	delete mpMightyCandy;
 	mpMightyCandy = NULL;
 
+	delete mpPowerUp;
+	mpPowerUp = NULL;
+
 
 }
 
@@ -273,33 +291,64 @@ void GameApp::beginLoop()
 
 void GameApp::processLoop()
 {
-	//get back buffer
-	GraphicsBuffer* pBackBuffer = mpGraphicsSystem->getBackBuffer();
-	//copy to back buffer
-	mpGridVisualizer->draw( *pBackBuffer );
-	mpUnitManager->updateAll(TARGET_ELAPSED_MS);
-	mpComponentManager->update(TARGET_ELAPSED_MS);
+	if (!startingToExit)
+	{
 
-	movePacman();
+		//get back buffer
+		GraphicsBuffer* pBackBuffer = mpGraphicsSystem->getBackBuffer();
+		//copy to back buffer
+		mpGridVisualizer->draw( *pBackBuffer );
+		mpUnitManager->updateAll(TARGET_ELAPSED_MS);
+		mpComponentManager->update(TARGET_ELAPSED_MS);
 
-#ifdef VISUALIZE_PATH
-	//show pathfinder visualizer
-	mpPathfinder->drawVisualization(mpGrid, pBackBuffer);
-#endif
-	//draw units
-	mpUnitManager->drawAll();
-	//mpDebugDisplay->draw( pBackBuffer );
-	mpScore->draw(pBackBuffer);
-	mpMessageManager->processMessagesForThisframe();
-	//mpCoin->update();
-	//should be last thing in processLoop
+		resetTimer();
+
+		movePacman();
+
+	#ifdef VISUALIZE_PATH
+		//show pathfinder visualizer
+		mpPathfinder->drawVisualization(mpGrid, pBackBuffer);
+	#endif
+		//draw units
+		mpUnitManager->drawAll();
+		//mpDebugDisplay->draw( pBackBuffer );
+		mpScore->draw(pBackBuffer);
+		mpMessageManager->processMessagesForThisframe();
+		//mpCoin->update();
+		//should be last thing in processLoop
+	}
+	checkForExit();
 	mInputSystem.update();
+
+	//cout << TARGET_ELAPSED_MS << endl;
 	Game::processLoop();
 }
 
 bool GameApp::endLoop()
 {
 	return Game::endLoop();
+}
+
+
+
+void GameApp::resetTimer()
+{
+	if (getCanDestroyEnemies())
+		candyRespawn += TARGET_ELAPSED_MS;
+	if (candyRespawn > 10 && getCanDestroyEnemies())
+	{
+		//cout << "Im popping in for a bit" << endl;
+		setCanDestroyEnemies(false);
+		candyRespawn = 0.0;
+	}
+}
+
+void GameApp::checkForExit()
+{
+	if (startingToExit)
+	{
+		mpScore->draw();
+	}
 }
 
 void GameApp::movePacman()
@@ -354,120 +403,123 @@ void GameApp::handleEvent(const Event & theEvent)
 		{
 			markForExit();
 		}
-		if (theEvent.getType() == MOUSE_LEFT)
+		if (!startingToExit)
 		{
-
-			GridPathfinder* pPathfinder = this->getPathfinder();
-
-			//continue for every unit
-			for (int i = 1; i <= mpUnitManager->getUnitCount(); i++)
+			if (theEvent.getType() == MOUSE_LEFT)
 			{
-				GridGraph* pGridGraph = this->getGridGraph();
-				Grid* pGrid = this->getGrid();
-				//ge the from and to index from the grid
-				int fromIndex = pGrid->getSquareIndexFromPixelXY((int)mpUnitManager->getUnit(i)->getPositionComponent()->getPosition().getX(), (int)mpUnitManager->getUnit(i)->getPositionComponent()->getPosition().getY());
-				int toIndex = pGrid->getSquareIndexFromPixelXY((int)mousePosX, (int)mousePosY);
-				Node* pFromNode = pGridGraph->getNode(fromIndex);
-				Node* pToNode = pGridGraph->getNode(toIndex);
 
-				//set path
-				FollowPath* pFollowSteering = dynamic_cast<FollowPath*>(mpUnitManager->getUnit(i)->getSteeringComponent()->getSteeringBehavior());
-				Path* newPath;
+				GridPathfinder* pPathfinder = this->getPathfinder();
 
-				//check to see wheher there is already a path made from the pool
-				if (mpPathPool->getPath(pFromNode, pToNode) != nullptr)
+				//continue for every unit
+				for (int i = 1; i <= mpUnitManager->getUnitCount(); i++)
 				{
-					//get that path from the pool
-					newPath = mpPathPool->getPath(pFromNode, pToNode);
+					GridGraph* pGridGraph = this->getGridGraph();
+					Grid* pGrid = this->getGrid();
+					//ge the from and to index from the grid
+					int fromIndex = pGrid->getSquareIndexFromPixelXY((int)mpUnitManager->getUnit(i)->getPositionComponent()->getPosition().getX(), (int)mpUnitManager->getUnit(i)->getPositionComponent()->getPosition().getY());
+					int toIndex = pGrid->getSquareIndexFromPixelXY((int)mousePosX, (int)mousePosY);
+					Node* pFromNode = pGridGraph->getNode(fromIndex);
+					Node* pToNode = pGridGraph->getNode(toIndex);
+
+					//set path
+					FollowPath* pFollowSteering = dynamic_cast<FollowPath*>(mpUnitManager->getUnit(i)->getSteeringComponent()->getSteeringBehavior());
+					Path* newPath;
+
+					//check to see wheher there is already a path made from the pool
+					if (mpPathPool->getPath(pFromNode, pToNode) != nullptr)
+					{
+						//get that path from the pool
+						newPath = mpPathPool->getPath(pFromNode, pToNode);
+					}
+					else
+					{
+						//otherwise assign it to the pool so that it doesnt need to research it again
+						newPath = pPathfinder->findPath(pFromNode, pToNode);
+						mpPathPool->storePath(pFromNode, pToNode, newPath);
+					}
+					//smooth the path
+					PathSmoothing mySmooth(pGridGraph);
+					newPath = mySmooth.smoothPath(newPath);
+
+					//reset the index every click
+					pFollowSteering->resetIndex();
+					pFollowSteering->setPath(newPath);
 				}
-				else
+
+			}
+			if (theEvent.getType() == S_KEY || theEvent.getType() == DOWN_ARROW)
+			{
+				if (canHandle)
 				{
-					//otherwise assign it to the pool so that it doesnt need to research it again
-					newPath = pPathfinder->findPath(pFromNode, pToNode);
-					mpPathPool->storePath(pFromNode, pToNode, newPath);
+					cout << "move down" << endl;
+
+					mPacXDist = 0;
+					mPacYDist = 32;
+					mPacXDir = Vector2D(0, 0);
+					mPacYDir = Vector2D(0, 1);
+
+					mPacCanMove = true;
+					//movePacman();
+
+					canHandle = false;
 				}
-				//smooth the path
-				PathSmoothing mySmooth(pGridGraph);
-				newPath = mySmooth.smoothPath(newPath);
-
-				//reset the index every click
-				pFollowSteering->resetIndex();
-				pFollowSteering->setPath(newPath);
 			}
-
-		}
-		if (theEvent.getType() == S_KEY || theEvent.getType() == DOWN_ARROW)
-		{
-			if (canHandle)
+			if (theEvent.getType() == D_KEY || theEvent.getType() == RIGHT_ARROW)
 			{
-				cout << "move down" << endl;
+				if (canHandle)
+				{
+					cout << "move left" << endl;
 
-				mPacXDist = 0;
-				mPacYDist = 32;
-				mPacXDir = Vector2D(0, 0);
-				mPacYDir = Vector2D(0, 1);
+					mPacXDist = 32;
+					mPacYDist = 0;
+					mPacXDir = Vector2D(0, 1);
+					mPacYDir = Vector2D(0, 0);
 
-				mPacCanMove = true;
-				//movePacman();
+					mPacCanMove = true;
+					//movePacman();
 
-				canHandle = false;
+					canHandle = false;
+				}
 			}
-		}
-		if (theEvent.getType() == D_KEY || theEvent.getType() == RIGHT_ARROW)
-		{
-			if (canHandle)
+			if (theEvent.getType() == A_KEY || theEvent.getType() == LEFT_ARROW)
 			{
-				cout << "move left" << endl;
-
-				mPacXDist = 32;
-				mPacYDist = 0;
-				mPacXDir = Vector2D(0, 1);
-				mPacYDir = Vector2D(0, 0);
-
-				mPacCanMove = true;
-				//movePacman();
-
-				canHandle = false;
-			}
-		}
-		if (theEvent.getType() == A_KEY || theEvent.getType() == LEFT_ARROW)
-		{
 			
-			if (canHandle)
-			{
-				cout << "move left" << endl;
+				if (canHandle)
+				{
+					cout << "move left" << endl;
 				
-				mPacXDist = -32;
-				mPacYDist = 0;
-				mPacXDir = Vector2D(1, 0);
-				mPacYDir = Vector2D(0, 0);
+					mPacXDist = -32;
+					mPacYDist = 0;
+					mPacXDir = Vector2D(1, 0);
+					mPacYDir = Vector2D(0, 0);
 
-				mPacCanMove = true;
-				//movePacman();
+					mPacCanMove = true;
+					//movePacman();
 
-				canHandle = false;
+					canHandle = false;
+				}
+			
 			}
-			
-		}
-		if (theEvent.getType() == W_KEY || theEvent.getType() == UP_ARROW)
-		{
-			//DFS
-			
-			if (canHandle)
+			if (theEvent.getType() == W_KEY || theEvent.getType() == UP_ARROW)
 			{
-				cout << "move up" << endl;
-
-				mPacXDist = 0;
-				mPacYDist = -32;
-				mPacXDir = Vector2D(0, 0);
-				mPacYDir = Vector2D(1, 0);
-
-				mPacCanMove = true;
-				//movePacman();
-
-				canHandle = false;
-			}
+				//DFS
 			
+				if (canHandle)
+				{
+					cout << "move up" << endl;
+
+					mPacXDist = 0;
+					mPacYDist = -32;
+					mPacXDir = Vector2D(0, 0);
+					mPacYDir = Vector2D(1, 0);
+
+					mPacCanMove = true;
+					//movePacman();
+
+					canHandle = false;
+				}
+			
+			}
 		}
 
 }

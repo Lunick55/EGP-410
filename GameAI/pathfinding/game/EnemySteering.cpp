@@ -24,8 +24,8 @@ EnemySteering::EnemySteering(const UnitID & ownerID, const Vector2D & targetLoc,
 	isUnitRight = false;
 	isUnitLeft = false;
 	isUnitUp = false;
-
-	mSpeed = 1.6;
+	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+	mSpeed = pGame->getEnemySpeed();
 	mSpeedX = mSpeedY = 0;
 
 	mIndex = 0;
@@ -48,7 +48,7 @@ Steering * EnemySteering::getSteering()
 	Unit* pOwner = pGame->getUnitManager()->getUnit(mOwnerID);
 	PhysicsData data = pOwner->getPhysicsComponent()->getData();
 	Grid* pGrid = dynamic_cast<GameApp*>(gpGame)->getGrid();
-
+	mSpeed = pGame->getEnemySpeed();
 	//get the target location for each of the nodes
 	if (mPath.peekNode(mIndex) != NULL)
 	{

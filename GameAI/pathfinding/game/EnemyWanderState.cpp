@@ -124,6 +124,18 @@ StateTransition * EnemyWanderState::update()
 	pEnemySteer->setPath(newPath);
 	//reset the index every click
 
+	//check within radius of player and take damage if you are
+	if (abs(enemyPosCenter.getX() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getX()) < 60
+		&& abs(enemyPosCenter.getY() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getY()) < 60)
+	{
+		if (timer > 20)
+		{
+			pGame->getUnitManager()->getPlayerUnit()->subtractHealth(1);
+			timer = 0;
+			cout << pGame->getUnitManager()->getPlayerUnit()->getHealth() << endl;
+		}
+
+	}
 	//when pacman is within a certain radius of ghost
 	//needs to be at an intersection in order to change to chase
 	if (pGrid->getValueAtIndex(fromIndex) == INTERSECTION_VALUE)
@@ -139,7 +151,11 @@ StateTransition * EnemyWanderState::update()
 			}
 		}
 	}
-
+	//means the enemy is allowed to hurt the enemy
+	if (pGame->getCanDestroyEnemies())
+	{
+		//transition back to flee
+	}
 	if (pGrid->getValueAtIndex(fromIndex) == SPAWNING_VALUE && timer > 60)
 	{
 		map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(ENEMY_IDLE_TRANSTION);

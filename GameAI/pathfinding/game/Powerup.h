@@ -8,11 +8,11 @@
 
 class GraphicsBuffer;
 
-class AllMightyCandy :public Trackable
+class Powerup :public Trackable
 {
 public:
-	AllMightyCandy(const Sprite& sprite);
-	~AllMightyCandy();
+	Powerup(const Sprite& sprite);
+	~Powerup();
 
 	void draw();
 	void update();
@@ -22,10 +22,14 @@ public:
 	void setID(int myID) { mID = myID; };
 	int getID() { return mID; };
 
+	void setEnemyID(int myID) { enemyID = myID; };
+	int getEnemyID() { return enemyID; };
+
 private:
 	int mCoins;
 	Sprite mSprite;
 	int mID;
+	int enemyID;
 	int timer = 0;
 	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
 };

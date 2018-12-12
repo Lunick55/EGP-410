@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "ComponentManager.h"
 #include "GraphicsSystem.h"
+#include "AllMightyCandy.h"
 #include "GameApp.h"
 #include "Grid.h"
 #include "Coins.h"
@@ -16,6 +17,7 @@ using namespace std;
 UnitManager::UnitManager(Uint32 maxSize)
 	:mPool(maxSize, sizeof(Unit))
 {
+	timer = 0;
 }
 
 Unit* UnitManager::createUnit(const Sprite& sprite, bool shouldWrap, const PositionData& posData /*= ZERO_POSITION_DATA*/, const PhysicsData& physicsData /*= ZERO_PHYSICS_DATA*/, const UnitID& id)
@@ -40,6 +42,8 @@ Unit* UnitManager::createUnit(const Sprite& sprite, bool shouldWrap, const Posit
 
 		//assign id and increment nextID counter
 		pUnit->mID = theID;
+
+		pUnit->mHealth = 10;
 
 		//create some components
 		GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
@@ -146,6 +150,17 @@ Unit * UnitManager::createRandomObject(const Sprite & sprite)
 
 	Unit* pUnit = createUnit(sprite, true, PositionData(Vector2D(posX, posY), 0)/*, PhysicsData(Vector2D(velX, velY), Vector2D(0.1f, 0.1f), 0.1f, 0.05f)*/);
 	return pUnit;
+}
+
+void UnitManager::checkIfPlayerDead()
+{
+	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+	if (getPlayerUnit()->getHealth() < 0)
+	{
+		cout << "I am dead boi" << endl;
+		pGame->markForExiting();
+	}
+
 }
 
 Unit * UnitManager::createCoinObject(const Sprite & sprite)
@@ -352,6 +367,27 @@ void UnitManager::deleteCandyUnit(const UnitID & id)
 	}
 }
 
+void UnitManager::resetCandyUnit(float elapsedTime)
+{
+	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+	if (pGame->getCanDestroyEnemies())
+	{
+		canAdd = true;
+	}
+	if (canAdd)
+	{
+		timer += elapsedTime;
+	}
+	if (timer > respawnTime)
+	{
+		pGame->getCandy()->reset();
+		//pGame->setCanDestroyEnemies(false);
+		timer = 0;
+		canAdd = false;
+	}
+}
+
+
 void UnitManager::deleteRandomUnit()
 {
 	if (mUnitMap.size() >= 1)
@@ -387,6 +423,10 @@ void UnitManager::drawAll() const
 	{
 		it->second->drawCandy();
 	}
+	for (auto it = mPowerUpUnitMap.begin(); it != mPowerUpUnitMap.end(); ++it)
+	{
+		it->second->drawPowerUp();
+	}
 }
 
 void UnitManager::updateAll(float elapsedTime)
@@ -404,7 +444,10 @@ void UnitManager::updateAll(float elapsedTime)
 	{
 		it->second->updateCandy();
 	}
-
+	for (auto it = mPowerUpUnitMap.begin(); it != mPowerUpUnitMap.end(); ++it)
+	{
+		it->second->updatePowerUp();
+	}
 	for (auto& it : toBeDeleted)
 	{
 		deleteCoinUnit(it);
@@ -418,7 +461,16 @@ void UnitManager::updateAll(float elapsedTime)
 		//pGame->getCoins()->addCoin();
 	}
 	candyToBeDeleted.clear();
-	
+
+	for (auto& it : powerUpToBeDeleted)
+	{
+		deletePowerUpUnit(it);
+		//pGame->getCoins()->addCoin();
+	}
+	powerUpToBeDeleted.clear();
+
+	resetCandyUnit(elapsedTime);
+	checkIfPlayerDead();
 }
 void UnitManager::addToDelete(UnitID myID)
 {
@@ -430,3 +482,98 @@ void UnitManager::addToCandyDelete(UnitID myID)
 	candyToBeDeleted.push_back(myID);
 }
 
+void UnitManager::addToPowerUpDelete(UnitID myID)
+{
+	powerUpToBeDeleted.push_back(myID);
+}
+
+Unit * UnitManager::createPowerUpUnit(const Sprite & sprite, bool shouldWrap, const PositionData & posData, const PhysicsData & physicsData, const UnitID & id)
+{
+	Unit* pUnit = NULL;
+
+	Byte* ptr = mPool.allocateObject();
+	if (ptr != NULL)
+	{
+		//create unit
+		pUnit = new (ptr)Unit(sprite);//placement new
+
+		UnitID theID = id;
+		if (theID == INVALID_UNIT_ID)
+		{
+			theID = msNextUnitID;
+			msNextUnitID++;
+		}
+
+		//place in map
+		mPowerUpUnitMap[theID] = pUnit;
+
+		//assign id and increment nextID counter
+		pUnit->mID = theID;
+
+		//create some components
+		GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+		ComponentManager* pComponentManager = pGame->getComponentManager();
+		ComponentID id = pComponentManager->allocatePositionComponent(posData, shouldWrap);
+		pUnit->mPositionComponentID = id;
+		pUnit->mpPositionComponent = pComponentManager->getPositionComponent(id);
+
+	}
+
+	return pUnit;
+}
+
+Unit * UnitManager::createPowerUpObject(const Sprite & sprite)
+{
+	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+	Grid* pGrid = pGame->getGrid();
+	int posX = rand() % pGrid->getGridWidth() * PIXEL_SIZE;
+	int posY = rand() % pGrid->getGridHeight() * PIXEL_SIZE;
+	int velX = rand() % 50 - 25;
+	int velY = rand() % 40 - 20;
+
+	while (pGrid->getValueAtPixelXY(posX, posY) != CLEAR_VALUE)
+	{
+		posX = rand() % pGrid->getGridWidth() * PIXEL_SIZE;
+		posY = rand() % pGrid->getGridHeight() * PIXEL_SIZE;
+	}
+
+	Unit* pUnit = createPowerUpUnit(sprite, true, PositionData(Vector2D(posX, posY), 0)/*, PhysicsData(Vector2D(velX, velY), Vector2D(0.1f, 0.1f), 0.1f, 0.05f)*/);
+
+	return pUnit;
+}
+
+Unit * UnitManager::getPowerUpUnit(const UnitID & id) const
+{
+	auto it = mPowerUpUnitMap.find(id);
+	if (it != mPowerUpUnitMap.end())//found?
+	{
+		return it->second;
+	}
+	else
+	{
+		return NULL;
+	}
+}
+
+void UnitManager::deletePowerUpUnit(const UnitID & id)
+{
+	auto it = mPowerUpUnitMap.find(id);
+	if (it != mPowerUpUnitMap.end())//found?
+	{
+		Unit* pUnit = it->second;//hold for later
+
+								 //remove from map
+		mPowerUpUnitMap.erase(it);
+
+		//remove components
+		GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+		ComponentManager* pComponentManager = pGame->getComponentManager();
+		pComponentManager->deallocatePositionComponent(pUnit->mPositionComponentID);
+
+		//call destructor
+		pUnit->~Unit();
+
+		//free the object in the pool
+		mPool.freeObject((Byte*)pUnit);
+	}
+}

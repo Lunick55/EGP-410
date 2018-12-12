@@ -1,4 +1,4 @@
-#include "AllMightyCandy.h"
+#include "Powerup.h"
 #include "Sprite.h"
 #include "GridPathfinder.h"
 #include "UnitManager.h"
@@ -9,48 +9,48 @@
 #include "SteeringComponent.h"
 #include "Score.h"
 
-AllMightyCandy::AllMightyCandy(const Sprite & sprite)
+Powerup::Powerup(const Sprite & sprite)
 	:mSprite(sprite)
 {
 	//mCoins = 0;
 }
 
-AllMightyCandy::~AllMightyCandy()
+Powerup::~Powerup()
 {
 
 }
 
-void AllMightyCandy::draw()
+void Powerup::draw()
 {
-	Unit* pUnit = pGame->getUnitManager()->createCandyObject(mSprite);
-	
+	Unit* pUnit = pGame->getUnitManager()->createPowerUpObject(mSprite);
 }
 
-void AllMightyCandy::update()
+void Powerup::update()
 {
 	GridPathfinder* pPathfinder = pGame->getPathfinder();
 	GridGraph* pGridGraph = pGame->getGridGraph();
 	Grid* pGrid = pGame->getGrid();
 	int i = mID;
+	int j = enemyID;
 
-	Vector2D enemyPosCenter = (pGame->getUnitManager()->getCandyUnit(i)->getPositionComponent()->getPosition() + Vector2D(16, 16));
+	Vector2D enemyPosCenter = (pGame->getUnitManager()->getPowerUpUnit(i)->getPositionComponent()->getPosition() + Vector2D(16, 16));
 	int fromIndex = pGrid->getSquareIndexFromPixelXY((int)enemyPosCenter.getX(), (int)enemyPosCenter.getY());
 	int toIndex = pGrid->getSquareIndexFromPixelXY((int)enemyPosCenter.getX(), (int)enemyPosCenter.getY());
 
 
-	
-	if (abs(enemyPosCenter.getX() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getX()) < 20
-		&& abs(enemyPosCenter.getY() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getY()) < 20)
+
+	if (abs(enemyPosCenter.getX() - pGame->getUnitManager()->getUnit(j)->getPositionComponent()->getPosition().getX()) < 20
+		&& abs(enemyPosCenter.getY() - pGame->getUnitManager()->getUnit(j)->getPositionComponent()->getPosition().getY()) < 20)
 	{
-		pGame->getUnitManager()->addToCandyDelete(i);
-		pGame->setCanDestroyEnemies(true);
+		pGame->getUnitManager()->addToPowerUpDelete(i);
+		pGame->setEnemySpeed(1.6);
 		//pGame->getScore()->addToScore(1000);
 	}
 
 
 }
 
-void AllMightyCandy::reset()
+void Powerup::reset()
 {
 	Unit* pUnit = pGame->getUnitManager()->createCandyObject(mSprite);
 }

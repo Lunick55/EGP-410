@@ -137,6 +137,7 @@
     <ClInclude Include="PhysicsComponent.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PositionComponent.h" />
+    <ClInclude Include="Powerup.h" />
     <ClInclude Include="Score.h" />
     <ClInclude Include="SeekSteering.h" />
     <ClInclude Include="Seperation.h" />
@@ -204,6 +205,7 @@
     <ClCompile Include="PhysicsComponent.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PositionComponent.cpp" />
+    <ClCompile Include="Powerup.cpp" />
     <ClCompile Include="Score.cpp" />
     <ClCompile Include="SeekSteering.cpp" />
     <ClCompile Include="StateMachine.cpp" />
