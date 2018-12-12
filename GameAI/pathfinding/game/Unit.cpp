@@ -25,42 +25,17 @@ Unit::Unit(const Sprite& sprite)
 	, mShowTarget(true)
 {
 	mpStateMachine = new StateMachine();
-	
 
-	//create the states
-	mpIdleState = new EnemyIdleState(0);
-	mpWanderState = new EnemyWanderState(1);
-	mpChaseState = new EnemyChaseState(2);
-	mpFleeState = new EnemyFleeState(3);
-	//set id
-	pChaseTrans = new StateTransition(ENEMY_CHASE_TRANSITION, 2);
-	pWanderTrans = new StateTransition(ENEMY_WANDER_TRANSITION, 1);
-	pIdleTrans = new StateTransition(ENEMY_IDLE_TRANSTION, 0);
-	pFleeTrans = new StateTransition(ENEMY_FLEE_TRANSITION, 3);
+	mpWanderState = NULL;
+	mpChaseState = NULL;
+	mpIdleState = NULL;
+	mpFleeState = NULL;
+	mpPlayerWanderState = NULL;
 
-	//add the transitions to the states
-	mpIdleState->addTransition(pWanderTrans);
-
-	mpWanderState->addTransition(pChaseTrans);
-	mpWanderState->addTransition(pFleeTrans);
-	mpWanderState->addTransition(pIdleTrans);
-
-	mpChaseState->addTransition(pWanderTrans);
-	mpChaseState->addTransition(pFleeTrans);
-	mpChaseState->addTransition(pIdleTrans);
-
-	mpFleeState->addTransition(pWanderTrans);
-	
-	//mpIdleState->addTransition(pIdleTrans);
-
-
-
-	mpStateMachine->addState(mpWanderState);
-	mpStateMachine->addState(mpChaseState);
-	mpStateMachine->addState(mpIdleState);
-	mpStateMachine->addState(mpFleeState);
-	mpStateMachine->setInitialStateID(0);
-
+	pChaseTrans = NULL;
+	pWanderTrans = NULL;
+	pIdleTrans = NULL;
+	pFleeTrans = NULL;
 }
 
 Unit::~Unit()
@@ -184,6 +159,51 @@ void Unit::update(float elapsedTime)
 		pGame->getPowerUp()->setEnemyID(mID);
 		mpStateMachine->update();
 	}
+	else if (isAIControlled)
+	{
+		PlayerWanderState* pWander = dynamic_cast<PlayerWanderState*>(mpPlayerWanderState);
+		pWander->setId(mID);
+		mpStateMachine->update();
+	}
+}
+
+void Unit::alignStateMachine()
+{	
+		if (mID != 0)
+		{
+			//create the states
+			mpIdleState = new EnemyIdleState(0);
+			mpWanderState = new EnemyWanderState(1);
+			mpChaseState = new EnemyChaseState(2);
+			mpFleeState = new EnemyFleeState(3);
+			//set id
+			pChaseTrans = new StateTransition(ENEMY_CHASE_TRANSITION, 2);
+			pWanderTrans = new StateTransition(ENEMY_WANDER_TRANSITION, 1);
+			pIdleTrans = new StateTransition(ENEMY_IDLE_TRANSTION, 0);
+			pFleeTrans = new StateTransition(ENEMY_FLEE_TRANSITION, 3);
+	
+			//add the transitions to the states
+			mpIdleState->addTransition(pWanderTrans);
+			mpWanderState->addTransition(pChaseTrans);
+			mpWanderState->addTransition(pFleeTrans);
+			mpWanderState->addTransition(pIdleTrans);
+			mpChaseState->addTransition(pWanderTrans);
+			mpChaseState->addTransition(pFleeTrans);
+			mpChaseState->addTransition(pIdleTrans);
+			mpFleeState->addTransition(pWanderTrans);
+	
+			mpStateMachine->addState(mpWanderState);
+			mpStateMachine->addState(mpChaseState);
+			mpStateMachine->addState(mpIdleState);
+			mpStateMachine->addState(mpFleeState);
+			mpStateMachine->setInitialStateID(0);
+		}
+		else
+		{
+			mpPlayerWanderState = new PlayerWanderState(0);
+			mpStateMachine->addState(mpPlayerWanderState);
+			mpStateMachine->setInitialStateID(0);
+		}
 }
 
 void Unit::updateCoins()

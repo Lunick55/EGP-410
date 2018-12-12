@@ -74,7 +74,7 @@ Steering * PacSteering::getSteering()
 	mSquareIndexShifted = pGrid->getSquareIndexFromPixelXY(mPositionCentered.getX() + xVal, mPositionCentered.getY() + yVal);
 	if (pGrid->getValueAtIndex(mSquareIndexAtCenter) == INTERSECTION_VALUE)
 	{
-		pGame->SetPacCanMove(true);
+		//pGame->SetPacCanMove(true);
 	}
 	if (pGrid->getValueAtIndex(mSquareIndexShifted) == BLOCKING_VALUE)
 	{

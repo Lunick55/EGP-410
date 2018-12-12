@@ -282,6 +282,9 @@
     <ClInclude Include="AStarPathFleeing.h">
       <Filter>Header Files\pathfinding</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerWanderState.h">
+      <Filter>Header Files\StateMachines</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\common\Game.cpp">
@@ -481,6 +484,9 @@
     </ClCompile>
     <ClCompile Include="AStarPathFleeing.cpp">
       <Filter>Source Files\pathfinding</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerWanderState.cpp">
+      <Filter>Source Files\StateMachines</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

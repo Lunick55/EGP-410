@@ -11,6 +11,7 @@
 #include "Steering.h"
 #include "StateMachine.h"
 #include "EnemyWanderState.h"
+#include "PlayerWanderState.h"
 #include "EnemyChaseState.h"
 #include "EnemyIdleState.h"
 #include "EnemyFleeState.h"
@@ -34,6 +35,7 @@ public:
 	void drawCandy() const;
 	void drawPowerUp() const;
 	float getFacing() const;
+	void alignStateMachine();
 	void update(float elapsedTime);
 	void updateCoins();
 	void updateCandy();
@@ -49,7 +51,7 @@ public:
 	void setShowTarget(bool val) { mShowTarget = val; };
 	int getHealth() { return mHealth; };
 	void subtractHealth(int subtractNumber) { mHealth -= subtractNumber; };
-
+	void swapControl(){isAIControlled = !isAIControlled;};
 
 	void setSteering(Steering::SteeringType type, Vector2D targetLoc = ZERO_VECTOR2D, UnitID targetUnitID = INVALID_UNIT_ID);
 	void whatIsState()
@@ -70,7 +72,7 @@ private:
 	StateMachineState* mpChaseState;
 	StateMachineState* mpIdleState;
 	StateMachineState* mpFleeState;
-	//EnemyFleeState*	mpFleeState;
+	StateMachineState* mpPlayerWanderState;
 
 	StateTransition* pChaseTrans;
 	StateTransition* pWanderTrans;
@@ -79,6 +81,8 @@ private:
 	//StateTransition*
 	int mHealth;
 	int mDamageRadius;
+
+	bool isAIControlled = false;
 
 	PositionComponent* mpPositionComponent = NULL;
 	Sprite mSprite;
