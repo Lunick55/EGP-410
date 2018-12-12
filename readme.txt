@@ -8,10 +8,11 @@ How to compile:
 4. Press F5/Ctrl+F5 to run the program
 
 Keyboard Inputs:
-f: Sets pathfinding to be DFS
-a: Sets pathfinding to be A*
-d: Sets pathfinding to be Dijkstra
-Esc: Exits Simulation
+A or UP ARROW: Move pacman to the left.
+S or DOWN ARROW: Move pacman down.
+D or RIGHT ARROW: Move pacman to the right.
+W or UP ARROW: Move pacman up.
+SPACE: Changes player control to state machine control. The game plays itself for you.
 
 Jeff: All commits made by Tcarbone are from Kelly. There was an issue with thte computer I was using at the time and the person using it before 
 forgot to log out of their github and for some reason it allowed me to continue to commit. Sorry about that.
