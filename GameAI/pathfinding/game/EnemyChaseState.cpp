@@ -31,6 +31,7 @@ StateTransition * EnemyChaseState::update()
 	GridPathfinder* pPathfinder = pGame->getPathfinder();
 	int i = mID;
 	timer++;
+
 	GridGraph* pGridGraph = pGame->getGridGraph();
 	Grid* pGrid = pGame->getGrid();
 	//get the from and to index from the grid
@@ -127,8 +128,8 @@ StateTransition * EnemyChaseState::update()
 
 	if (pGrid->getValueAtIndex(fromIndex) == INTERSECTION_VALUE)
 	{
-		if (abs(enemyPosCenter.getX() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getX()) >= 60
-			&& abs(enemyPosCenter.getY() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getY()) >= 60)
+		if (abs(enemyPosCenter.getX() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getX()) >= 100
+			&& abs(enemyPosCenter.getY() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getY()) >= 100)
 		{
 			map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(ENEMY_WANDER_TRANSITION);
 			if (iter != mTransitions.end())//found?

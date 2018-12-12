@@ -173,6 +173,7 @@ void Unit::update(float elapsedTime)
 	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
 	if (mID != 0)
 	{
+		pGame->getPowerUp()->setEnemyID(mID);
 		EnemyIdleState* pIdle = dynamic_cast<EnemyIdleState*>(mpIdleState);
 		pIdle->setId(mID);
 		EnemyWanderState* pWander = dynamic_cast<EnemyWanderState*>(mpWanderState);
@@ -181,7 +182,6 @@ void Unit::update(float elapsedTime)
 		pChase->setId(mID);
 		EnemyFleeState* pFlee = dynamic_cast<EnemyFleeState*>(mpFleeState);
 		pFlee->setId(mID);
-		pGame->getPowerUp()->setEnemyID(mID);
 		mpStateMachine->update();
 	}
 }
@@ -202,12 +202,12 @@ void Unit::updateCandy()
 		pGame->getCandy()->update();
 }
 
-void Unit::updatePowerUp()
+void Unit::updatePowerUp(float elapsedTime)
 {
 	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
 	pGame->getPowerUp()->setID(mID);
 	if (pGame->getPowerUp()->getID() != NULL)
-		pGame->getPowerUp()->update();
+		pGame->getPowerUp()->update(elapsedTime);
 }
 
 PositionComponent* Unit::getPositionComponent() const

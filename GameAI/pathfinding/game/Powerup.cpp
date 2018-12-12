@@ -25,7 +25,7 @@ void Powerup::draw()
 	Unit* pUnit = pGame->getUnitManager()->createPowerUpObject(mSprite);
 }
 
-void Powerup::update()
+void Powerup::update(float elapsedTime)
 {
 	GridPathfinder* pPathfinder = pGame->getPathfinder();
 	GridGraph* pGridGraph = pGame->getGridGraph();
@@ -38,16 +38,32 @@ void Powerup::update()
 	int toIndex = pGrid->getSquareIndexFromPixelXY((int)enemyPosCenter.getX(), (int)enemyPosCenter.getY());
 
 
-	if (pGame->getUnitManager()->getUnit(j) != NULL)
-	{
 		if (abs(enemyPosCenter.getX() - pGame->getUnitManager()->getUnit(j)->getPositionComponent()->getPosition().getX()) < 20
 			&& abs(enemyPosCenter.getY() - pGame->getUnitManager()->getUnit(j)->getPositionComponent()->getPosition().getY()) < 20)
 		{
-			pGame->getUnitManager()->addToPowerUpDelete(i);
-			pGame->setEnemySpeed(1.6);
+			/*if (pGame->getUnitManager()->getUnit(j) != NULL)
+			{*/
+				pGame->getUnitManager()->addToPowerUpDelete(i);
+
+				//this sets it to every unit in the game, not just one
+				pGame->setEnemySpeed(1.6);
+				increaseTime = true;
+			/*}*/
 			//pGame->getScore()->addToScore(1000);
 		}
 
+	
+
+	if(increaseTime)
+	{
+		timer+=elapsedTime;
+	}
+
+	if (timer > 50)
+	{
+		increaseTime = false;
+		pGame->setEnemySpeed(1.0);
+		timer = 0;
 	}
 
 }

@@ -38,7 +38,6 @@
 
 #include <SDL.h>
 #include <fstream>
-#include <vector>
 
 const int GRID_SQUARE_SIZE = 32;
 const std::string gFileName = "pathgrid.txt";
@@ -167,7 +166,6 @@ bool GameApp::init()
 	{
 		pPowerUp = mpSpriteManager->createAndManageSprite(POWER_UP_ID, pPowerUpBuffer, 0, 0, (float)pPowerUpBuffer->getWidth(), (float)pPowerUpBuffer->getHeight());
 	}
-
 	mpPowerUp = new Powerup(*pPowerUp);
 	for(int i = 0; i < 10; i++)
 		mpPowerUp->draw();
@@ -187,36 +185,40 @@ bool GameApp::init()
 	if (pRedGhost != NULL)
 	{
 		pRGhost = mpSpriteManager->createAndManageSprite(RED_SPRITE_ID, pRedGhost, 0, 0, (float)pRedGhost->getWidth(), (float)pRedGhost->getHeight());
+		//mEnemySprite = new Sprite(*pRGhost);
+		mEnemySprites.push_back(pRGhost);
 	}
 	Unit* pRdGhost = mpUnitManager->createUnit(*pRGhost, true, PositionData(Vector2D(224, 130), 0));
 	pRdGhost->setSteering(Steering::ENEMY_STEER, Vector2D(224, 130));
-
 	////set up orange ghost
 	GraphicsBuffer* pOrangeGhost = mpGraphicsBufferManager->getBuffer(mOrangeGhostBufferID);
 	Sprite* pOGhost = NULL;
 	if (pOrangeGhost != NULL)
 	{
 		pOGhost = mpSpriteManager->createAndManageSprite(ORANGE_SPRITE_ID, pOrangeGhost, 0, 0, (float)pOrangeGhost->getWidth(), (float)pOrangeGhost->getHeight());
+		mEnemySprites.push_back(pOGhost);
 	}
 	Unit* pOrGhost = mpUnitManager->createUnit(*pOGhost, true, PositionData(Vector2D(256, 130), 0));
 	pOrGhost->setSteering(Steering::ENEMY_STEER, Vector2D(256, 130));
 
 	////set up pink ghost
-	//GraphicsBuffer* pPinkGhost = mpGraphicsBufferManager->getBuffer(mPinkGhostBufferID);
-	//Sprite* pPGhost = NULL;
-	//if (pPinkGhost != NULL)
-	//{
-	//	pPGhost = mpSpriteManager->createAndManageSprite(PINK_SPRITE_ID, pPinkGhost, 0, 0, (float)pPinkGhost->getWidth(), (float)pPinkGhost->getHeight());
-	//}
+	GraphicsBuffer* pPinkGhost = mpGraphicsBufferManager->getBuffer(mPinkGhostBufferID);
+	Sprite* pPGhost = NULL;
+	if (pPinkGhost != NULL)
+	{
+		pPGhost = mpSpriteManager->createAndManageSprite(PINK_SPRITE_ID, pPinkGhost, 0, 0, (float)pPinkGhost->getWidth(), (float)pPinkGhost->getHeight());
+		mEnemySprites.push_back(pPGhost);
+	}
 	//Unit* pPkGhost = mpUnitManager->createUnit(*pPGhost, true, PositionData(Vector2D(288, 130), 0));
 	//pPkGhost->setSteering(Steering::ENEMY_STEER, Vector2D(288, 130));
 	//////set up blue ghost
-	//GraphicsBuffer* pBlueGhost = mpGraphicsBufferManager->getBuffer(mBlueGhostBufferID);
-	//Sprite* pBlue = NULL;
-	//if (pBlueGhost != NULL)
-	//{
-	//	pBlue = mpSpriteManager->createAndManageSprite(BLUE_SPRITE_ID, pBlueGhost, 0, 0, (float)pBlueGhost->getWidth(), (float)pBlueGhost->getHeight());
-	//}
+	GraphicsBuffer* pBlueGhost = mpGraphicsBufferManager->getBuffer(mBlueGhostBufferID);
+	Sprite* pBlue = NULL;
+	if (pBlueGhost != NULL)
+	{
+		pBlue = mpSpriteManager->createAndManageSprite(BLUE_SPRITE_ID, pBlueGhost, 0, 0, (float)pBlueGhost->getWidth(), (float)pBlueGhost->getHeight());
+		mEnemySprites.push_back(pBlue);
+	}
 	//Unit* pBlueBoi = mpUnitManager->createUnit(*pBlue, true, PositionData(Vector2D(192, 130), 0));
 	//pBlueBoi->setSteering(Steering::ENEMY_STEER, Vector2D(192, 130));
 

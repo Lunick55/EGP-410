@@ -50,6 +50,7 @@ public:
 			it->second->~Unit();
 		}
 		mPowerUpUnitMap.clear();
+		//delete mEnemySprite;
 	};
 
 	Unit* createUnit(const Sprite& sprite, bool shouldWrap = true, const PositionData& posData = ZERO_POSITION_DATA, const PhysicsData& physicsData = ZERO_PHYSICS_DATA, const UnitID& id = INVALID_UNIT_ID);
@@ -69,6 +70,7 @@ public:
 	void drawAll() const;
 	void updateAll(float elapsedTime);
 	void updatePacman(const Sprite& sprite, int posX, int posY);
+	void respawnEnemy();
 	
 	Unit* createCoinUnit(const Sprite& sprite, bool shouldWrap = true, const PositionData& posData = ZERO_POSITION_DATA, const PhysicsData& physicsData = ZERO_PHYSICS_DATA, const UnitID& id = INVALID_UNIT_ID);
 	Unit* createCoinObject(const Sprite& sprite);
@@ -106,6 +108,9 @@ private:
 	float timer;
 	int respawnTime = 60;
 	bool canAdd = false;
+	bool needsRespawn = false;
+	int amountOfRespawns = 0;
+	int spriteID = 2;
 	
 	std::map<UnitID, Unit*> mUnitMap;
 	std::map<UnitID, Unit*> mCoinUnitMap;

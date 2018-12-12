@@ -91,15 +91,13 @@ StateTransition * EnemyFleeState::update()
 	//reset the index every click
 
 
-
-
 	//check within radius of player and take damage if you are
 	if (abs(enemyPosCenter.getX() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getX()) < 60
 		&& abs(enemyPosCenter.getY() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getY()) < 60)
 	{
 		if (timer > 20)
 		{
-			pGame->getUnitManager()->getUnit(i)->subtractHealth(1);
+			pGame->getUnitManager()->getUnit(i)->subtractHealth(10);
 			timer = 0;
 			cout << pGame->getUnitManager()->getUnit(i)->getHealth() << endl;
 			if(pGame->getUnitManager()->getUnit(i)->getHealth() < 0)
@@ -120,19 +118,6 @@ StateTransition * EnemyFleeState::update()
 			}
 		}
 	}
-
-	//IF PLAYER IS OUTSIDE OF RADIUS
-	//when pacman is within a certain radius of ghost
-	//needs to be at an intersection in order to change to chase
-
-	//IF PLAYER IS CHASING ENEMY
-	//map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(ENEMY_FLEE_TRANSITION);
-	//if (iter != mTransitions.end())//found?
-	//{
-	//	StateTransition* pTransition = iter->second;
-	//	return pTransition;
-	//}
-
 
 
 	return NULL;//no transition

@@ -37,7 +37,7 @@ public:
 	void update(float elapsedTime);
 	void updateCoins();
 	void updateCandy();
-	void updatePowerUp();
+	void updatePowerUp(float elapsedTime);
 
 	PositionComponent* getPositionComponent() const;
 	PhysicsComponent* getPhysicsComponent() const;

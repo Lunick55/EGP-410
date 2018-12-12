@@ -15,7 +15,7 @@ public:
 	~Powerup();
 
 	void draw();
-	void update();
+	void update(float elapsedTime);
 
 	void reset();
 
@@ -30,6 +30,7 @@ private:
 	Sprite mSprite;
 	int mID;
 	int enemyID;
-	int timer = 0;
+	float timer = 0;
+	bool increaseTime = false;
 	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
 };

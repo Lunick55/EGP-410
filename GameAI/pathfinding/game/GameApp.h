@@ -9,6 +9,7 @@ Champlain College
 
 #include "Game.h"
 #include "Vector2D.h"
+#include <vector>
 
 //forward declarations
 class GraphicsBuffer;
@@ -75,6 +76,7 @@ public:
 	AllMightyCandy* getCandy() { return mpMightyCandy; };
 	Score* getScore() { return mpScore; };
 	Powerup* getPowerUp() { return mpPowerUp; };
+	std::vector<Sprite*> getEnemySprite() { return mEnemySprites; };
 	void setCanDestroyEnemies(bool myBool) { mCanDestroyEnemies = myBool; };
 	bool getCanDestroyEnemies() { return mCanDestroyEnemies; };
 	void markForExiting() { startingToExit = true; };
@@ -116,6 +118,7 @@ private:
 	AllMightyCandy* mpMightyCandy;
 	Powerup* mpPowerUp;
 	Timer mTimer;
+	vector<Sprite*> mEnemySprites;
 	int timer;
 	float candyRespawn;
 	bool startingToExit;

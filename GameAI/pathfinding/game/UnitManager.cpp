@@ -43,6 +43,7 @@ Unit* UnitManager::createUnit(const Sprite& sprite, bool shouldWrap, const Posit
 		//assign id and increment nextID counter
 		pUnit->mID = theID;
 
+
 		pUnit->mHealth = 10;
 
 		//create some components
@@ -200,6 +201,24 @@ void UnitManager::updatePacman(const Sprite & sprite, int posX, int posY)
 	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
 	Grid* pGrid = pGame->getGrid();
 	Unit* pUnit = createUnit(sprite, true, PositionData(Vector2D(posX, posY), 0), ZERO_PHYSICS_DATA, PLAYER_UNIT_ID);
+}
+
+void UnitManager::respawnEnemy()
+{
+	
+	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+	if (needsRespawn)
+	{
+		
+		needsRespawn = false;
+		Unit* pUnit = pGame->getUnitManager()->createUnit(*pGame->getEnemySprite().at(spriteID) , true, PositionData(Vector2D(224, 130), 0));
+		pUnit->setSteering(Steering::ENEMY_STEER, Vector2D(224, 130));
+		spriteID++;
+		if (spriteID > 4)
+		{
+			spriteID = 0;
+		}
+	}
 }
 
 Unit* UnitManager::getUnit(const UnitID& id) const
@@ -446,7 +465,7 @@ void UnitManager::updateAll(float elapsedTime)
 	}
 	for (auto it = mPowerUpUnitMap.begin(); it != mPowerUpUnitMap.end(); ++it)
 	{
-		it->second->updatePowerUp();
+		it->second->updatePowerUp(elapsedTime);
 	}
 	for (auto& it : toBeDeleted)
 	{
@@ -472,10 +491,11 @@ void UnitManager::updateAll(float elapsedTime)
 	for (auto& it : enemyToBeDeleted)
 	{
 		deleteUnit(it);
+		needsRespawn = true;
 		//pGame->getCoins()->addCoin();
 	}
 	enemyToBeDeleted.clear();
-
+	respawnEnemy();
 	resetCandyUnit(elapsedTime);
 	checkIfPlayerDead();
 }
