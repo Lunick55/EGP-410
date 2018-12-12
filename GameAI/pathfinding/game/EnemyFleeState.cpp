@@ -6,9 +6,12 @@
 #include "Unit.h"
 #include "EnemySteering.h"
 #include "SteeringComponent.h"
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
 
 void EnemyFleeState::onEntrance()
 {
+	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
 	cout << "\nEntering Enemy Flee State id:" << mID << endl;
 	mEnemyXDist = 0;
 	mEnemyYDist = 0;
@@ -16,12 +19,18 @@ void EnemyFleeState::onEntrance()
 	mEnemyYDir = Vector2D(0, 0);
 	mPathIndex = 1;
 	timer = 0;
+	int i = mID;
+	pGame->getUnitManager()->getUnit(i)->swapSprites(pGame->getScaredSprite());
 	mEnemyDir = make_pair(Vector2D(0, 0), Vector2D(0, 0));
 }
 
 void EnemyFleeState::onExit()
 {
 	cout << "\nExiting Enemy Flee State id:" << mID << endl;
+	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
+	int i = mID;
+	srand(time(NULL) + mID);
+	pGame->getUnitManager()->getUnit(i)->swapSprites(pGame->getEnemySprite().at(rand() % pGame->getEnemySprite().size()));
 }
 
 StateTransition * EnemyFleeState::update()
@@ -107,16 +116,17 @@ StateTransition * EnemyFleeState::update()
 	}
 
 	//if player is not able to destroy enemies, switch back to wander
-	if (!pGame->getCanDestroyEnemies())
+	if (pGrid->getValueAtIndex(fromIndex) == INTERSECTION_VALUE)
 	{
-		if(pGrid->getValueAtIndex(fromIndex) == INTERSECTION_VALUE)
-		{ 
+		if (!pGame->getCanDestroyEnemies())
+		{
 			map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(ENEMY_WANDER_TRANSITION);
 			if (iter != mTransitions.end())//found?
 			{
 				StateTransition* pTransition = iter->second;
 				return pTransition;
 			}
+
 		}
 	}
 

@@ -58,6 +58,7 @@ GameApp::GameApp()
 , candyRespawn(0.0)
 , enemySpeed(1.0)
 , mpPowerUp(NULL)
+, mScaredSprite(NULL)
 {
 }
 
@@ -147,6 +148,7 @@ bool GameApp::init()
 	mpGraphicsBufferManager->loadBuffer(mOrangeGhostBufferID, "OrangeGhost.png");
 	mpGraphicsBufferManager->loadBuffer(mCherryBufferID, "Cherry.png");
 	mpGraphicsBufferManager->loadBuffer(mPowerUpID, "EnemyPowerUp.png");
+	mpGraphicsBufferManager->loadBuffer(mScaredID, "ScaredGhost.png");
 
 
 
@@ -256,6 +258,14 @@ bool GameApp::init()
 	pPlayer->setSteering(Steering::PAC_STEER, Vector2D(256, 320));
 	pPlayer->setShowTarget(true);
 
+	//scaredSprite
+	GraphicsBuffer* pScaredGhost = mpGraphicsBufferManager->getBuffer(mScaredID);
+	Sprite* pScared = NULL;
+	if (pScaredGhost != NULL)
+	{
+		pScared = mpSpriteManager->createAndManageSprite(SCARED_ID, pScaredGhost, 0, 0, (float)pScaredGhost->getWidth(), (float)pScaredGhost->getHeight());
+		mScaredSprite = pScared;
+	}
 
 	PathfindingDebugContent* pContent = new PathfindingDebugContent( mpPathfinder );
 	mpDebugDisplay = new DebugDisplay( Vector2D(0,12), pContent );
@@ -310,7 +320,6 @@ void GameApp::cleanup()
 
 	delete mpPowerUp;
 	mpPowerUp = NULL;
-
 
 }
 

@@ -46,6 +46,7 @@ const IDType PINK_SPRITE_ID = 8;
 const IDType ORANGE_SPRITE_ID = 9;
 const IDType CHERRY_SPRITE_ID = 10;
 const IDType POWER_UP_ID = 11;
+const IDType SCARED_ID = 12;
 
 class GameApp: public Game
 {
@@ -76,6 +77,7 @@ public:
 	AllMightyCandy* getCandy() { return mpMightyCandy; };
 	Score* getScore() { return mpScore; };
 	Powerup* getPowerUp() { return mpPowerUp; };
+	Sprite* getScaredSprite() { return mScaredSprite; }; const
 	std::vector<Sprite*> getEnemySprite() { return mEnemySprites; };
 	void setCanDestroyEnemies(bool myBool) { mCanDestroyEnemies = myBool; };
 	bool getCanDestroyEnemies() { return mCanDestroyEnemies; };
@@ -126,6 +128,7 @@ private:
 	Powerup* mpPowerUp;
 	Timer mTimer;
 	vector<Sprite*> mEnemySprites;
+	Sprite* mScaredSprite;
 	int timer;
 	float candyRespawn;
 	bool startingToExit;
@@ -151,7 +154,7 @@ private:
 	GraphicsBufferID mPinkGhostBufferID = "pinkGhost";
 	GraphicsBufferID mCherryBufferID = "allmightyCandy";
 	GraphicsBufferID mPowerUpID = "powerUp";
-	
+	GraphicsBufferID mScaredID = "scared";
 
 	bool canHandle = false;
 	bool mPacCanMove = false;

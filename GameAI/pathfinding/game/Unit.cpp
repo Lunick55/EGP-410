@@ -25,6 +25,7 @@ Unit::Unit(const Sprite& sprite)
 	, mShowTarget(false)
 {
 	mpStateMachine = new StateMachine();
+	mOriginalSprite = &mSprite;
 
 	mpWanderState = NULL;
 	mpChaseState = NULL;
@@ -240,6 +241,11 @@ SteeringComponent* Unit::getSteeringComponent() const
 	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
 	SteeringComponent* pComponent = pGame->getComponentManager()->getSteeringComponent(mSteeringComponentID);
 	return pComponent;
+}
+
+void Unit::swapSprites(Sprite * sprite)
+{
+	mSprite = *sprite;
 }
 
 void Unit::setSteering(Steering::SteeringType type, Vector2D targetLoc /*= ZERO_VECTOR2D*/, UnitID targetUnitID /*= INVALID_UNIT_ID*/)

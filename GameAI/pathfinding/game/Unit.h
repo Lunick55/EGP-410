@@ -50,6 +50,7 @@ public:
 	float getMaxRotAcc() const { return mMaxRotAcc; };
 	float getMaxRotVel() const { return mMaxRotVel; };
 	UnitID getID(){return mID;};
+	Sprite* getSprite() { return mOriginalSprite; };
 	void setShowTarget(bool val) { mShowTarget = val; };
 	int getHealth() { return mHealth; };
 	int getSpeed() { return mSpeed; };
@@ -57,6 +58,8 @@ public:
 	void subtractHealth(int subtractNumber) { mHealth -= subtractNumber; };
 	void swapControl(){isAIControlled = !isAIControlled;};
 	bool getControl(){return isAIControlled;};
+
+	void swapSprites(Sprite* sprite);
 
 	void setSteering(Steering::SteeringType type, Vector2D targetLoc = ZERO_VECTOR2D, UnitID targetUnitID = INVALID_UNIT_ID);
 	void whatIsState()
@@ -95,6 +98,7 @@ private:
 
 	PositionComponent* mpPositionComponent = NULL;
 	Sprite mSprite;
+	Sprite* mOriginalSprite;
 	float mMaxAcc;
 	float mMaxSpeed;
 	float mMaxRotAcc;
