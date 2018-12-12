@@ -49,6 +49,7 @@ Unit::~Unit()
 	delete mpIdleState;
 	delete pIdleTrans;
 	delete pFleeTrans;
+	delete mpPlayerWanderState;
 }
 
 void Unit::draw() const
