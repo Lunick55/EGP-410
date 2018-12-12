@@ -15,7 +15,6 @@ void PlayerChaseState::onEntrance()
 	mPlayerXDir = Vector2D(0, 0);
 	mPlayerYDir = Vector2D(0, 0);
 	mPathIndex = 1;
-	//mID = 1;
 	timer = 0;
 	mPlayerDir = make_pair(Vector2D(0, 0), Vector2D(0, 0));
 }
@@ -42,7 +41,6 @@ StateTransition * PlayerChaseState::update()
 	//Find nearest enemy
 	int numEnemies = pGame->getUnitManager()->getUnitCount();
 
-	//Shouldn't be hardCoded!
 	int closestEnemyIndex = 0;
 
 	if (numEnemies > 0)
@@ -57,11 +55,6 @@ StateTransition * PlayerChaseState::update()
 	Node* pToNode = pGridGraph->getNode(toIndex);
 	mpPath = pPathfinder->findPath(pFromNode, pToNode);
 
-	if (pGrid->getValueAtIndex(fromIndex) == INTERSECTION_VALUE || mpPath == nullptr)
-	{
-		/*THIS NEEDS TO pathfind peemans location ONLY at intersections*/
-	}
-
 	PacSteering* pPacSteer = dynamic_cast<PacSteering*>(pGame->getUnitManager()->getUnit(i)->getSteeringComponent()->getSteeringBehavior());
 
 	/*find direction to next node. use that to go in*/
@@ -73,7 +66,7 @@ StateTransition * PlayerChaseState::update()
 
 
 	int x1, x2, y1, y2 = 0;
-
+	//make sure we are going the right direction
 	x1 = mPlayerXDist / -32;
 	x2 = mPlayerXDist / 32;
 	y1 = mPlayerYDist / -32;

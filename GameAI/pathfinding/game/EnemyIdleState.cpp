@@ -16,7 +16,6 @@ void EnemyIdleState::onEntrance()
 	mEnemyYDist = -32;
 	mEnemyXDir = Vector2D(0, 0);
 	mEnemyYDir = Vector2D(1, 0);
-	//mID = 1;
 	timer = 0;
 	mEnemyDir = make_pair(Vector2D(0, 0), Vector2D(1, 0));
 }
@@ -44,8 +43,8 @@ StateTransition * EnemyIdleState::update()
 
 
 	//check within radius of player and take damage if you are
-	if (abs(enemyPosCenter.getX() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getX()) < 60
-		&& abs(enemyPosCenter.getY() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getY()) < 60)
+	if (abs(enemyPosCenter.getX() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getX()) < pGame->getIdleTimeRespawn()
+		&& abs(enemyPosCenter.getY() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getY()) < pGame->getIdleTimeRespawn())
 	{
 		if (timer > 20)
 		{
@@ -54,10 +53,6 @@ StateTransition * EnemyIdleState::update()
 			cout << pGame->getUnitManager()->getPlayerUnit()->getHealth() << endl;
 		}
 
-	}
-	if (pGame->getCanDestroyEnemies())
-	{
-		//transition back to flee
 	}
 
 	//IF PLAYER IS OUTSIDE OF RADIUS

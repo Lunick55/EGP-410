@@ -68,6 +68,30 @@ GameApp::~GameApp()
 
 bool GameApp::init()
 {
+	ifstream myFile;
+	string line;
+	myFile.open("Data.txt");
+	if (myFile.is_open())
+	{
+		getline(myFile, line);
+		enemyHitPoints = atoi(line.c_str());
+
+		getline(myFile, line);
+		powerUpRespawnRate = atoi(line.c_str());
+
+		getline(myFile, line);
+		damageRadiusEnemy = atoi(line.c_str());
+
+		getline(myFile, line);
+		transitionRadius = atoi(line.c_str());
+
+		getline(myFile, line);
+		idleTime = atoi(line.c_str());
+
+		getline(myFile, line);
+		damageRadiusPlayer = atoi(line.c_str());
+	}
+
 	bool retVal = Game::init();
 	if( retVal == false )
 	{
@@ -94,6 +118,7 @@ bool GameApp::init()
 
 	//create new pathPool
 	mpPathPool = new PathPooling;
+
 
 	//load listeners
 	EventSystem::initInstance();
@@ -210,8 +235,7 @@ bool GameApp::init()
 		pPGhost = mpSpriteManager->createAndManageSprite(PINK_SPRITE_ID, pPinkGhost, 0, 0, (float)pPinkGhost->getWidth(), (float)pPinkGhost->getHeight());
 		mEnemySprites.push_back(pPGhost);
 	}
-	//Unit* pPkGhost = mpUnitManager->createUnit(*pPGhost, true, PositionData(Vector2D(288, 130), 0));
-	//pPkGhost->setSteering(Steering::ENEMY_STEER, Vector2D(288, 130));
+
 	//////set up blue ghost
 	GraphicsBuffer* pBlueGhost = mpGraphicsBufferManager->getBuffer(mBlueGhostBufferID);
 	Sprite* pBlue = NULL;
@@ -220,8 +244,6 @@ bool GameApp::init()
 		pBlue = mpSpriteManager->createAndManageSprite(BLUE_SPRITE_ID, pBlueGhost, 0, 0, (float)pBlueGhost->getWidth(), (float)pBlueGhost->getHeight());
 		mEnemySprites.push_back(pBlue);
 	}
-	//Unit* pBlueBoi = mpUnitManager->createUnit(*pBlue, true, PositionData(Vector2D(192, 130), 0));
-	//pBlueBoi->setSteering(Steering::ENEMY_STEER, Vector2D(192, 130));
 
 	GraphicsBuffer* pPacmanBuffer = mpGraphicsBufferManager->getBuffer(mPacmanBufferID);
 	Sprite* pPacman = NULL;
@@ -314,22 +336,14 @@ void GameApp::processLoop()
 
 		movePacman();
 
-	#ifdef VISUALIZE_PATH
-		//show pathfinder visualizer
-		mpPathfinder->drawVisualization(mpGrid, pBackBuffer);
-	#endif
 		//draw units
 		mpUnitManager->drawAll();
-		//mpDebugDisplay->draw( pBackBuffer );
 		mpScore->draw(pBackBuffer);
 		mpMessageManager->processMessagesForThisframe();
-		//mpCoin->update();
-		//should be last thing in processLoop
 	}
 	checkForExit();
 	mInputSystem.update();
 
-	//cout << TARGET_ELAPSED_MS << endl;
 	Game::processLoop();
 }
 
@@ -346,7 +360,6 @@ void GameApp::resetTimer()
 		candyRespawn += TARGET_ELAPSED_MS;
 	if (candyRespawn > 10 && getCanDestroyEnemies())
 	{
-		//cout << "Im popping in for a bit" << endl;
 		setCanDestroyEnemies(false);
 		candyRespawn = 0.0;
 	}
@@ -400,7 +413,6 @@ void GameApp::movePacman()
 		pPacSteer->resetIndex();
 		pPacSteer->setPath(newPath);
 
-		//mPacCanMove = false;
 	}
 }
 
@@ -478,7 +490,6 @@ void GameApp::handleEvent(const Event & theEvent)
 					mPacYDir = Vector2D(0, 1);
 
 					mPacCanMove = true;
-					//movePacman();
 
 					canHandle = false;
 				}
@@ -495,7 +506,6 @@ void GameApp::handleEvent(const Event & theEvent)
 					mPacYDir = Vector2D(0, 0);
 
 					mPacCanMove = true;
-					//movePacman();
 
 					canHandle = false;
 				}
@@ -513,7 +523,6 @@ void GameApp::handleEvent(const Event & theEvent)
 					mPacYDir = Vector2D(0, 0);
 
 					mPacCanMove = true;
-					//movePacman();
 
 					canHandle = false;
 				}
@@ -521,7 +530,6 @@ void GameApp::handleEvent(const Event & theEvent)
 			}
 			if (theEvent.getType() == W_KEY || theEvent.getType() == UP_ARROW)
 			{
-				//DFS
 			
 				if (canHandle)
 				{
@@ -533,7 +541,6 @@ void GameApp::handleEvent(const Event & theEvent)
 					mPacYDir = Vector2D(1, 0);
 
 					mPacCanMove = true;
-					//movePacman();
 
 					canHandle = false;
 				}

@@ -16,7 +16,6 @@ void PlayerWanderState::onEntrance()
 	mPlayerYDist = -32;
 	mPlayerXDir = Vector2D(0, 0);
 	mPlayerYDir = Vector2D(1, 0);
-	//mID = 1;
 	timer = 0;
 	mPlayerDir = make_pair(Vector2D(0, 0), Vector2D(1, 0));
 }
@@ -39,8 +38,6 @@ StateTransition * PlayerWanderState::update()
 	Grid* pGrid = pGame->getGrid();
 	//get the from and to index from the grid
 	Vector2D playerPosCenter = (pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition() + Vector2D(16, 16));
-	//float enemyX = pGame->getUnitManager()->getUnit(i)->getPositionComponent()->getPosition().getX() + 16;
-	//float enemyY = pGame->getUnitManager()->getUnit(i)->getPositionComponent()->getPosition().getY() + 16;
 
 	vector<int> adjacentIndices;
 	adjacentIndices = pGrid->getAdjacentIndices(pGrid->getSquareIndexFromPixelXY((int)playerPosCenter.getX(), (int)playerPosCenter.getY()));
@@ -67,6 +64,7 @@ StateTransition * PlayerWanderState::update()
 
 		int x1, x2, y1, y2;
 
+		//assign proper directions to enemy
 		x1 = mPlayerXDist / -32;
 		x2 = mPlayerXDist / 32;
 		y1 = mPlayerYDist / -32;
@@ -115,6 +113,7 @@ StateTransition * PlayerWanderState::update()
 	Node* pFromNode = pGridGraph->getNode(fromIndex);
 	Node* pToNode = pGridGraph->getNode(toIndex);
 
+	//steer
 	PacSteering* pPacSteer = dynamic_cast<PacSteering*>(pGame->getUnitManager()->getPlayerUnit()->getSteeringComponent()->getSteeringBehavior());
 	pPacSteer->moveDirection(mPlayerXDir, mPlayerYDir);
 
@@ -122,15 +121,9 @@ StateTransition * PlayerWanderState::update()
 
 	pPacSteer->resetIndex();
 	pPacSteer->setPath(newPath);
-	//reset the index every click
 
-	//check within radius of player and take damage if you are
-
-	//when pacman is within a certain radius of ghost
-	//needs to be at an intersection in order to change to chase
-
+	//check if the player is currently seeking the enemy
 	//means the enemy is allowed to hurt the enemy
-
 	if (pGame->getCanDestroyEnemies() == true)
 	{
 		map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(PLAYER_CHASE_TRANSITION);

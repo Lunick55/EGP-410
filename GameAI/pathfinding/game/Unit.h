@@ -52,6 +52,8 @@ public:
 	UnitID getID(){return mID;};
 	void setShowTarget(bool val) { mShowTarget = val; };
 	int getHealth() { return mHealth; };
+	int getSpeed() { return mSpeed; };
+	void setSpeed(float speed) { mSpeed = speed; };
 	void subtractHealth(int subtractNumber) { mHealth -= subtractNumber; };
 	void swapControl(){isAIControlled = !isAIControlled;};
 	bool getControl(){return isAIControlled;};
@@ -87,6 +89,7 @@ private:
 	//StateTransition*
 	int mHealth;
 	int mDamageRadius;
+	float mSpeed;
 
 	bool isAIControlled = false;
 

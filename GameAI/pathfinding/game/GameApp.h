@@ -85,6 +85,13 @@ public:
 	void setEnemySpeed(float mySpeed) { enemySpeed = mySpeed; };
 	float getEnemySpeed() { return enemySpeed; };
 
+	int getEnemyHitPoints() { return enemyHitPoints; };
+	int getPowerUpRespawn() { return powerUpRespawnRate; };
+	int getDamageRadiusEnemy() { return damageRadiusEnemy; };
+	int getDamageRadiusPlayer() { return damageRadiusEnemy; };
+	int getTransitionRadiusEnemy() { return transitionRadius; };
+	int getIdleTimeRespawn() { return idleTime; };
+
 	void changeHandle(bool myHandle) { canHandle = myHandle; };
 	void checkForExit();
 
@@ -123,6 +130,13 @@ private:
 	float candyRespawn;
 	bool startingToExit;
 	float enemySpeed;
+
+	int enemyHitPoints;
+	int powerUpRespawnRate;
+	int damageRadiusEnemy;
+	int transitionRadius;
+	int idleTime;
+	int damageRadiusPlayer;
 
 
 	GraphicsBufferID mBackgroundBufferID = "woods";

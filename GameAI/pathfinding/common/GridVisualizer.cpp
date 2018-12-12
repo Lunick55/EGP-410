@@ -39,10 +39,6 @@ void GridVisualizer::refresh()
 			{
 				addColor(i, color2);
 			}
-			else if (mpGrid->getValueAtIndex(i) == INTERSECTION_VALUE)
-			{
-				addColor(i, color3);
-			}
 		}
 	}
 	mDirty = false;

@@ -30,6 +30,7 @@ public:
 	UnitManager(Uint32 maxSize);
 	~UnitManager() 
 	{
+		//delete the units in the game
 		for (auto it = mUnitMap.begin(); it != mUnitMap.end(); ++it)
 		{
 			it->second->~Unit();
@@ -50,7 +51,6 @@ public:
 			it->second->~Unit();
 		}
 		mPowerUpUnitMap.clear();
-		//delete mEnemySprite;
 	};
 
 	Unit* createUnit(const Sprite& sprite, bool shouldWrap = true, const PositionData& posData = ZERO_POSITION_DATA, const PhysicsData& physicsData = ZERO_PHYSICS_DATA, const UnitID& id = INVALID_UNIT_ID);
@@ -72,17 +72,20 @@ public:
 	void updatePacman(const Sprite& sprite, int posX, int posY);
 	void respawnEnemy();
 	
+	//create coin unit functions
 	Unit* createCoinUnit(const Sprite& sprite, bool shouldWrap = true, const PositionData& posData = ZERO_POSITION_DATA, const PhysicsData& physicsData = ZERO_PHYSICS_DATA, const UnitID& id = INVALID_UNIT_ID);
 	Unit* createCoinObject(const Sprite& sprite);
 	Unit* getCoinUnit(const UnitID& id) const;
 	void deleteCoinUnit(const UnitID& id);
 
+	//create candy unit functions
 	Unit* createCandyUnit(const Sprite& sprite, bool shouldWrap = true, const PositionData& posData = ZERO_POSITION_DATA, const PhysicsData& physicsData = ZERO_PHYSICS_DATA, const UnitID& id = INVALID_UNIT_ID);
 	Unit* createCandyObject(const Sprite& sprite);
 	Unit* getCandyUnit(const UnitID& id) const;
 	void deleteCandyUnit(const UnitID& id);
 	void resetCandyUnit(float elapsedTime);
 
+	//create power up unit functions
 	Unit* createPowerUpUnit(const Sprite& sprite, bool shouldWrap = true, const PositionData& posData = ZERO_POSITION_DATA, const PhysicsData& physicsData = ZERO_PHYSICS_DATA, const UnitID& id = INVALID_UNIT_ID);
 	Unit* createPowerUpObject(const Sprite& sprite);
 	Unit* getPowerUpUnit(const UnitID& id) const;
@@ -108,7 +111,7 @@ private:
 	const int HALF = 2;
 	const int OFFSET = 64;
 	float timer;
-	int respawnTime = 60;
+	int respawnTime;
 	bool canAdd = false;
 	bool needsRespawn = false;
 	int amountOfRespawns = 0;

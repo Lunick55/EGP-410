@@ -15,7 +15,6 @@ void EnemyChaseState::onEntrance()
 	mEnemyXDir = Vector2D(0, 0);
 	mEnemyYDir = Vector2D(0, 0);
 	mPathIndex = 1;
-	//mID = 1;
 	timer = 0;
 	mEnemyDir = make_pair(Vector2D(0, 0), Vector2D(0, 0));
 }
@@ -45,11 +44,6 @@ StateTransition * EnemyChaseState::update()
 	Node* pToNode = pGridGraph->getNode(toIndex);
 	mpPath = pPathfinder->findPath(pFromNode, pToNode);
 
-	if (pGrid->getValueAtIndex(fromIndex) == INTERSECTION_VALUE || mpPath == nullptr)
-	{
-		/*THIS NEEDS TO pathfind peemans location ONLY at intersections*/
-	}
-
 	EnemySteering* pEnemySteer = dynamic_cast<EnemySteering*>(pGame->getUnitManager()->getUnit(i)->getSteeringComponent()->getSteeringBehavior());
 
 	/*find direction to next node. use that to go in*/
@@ -62,6 +56,7 @@ StateTransition * EnemyChaseState::update()
 
 	int x1, x2, y1, y2 = 0;
 
+	//put direction to the right way
 	x1 = mEnemyXDist / -32;
 	x2 = mEnemyXDist / 32;
 	y1 = mEnemyYDist / -32;
@@ -88,7 +83,7 @@ StateTransition * EnemyChaseState::update()
 	mEnemyXDir = mEnemyDir.first;
 	mEnemyYDir = mEnemyDir.second;
 
-
+	//move enemy in proper direction
 	pEnemySteer->moveDirection(mEnemyXDir, mEnemyYDir);
 
 
@@ -100,8 +95,8 @@ StateTransition * EnemyChaseState::update()
 
 
 	//check within radius of player and take damage if you are
-	if (abs(enemyPosCenter.getX() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getX()) < 20
-		&& abs(enemyPosCenter.getY() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getY()) < 20)
+	if (abs(enemyPosCenter.getX() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getX()) < pGame->getDamageRadiusEnemy()
+		&& abs(enemyPosCenter.getY() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getY()) < pGame->getDamageRadiusEnemy())
 	{
 		if (timer > 20)
 		{
@@ -128,8 +123,8 @@ StateTransition * EnemyChaseState::update()
 
 	if (pGrid->getValueAtIndex(fromIndex) == INTERSECTION_VALUE)
 	{
-		if (abs(enemyPosCenter.getX() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getX()) >= 100
-			&& abs(enemyPosCenter.getY() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getY()) >= 100)
+		if (abs(enemyPosCenter.getX() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getX()) >= pGame->getTransitionRadiusEnemy()
+			&& abs(enemyPosCenter.getY() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getY()) >= pGame->getTransitionRadiusEnemy())
 		{
 			map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(ENEMY_WANDER_TRANSITION);
 			if (iter != mTransitions.end())//found?
@@ -140,6 +135,7 @@ StateTransition * EnemyChaseState::update()
 		}
 	}
 
+	//if the enemy is in the idle area, wait 60 seconds and then go
 	if (pGrid->getValueAtIndex(fromIndex) == SPAWNING_VALUE && timer > 60)
 	{
 		map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(ENEMY_IDLE_TRANSTION);
@@ -149,16 +145,6 @@ StateTransition * EnemyChaseState::update()
 			return pTransition;
 		}
 	}
-
-	//IF PLAYER IS CHASING ENEMY
-	//map<TransitionType, StateTransition*>::iterator iter = mTransitions.find(ENEMY_FLEE_TRANSITION);
-	//if (iter != mTransitions.end())//found?
-	//{
-	//	StateTransition* pTransition = iter->second;
-	//	return pTransition;
-	//}
-
-
 
 	return NULL;//no transition
 }

@@ -148,7 +148,6 @@ void EnemySteering::centerToNode()
 	mSquareIndexAtCenter = pGrid->getSquareIndexFromPixelXY(mPositionCentered.getX(), mPositionCentered.getY());
 	if (pGrid->getValueAtIndex(mSquareIndexAtCenter) == INTERSECTION_VALUE)
 	{
-		cout << "I'M HOME" << endl;
 		pOwner->getPositionComponent()->setPosition(pGrid->getULCornerOfSquare(mSquareIndexAtCenter));
 	}
 }

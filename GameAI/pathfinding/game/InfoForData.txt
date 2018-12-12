@@ -1,0 +1,6 @@
+1: Enemy hit points
+2: Power Up respawn rate
+3: Damage radius enemy
+4: Transition radius
+5: Idle wait time
+6: Damage radius player

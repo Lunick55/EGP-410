@@ -15,7 +15,6 @@ void EnemyFleeState::onEntrance()
 	mEnemyXDir = Vector2D(0, 0);
 	mEnemyYDir = Vector2D(0, 0);
 	mPathIndex = 1;
-	//mID = 1;
 	timer = 0;
 	mEnemyDir = make_pair(Vector2D(0, 0), Vector2D(0, 0));
 }
@@ -56,6 +55,7 @@ StateTransition * EnemyFleeState::update()
 
 	int x1, x2, y1, y2 = 0;
 
+	//make sure the enemy is going the right direction
 	x1 = mEnemyXDist / -32;
 	x2 = mEnemyXDist / 32;
 	y1 = mEnemyYDist / -32;
@@ -92,8 +92,8 @@ StateTransition * EnemyFleeState::update()
 
 
 	//check within radius of player and take damage if you are
-	if (abs(enemyPosCenter.getX() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getX()) < 60
-		&& abs(enemyPosCenter.getY() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getY()) < 60)
+	if (abs(enemyPosCenter.getX() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getX()) < pGame->getDamageRadiusPlayer()
+		&& abs(enemyPosCenter.getY() - pGame->getUnitManager()->getPlayerUnit()->getPositionComponent()->getPosition().getY()) < pGame->getDamageRadiusPlayer())
 	{
 		if (timer > 20)
 		{
@@ -106,6 +106,7 @@ StateTransition * EnemyFleeState::update()
 
 	}
 
+	//if player is not able to destroy enemies, switch back to wander
 	if (!pGame->getCanDestroyEnemies())
 	{
 		if(pGrid->getValueAtIndex(fromIndex) == INTERSECTION_VALUE)

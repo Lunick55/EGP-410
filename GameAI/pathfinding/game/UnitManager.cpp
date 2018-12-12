@@ -17,7 +17,9 @@ using namespace std;
 UnitManager::UnitManager(Uint32 maxSize)
 	:mPool(maxSize, sizeof(Unit))
 {
+	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
 	timer = 0;
+	respawnTime = pGame->getPowerUpRespawn();
 }
 
 Unit* UnitManager::createUnit(const Sprite& sprite, bool shouldWrap, const PositionData& posData /*= ZERO_POSITION_DATA*/, const PhysicsData& physicsData /*= ZERO_PHYSICS_DATA*/, const UnitID& id)
@@ -42,12 +44,11 @@ Unit* UnitManager::createUnit(const Sprite& sprite, bool shouldWrap, const Posit
 
 		//assign id and increment nextID counter
 		pUnit->mID = theID;
-
+		GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
 		pUnit->alignStateMachine();
-		pUnit->mHealth = 10;
+		pUnit->mHealth = pGame->getEnemyHitPoints();
 
 		//create some components
-		GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
 		ComponentManager* pComponentManager = pGame->getComponentManager();
 		ComponentID id = pComponentManager->allocatePositionComponent(posData, shouldWrap);
 		pUnit->mPositionComponentID = id;
@@ -117,6 +118,7 @@ Unit* UnitManager::createRandomUnit(const Sprite& sprite)
 	int velX = rand() % 50 - 25;
 	int velY = rand() % 40 - 20;
 
+	//make sure the new coin position isnt in the wall
 	while (pGrid->getValueAtIndex(pGrid->getSquareIndexFromPixelXY(posX, posY)) == BLOCKING_VALUE)
 	{
 		posX = rand() % gpGame->getGraphicsSystem()->getWidth();
@@ -155,10 +157,10 @@ Unit * UnitManager::createRandomObject(const Sprite & sprite)
 
 void UnitManager::checkIfPlayerDead()
 {
+	//check to see if the players health is 0
 	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
 	if (getPlayerUnit()->getHealth() < 0)
 	{
-		cout << "I am dead boi" << endl;
 		pGame->markForExiting();
 	}
 
@@ -205,11 +207,10 @@ void UnitManager::updatePacman(const Sprite & sprite, int posX, int posY)
 
 void UnitManager::respawnEnemy()
 {
-	
+	//check to see if there needs to be a respawn
 	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
 	if (needsRespawn)
 	{
-		
 		needsRespawn = false;
 		Unit* pUnit = pGame->getUnitManager()->createUnit(*pGame->getEnemySprite().at(spriteID) , true, PositionData(Vector2D(224, 130), 0));
 		pUnit->setSteering(Steering::ENEMY_STEER, Vector2D(224, 130));
@@ -339,6 +340,7 @@ Unit * UnitManager::createCandyObject(const Sprite & sprite)
 	int velX = rand() % 50 - 25;
 	int velY = rand() % 40 - 20;
 
+	//make sure area is clear
 	while (pGrid->getValueAtPixelXY(posX, posY) != CLEAR_VALUE)
 	{
 		posX = rand() % pGrid->getGridWidth() * PIXEL_SIZE;
@@ -388,6 +390,7 @@ void UnitManager::deleteCandyUnit(const UnitID & id)
 
 void UnitManager::resetCandyUnit(float elapsedTime)
 {
+
 	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
 	if (pGame->getCanDestroyEnemies())
 	{
@@ -397,10 +400,10 @@ void UnitManager::resetCandyUnit(float elapsedTime)
 	{
 		timer += elapsedTime;
 	}
+	//respawn the candy every 60 seconds
 	if (timer > respawnTime)
 	{
 		pGame->getCandy()->reset();
-		//pGame->setCanDestroyEnemies(false);
 		timer = 0;
 		canAdd = false;
 	}
@@ -430,6 +433,7 @@ void UnitManager::deleteRandomUnit()
 
 void UnitManager::drawAll() const
 {
+	//draw all of the unit maps
 	for (auto it = mUnitMap.begin(); it != mUnitMap.end(); ++it)
 	{
 		it->second->draw();
@@ -450,6 +454,7 @@ void UnitManager::drawAll() const
 
 void UnitManager::updateAll(float elapsedTime)
 {
+	//update all of the unit maps
 	GameApp* pGame = dynamic_cast<GameApp*>(gpGame);
 	for (auto it = mUnitMap.begin(); it != mUnitMap.end(); ++it)
 	{
@@ -467,6 +472,7 @@ void UnitManager::updateAll(float elapsedTime)
 	{
 		it->second->updatePowerUp(elapsedTime);
 	}
+	//check and delete units that are marked for deletion
 	for (auto& it : toBeDeleted)
 	{
 		deleteCoinUnit(it);
@@ -477,14 +483,12 @@ void UnitManager::updateAll(float elapsedTime)
 	for (auto& it : candyToBeDeleted)
 	{
 		deleteCandyUnit(it);
-		//pGame->getCoins()->addCoin();
 	}
 	candyToBeDeleted.clear();
 
 	for (auto& it : powerUpToBeDeleted)
 	{
 		deletePowerUpUnit(it);
-		//pGame->getCoins()->addCoin();
 	}
 	powerUpToBeDeleted.clear();
 
@@ -492,11 +496,13 @@ void UnitManager::updateAll(float elapsedTime)
 	{
 		deleteUnit(it);
 		needsRespawn = true;
-		//pGame->getCoins()->addCoin();
 	}
 	enemyToBeDeleted.clear();
+	//respawn enemies that need to respawn
 	respawnEnemy();
+	//respawn the candy unit every 60 seconds
 	resetCandyUnit(elapsedTime);
+	//check to make sure player is alive
 	checkIfPlayerDead();
 }
 void UnitManager::addToDelete(UnitID myID)
