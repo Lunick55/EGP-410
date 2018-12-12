@@ -43,7 +43,7 @@ Unit* UnitManager::createUnit(const Sprite& sprite, bool shouldWrap, const Posit
 		//assign id and increment nextID counter
 		pUnit->mID = theID;
 
-
+		pUnit->alignStateMachine();
 		pUnit->mHealth = 10;
 
 		//create some components

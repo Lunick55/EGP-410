@@ -459,15 +459,16 @@ void GameApp::handleEvent(const Event & theEvent)
 			{
 				if (canHandle)
 				{
-					cout << "move down" << endl;
+					//cout << "move down" << endl;
 
-					mPacXDist = 0;
-					mPacYDist = 32;
-					mPacXDir = Vector2D(0, 0);
-					mPacYDir = Vector2D(0, 1);
+					//mPacXDist = 0;
+					//mPacYDist = 32;
+					//mPacXDir = Vector2D(0, 0);
+					//mPacYDir = Vector2D(0, 1);
 
-					mPacCanMove = true;
-					//movePacman();
+					mPacCanMove = false;
+					////movePacman();
+					mpUnitManager->getPlayerUnit()->swapControl();
 
 					canHandle = false;
 				}
